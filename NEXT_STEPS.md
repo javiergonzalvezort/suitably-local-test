@@ -1,0 +1,28 @@
+# Next steps
+
+State after the first session (2026-10-27). Done: repo skeleton (AGPL-3.0), doctor, Windows and macOS installers, privacy pre-commit hook, fictional persona, job search on Himalayas and Remote OK, ranking (shortlist, evaluations, score), tailored CV and cover letter (check, render), and the `npm run demo` flow. 44 tests pass (`npm test`, `npm run typecheck`).
+
+## Before the first mentoring session
+
+1. **Workflow skills** in `.agents/skills/<name>/SKILL.md` (Agent Skills format): `setup` (profile interview and CV import), `find-offers` (including pasted offers), `rank` (gates and requirement classification, adapted from upstream `04-job-evaluation.md`), `tailor` (writing rules adapted from upstream `03-writing-style.md`, plus a self-review pass). Until then `AGENTS.md` carries short versions. Update THIRD_PARTY_NOTICES.md when adapting.
+2. **Copy skills for Claude Code**: a `scripts/sync-skills.ts` that copies `.agents/skills` to `.claude/skills`, with a test that they match. Pointers for other agents: `GEMINI.md`, `.cursor/rules/main.mdc`.
+3. **Test the installers on clean machines**: a Windows laptop without Git/Node/Typst, and a Mac without Homebrew. Only dry runs were tested (`$env:DRY_RUN='1'` / `DRY_RUN=1`). The clone path (`irm ... | iex`) needs the pushed repo.
+4. **One real run with Claude Code** on the persona (`demo-workspace`): setup, rank of the live shortlist, tailor. Measure tokens and time on a Pro plan.
+5. **Re-read the terms** of Himalayas and Remote OK for personal, local use (the dates in `config/sources.json` come from a review written for hosted use) and record the date.
+
+## Later
+
+- `docs/` in Spanish (setup guide for non-developers, costs per agent, privacy, FAQ); README in Spanish.
+- Supervised apply (field plan, never submit; email drafts only) and interview prep.
+- Public ATS boards (Greenhouse, Lever, Ashby) over a user-maintained company list.
+- `applications.csv` log of what was sent where.
+- CI (GitHub Actions) that runs `npm test`, `npm run typecheck`, and the demo with Typst.
+- Second agent (Codex or Gemini CLI) tested end to end.
+- A contributor agreement (DCO or CLA) before accepting pull requests.
+
+## Known limits
+
+- Himalayas: only the first page per search term (robots.txt disallows `page=` URLs).
+- The shortlist's location filter is text matching; offers with no stated location pass.
+- `check-cv` checks facts and numbers, not wording: a human still reads every document.
+- Fonts: Arial on Windows and macOS; elsewhere Typst falls back to its bundled Libertinus Serif.

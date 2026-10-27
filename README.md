@@ -64,7 +64,7 @@ Open the project folder in your agent (for Claude Code: `cd` into the folder and
 - "Rank the offers"
 - "Tailor my CV and cover letter for offer 3"
 
-The agent follows the instructions in [AGENTS.md](AGENTS.md) and the skills in `.agents/skills/`.
+The agent follows the instructions in [AGENTS.md](AGENTS.md). What is planned next is in [NEXT_STEPS.md](NEXT_STEPS.md).
 
 ## Your data
 
