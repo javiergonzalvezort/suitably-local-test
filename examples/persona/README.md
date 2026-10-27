@@ -10,7 +10,7 @@ The folder has the same layout as your private `me/` workspace, so it shows what
 | `search.json` | the setup skill | search terms and filters for the scripts |
 | `offers/fetched.json` | `find-offers` script | eight invented offers (normally fetched from Himalayas and Remote OK) |
 | `offers/evaluations.json` | the rank skill | the agent's classification of each shortlisted offer |
-| `applications/example-1/` | the tailor skill | a tailored CV and cover letter for the best offer |
+| `applications/lumen-parcel-analytics-engineer/` | the tailor skill | a tailored CV and cover letter for the best offer |
 
 Try it with `npm run demo`, which copies this folder to `demo-workspace/` (ignored by git) and runs the scripts on the copy. To use it from your agent, ask it to work on `demo-workspace` instead of `me`.
 
