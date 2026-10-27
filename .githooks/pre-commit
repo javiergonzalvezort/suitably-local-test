@@ -1,0 +1,4 @@
+#!/bin/sh
+# Turned on by the installer with: git config core.hooksPath .githooks
+# Blocks commits that would publish personal data. See scripts/precommit.ts.
+exec node scripts/precommit.ts

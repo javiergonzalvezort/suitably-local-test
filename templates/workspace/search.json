@@ -1,0 +1,8 @@
+{
+  "queries": [],
+  "titleKeywords": [],
+  "excludeKeywords": [],
+  "allowedLocations": ["Worldwide", "Europe", "Spain"],
+  "maxAgeDays": 30,
+  "shortlistSize": 20
+}
