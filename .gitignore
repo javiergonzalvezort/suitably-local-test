@@ -1,0 +1,34 @@
+# --- Your personal workspace: never committed ---
+# Profile, CVs, offers, generated documents, caches. Keep it private.
+/me/
+# Copy of the sample persona made by `npm run demo`
+/demo-workspace/
+
+# --- Documents and images: blocked everywhere except the folders below ---
+*.pdf
+*.docx
+*.doc
+*.odt
+*.rtf
+*.pages
+*.png
+*.jpg
+*.jpeg
+*.heic
+*.webp
+# Documentation images may be added on purpose here
+!/docs/assets/**
+
+# --- Secrets ---
+.env
+.env.*
+*.key
+*.pem
+
+# --- Tooling ---
+node_modules/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

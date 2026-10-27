@@ -1,0 +1,28 @@
+{
+  "name": "suitably-local-test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first job search helper for coding agents: find offers from permitted sources, rank them, and tailor a CV and cover letter. Your data stays on your machine.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "doctor": "node scripts/doctor.ts",
+    "init-workspace": "node scripts/init-workspace.ts",
+    "find-offers": "node scripts/find-offers.ts",
+    "shortlist": "node scripts/rank.ts shortlist",
+    "score": "node scripts/rank.ts score",
+    "check-cv": "node scripts/check-cv.ts",
+    "render": "node scripts/render.ts",
+    "demo": "node scripts/demo.ts",
+    "sync-skills": "node scripts/sync-skills.ts",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
