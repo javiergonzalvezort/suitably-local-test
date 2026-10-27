@@ -1,0 +1,33 @@
+{
+  "_read_me": "Allowlist of job sources. Safe defaults: only change the limits if you have read the source's terms and accept the responsibility. Never add sites that need a login or whose terms forbid automated access. See docs/sources.md.",
+  "sources": {
+    "himalayas": {
+      "name": "Himalayas",
+      "enabled": true,
+      "kind": "official public JSON API",
+      "apiDocs": "https://himalayas.app/api",
+      "termsUrl": "https://himalayas.app/terms",
+      "termsReviewed": "2026-10-22",
+      "robotsChecked": "2026-10-27",
+      "duties": "Name Himalayas and link to the job page; keep applicationLink unchanged; drop expired jobs; personal use only, do not republish the offers.",
+      "minDelayMs": 2000,
+      "dailyRequestCap": 30,
+      "cacheHours": 6,
+      "maxQueries": 5
+    },
+    "remoteok": {
+      "name": "Remote OK",
+      "enabled": true,
+      "kind": "official public JSON API (latest jobs, one request)",
+      "apiDocs": "https://remoteok.com/api",
+      "termsUrl": "https://remoteok.com/legal",
+      "termsReviewed": "2026-10-22",
+      "robotsChecked": "2026-10-27",
+      "duties": "Name Remote OK as the source and link to the Remote OK job page; do not use the Remote OK logo.",
+      "minDelayMs": 2000,
+      "dailyRequestCap": 4,
+      "cacheHours": 6,
+      "maxQueries": 1
+    }
+  }
+}

@@ -5,6 +5,7 @@
 
 import { execFileSync } from "node:child_process";
 import { isMain } from "./lib/main.ts";
+import { EMAIL_PATTERN, PHONE_PATTERN } from "./lib/text.ts";
 
 export type StagedFile = { path: string; addedLines: string[] };
 
@@ -16,12 +17,11 @@ const BLOCKED_EXTENSIONS = /\.(pdf|docx?|odt|rtf|pages|png|jpe?g|heic|webp|key|p
 const ALLOWED_DOC_FOLDER = "docs/assets/";
 const SECRET_FILE = /(^|\/)\.env(\..*)?$/;
 
-const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
+const EMAIL = EMAIL_PATTERN;
 // Domains that are fine to mention: reserved example domains and no-reply addresses.
 const ALLOWED_EMAIL = /@(example\.(com|org|net)|users\.noreply\.github\.com|anthropic\.com)$/i;
-// International numbers with a leading +, or three groups of digits (3, 3, 3-4)
-// separated by spaces, dots, or hyphens. Examples are in tests/precommit.test.ts.
-const PHONE = /(\+\d{1,3}[\s.-]?\(?\d{1,4}\)?([\s.-]?\d{2,4}){2,4})|(\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{3,4}\b)/;
+// The shared pattern is global (flag g); .test() needs a non-global copy.
+const PHONE = new RegExp(PHONE_PATTERN.source);
 
 export function findProblems(files: StagedFile[]): string[] {
   const problems: string[] = [];
