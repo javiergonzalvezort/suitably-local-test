@@ -1,0 +1,64 @@
+{
+  "offerId": "example:1",
+  "language": "en",
+  "name": "Alba Ferrer Soler",
+  "headline": "Analytics engineer: dbt models, tests, and Looker dashboards for operations teams",
+  "contact": {
+    "email": "alba.ferrer@example.com",
+    "phone": "+34 600 000 000",
+    "location": "Valencia, Spain (remote in Europe)",
+    "links": ["linkedin.com/in/example-alba-ferrer"]
+  },
+  "summary": "Six years turning operational data into reporting that retail and logistics teams rely on. I build and test dbt models on BigQuery, put Looker on top, and agree metric definitions with the managers who use them.",
+  "experience": [
+    {
+      "title": "Senior Data Analyst",
+      "company": "Brisamar Retail",
+      "location": "Valencia",
+      "start": "2022-03",
+      "end": "present",
+      "bullets": [
+        "Rebuilt weekly sales reporting as dbt models on BigQuery, cutting preparation from 2 days to 3 hours a week.",
+        "Added dbt tests to the 25 most used models; incidents reported by managers fell from about 10 a month to 2.",
+        "Moved 40 Excel reports to Looker dashboards used by 120 store and regional managers.",
+        "Mentored 2 junior analysts on SQL and code review."
+      ]
+    },
+    {
+      "title": "Data Analyst",
+      "company": "Tallerum Logistics",
+      "location": "Valencia",
+      "start": "2019-09",
+      "end": "2022-02",
+      "bullets": [
+        "Built a Python (pandas) forecast of daily parcel volumes per depot; forecast error fell from 18% to 11%.",
+        "Wrote the SQL behind the operations KPI pack sent to 6 regional directors every Monday.",
+        "Automated driver-shift reports with Python and Airflow, saving about 5 hours a week."
+      ]
+    },
+    {
+      "title": "Junior BI Analyst",
+      "company": "Ciclo Verde Energía",
+      "location": "Castellón",
+      "start": "2018-06",
+      "end": "2019-08",
+      "bullets": [
+        "Cleaned and documented a customer database of about 30,000 records before a CRM migration."
+      ]
+    }
+  ],
+  "education": [
+    { "degree": "Analytics Engineering Certificate", "institution": "Open Data School", "year": "2023", "detail": "dbt, data modelling, testing, documentation" },
+    { "degree": "BSc in Statistics", "institution": "Universidad del Mediterráneo Central", "year": "2018" }
+  ],
+  "skills": [
+    { "group": "Data modelling", "items": ["dbt", "SQL", "BigQuery", "data testing"] },
+    { "group": "BI", "items": ["Looker", "Power BI", "Excel"] },
+    { "group": "Programming", "items": ["Python (pandas)", "Airflow", "Git"] }
+  ],
+  "languages": [
+    { "language": "Spanish", "level": "Native" },
+    { "language": "Catalan", "level": "Native" },
+    { "language": "English", "level": "C1" }
+  ]
+}

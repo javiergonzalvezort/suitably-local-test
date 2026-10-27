@@ -1,0 +1,111 @@
+[
+  {
+    "offerId": "example:1",
+    "eligibility": "pass",
+    "language": "pass",
+    "location": "pass",
+    "seniority": "fit",
+    "dealBreakers": [],
+    "requirements": [
+      { "text": "3+ years writing production SQL", "kind": "must", "match": "yes", "evidence": "SQL at Brisamar Retail and Tallerum Logistics since 2019" },
+      { "text": "Hands-on dbt experience including tests", "kind": "must", "match": "yes", "evidence": "Added dbt tests to the 25 most used models (Brisamar Retail)" },
+      { "text": "Experience with a BI tool such as Looker", "kind": "must", "match": "yes", "evidence": "Moved 40 Excel reports to Looker dashboards" },
+      { "text": "Fluent written English", "kind": "must", "match": "yes", "evidence": "English C1, daily at work" },
+      { "text": "Logistics or delivery data", "kind": "nice", "match": "yes", "evidence": "Parcel volume forecast at Tallerum Logistics" },
+      { "text": "Python", "kind": "nice", "match": "yes", "evidence": "Python (pandas) forecast" },
+      { "text": "Airflow", "kind": "nice", "match": "partial", "evidence": "Working knowledge: automated shift reports with Airflow" }
+    ],
+    "strengths": ["dbt models and tests in production", "Looker dashboards for operations managers", "Logistics data background"],
+    "gaps": ["No experience reviewing other people's pull requests is stated, only mentoring"],
+    "notes": "Very close to the role she wants: data modelling on dbt and BigQuery, remote in Europe, in a domain she knows."
+  },
+  {
+    "offerId": "example:2",
+    "eligibility": "pass",
+    "language": "pass",
+    "location": "pass",
+    "seniority": "fit",
+    "dealBreakers": [],
+    "requirements": [
+      { "text": "5+ years in data analysis", "kind": "must", "match": "yes", "evidence": "Data roles since 2018-06" },
+      { "text": "Advanced SQL", "kind": "must", "match": "yes", "evidence": "SQL listed as strong; dbt models" },
+      { "text": "Python for analysis", "kind": "must", "match": "yes", "evidence": "Python (pandas) forecast at Tallerum Logistics" },
+      { "text": "Presenting to non-technical stakeholders", "kind": "must", "match": "yes", "evidence": "Main contact for the finance team; KPI pack for regional directors" },
+      { "text": "Spanish and English", "kind": "must", "match": "yes", "evidence": "Spanish native, English C1" },
+      { "text": "Healthcare data", "kind": "nice", "match": "no", "evidence": "" },
+      { "text": "dbt", "kind": "nice", "match": "yes", "evidence": "dbt on BigQuery at Brisamar Retail" },
+      { "text": "Mentoring experience", "kind": "nice", "match": "yes", "evidence": "Mentored 2 junior analysts" }
+    ],
+    "strengths": ["Meets every must-have", "Stakeholder reporting experience"],
+    "gaps": ["Mostly reporting, less data modelling than she wants", "No healthcare data"],
+    "notes": "A safe match, but further from her goal of spending more time on data modelling."
+  },
+  {
+    "offerId": "example:3",
+    "eligibility": "pass",
+    "language": "pass",
+    "location": "pass",
+    "seniority": "above",
+    "dealBreakers": [],
+    "requirements": [
+      { "text": "4+ years building streaming pipelines with Kafka and Spark", "kind": "must", "match": "no", "evidence": "" },
+      { "text": "Strong Scala or Java", "kind": "must", "match": "no", "evidence": "" },
+      { "text": "Experience with Kubernetes", "kind": "must", "match": "no", "evidence": "" },
+      { "text": "On-call rotation", "kind": "must", "match": "unknown", "evidence": "" },
+      { "text": "Payments domain", "kind": "nice", "match": "no", "evidence": "" },
+      { "text": "dbt", "kind": "nice", "match": "yes", "evidence": "dbt on BigQuery" }
+    ],
+    "strengths": ["dbt"],
+    "gaps": ["No streaming, Scala, Java, or Kubernetes experience"],
+    "notes": "A software-heavy data engineering role; her profile does not cover its core."
+  },
+  {
+    "offerId": "example:4",
+    "eligibility": "pass",
+    "language": "pass",
+    "location": "pass",
+    "seniority": "fit",
+    "dealBreakers": ["Gambling, betting, or crypto companies"],
+    "requirements": [
+      { "text": "3+ years with Power BI and SQL", "kind": "must", "match": "partial", "evidence": "Power BI at Ciclo Verde Energía (about one year); SQL strong" },
+      { "text": "High-volume event data", "kind": "must", "match": "unknown", "evidence": "" }
+    ],
+    "strengths": ["SQL", "Hybrid in Valencia"],
+    "gaps": ["Limited Power BI time"],
+    "notes": "Online betting company: on her deal-breaker list."
+  },
+  {
+    "offerId": "example:6",
+    "eligibility": "pass",
+    "language": "fail",
+    "location": "pass",
+    "seniority": "fit",
+    "dealBreakers": [],
+    "requirements": [
+      { "text": "3+ years SQL", "kind": "must", "match": "yes", "evidence": "SQL since 2019" },
+      { "text": "Tableau or a similar BI tool", "kind": "must", "match": "yes", "evidence": "Looker and Power BI" },
+      { "text": "Fluent German (C1) for daily work with clients", "kind": "must", "match": "no", "evidence": "German A2" },
+      { "text": "English", "kind": "must", "match": "yes", "evidence": "English C1" }
+    ],
+    "strengths": ["SQL and BI tools"],
+    "gaps": ["German C1 required; profile says A2"],
+    "notes": "Language gate fails: \"fluent German (C1) for daily work with clients\" against German A2."
+  },
+  {
+    "offerId": "example:7",
+    "eligibility": "pass",
+    "language": "pass",
+    "location": "pass",
+    "seniority": "above",
+    "dealBreakers": ["Pure management roles with no hands-on work"],
+    "requirements": [
+      { "text": "8+ years in data", "kind": "must", "match": "no", "evidence": "About 8 years since 2018-06 is not quite reached" },
+      { "text": "3+ years managing data teams", "kind": "must", "match": "no", "evidence": "Mentored 2 junior analysts; no line management" },
+      { "text": "Budget ownership", "kind": "must", "match": "no", "evidence": "" },
+      { "text": "Experience hiring", "kind": "must", "match": "unknown", "evidence": "" }
+    ],
+    "strengths": ["Broad data background"],
+    "gaps": ["No management experience"],
+    "notes": "A leadership role well above her current level, and mostly management."
+  }
+]

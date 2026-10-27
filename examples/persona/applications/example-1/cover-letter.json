@@ -1,0 +1,21 @@
+{
+  "offerId": "example:1",
+  "language": "en",
+  "name": "Alba Ferrer Soler",
+  "contact": {
+    "email": "alba.ferrer@example.com",
+    "phone": "+34 600 000 000",
+    "location": "Valencia, Spain"
+  },
+  "date": "27 October 2026",
+  "recipient": "Lumen Parcel, Data team",
+  "subject": "Analytics Engineer: dbt and Looker for delivery operations",
+  "greeting": "Dear Lumen Parcel data team,",
+  "paragraphs": [
+    "I am applying for the Analytics Engineer role. Your dbt project on BigQuery and the Looker layer for operations are the work I have been doing at Brisamar Retail, and delivery data is where I started: at Tallerum Logistics I forecast daily parcel volumes for each depot.",
+    "In my first months I would get to know the delivery, courier, and support models, and add tests where operations managers feel the pain first. At Brisamar Retail, adding dbt tests to the 25 most used models brought incidents reported by managers down from about 10 a month to 2. I would like to do the same for your teams in six cities.",
+    "Metric definitions are where I can help operations most. Before rebuilding our weekly sales reporting, I agreed the definitions of margin and stock-out with finance; the new dbt models cut preparation from 2 days to 3 hours a week, and managers stopped asking which number was right.",
+    "Reviewing analysts' pull requests is the part of the role I have done least formally: so far I have mentored 2 junior analysts on SQL and code review. I would welcome the chance to make that a regular part of my work."
+  ],
+  "closing": "I would be glad to talk about how I could help Lumen Parcel's operations teams. Thank you for your time."
+}

@@ -1,0 +1,8 @@
+{
+  "queries": ["analytics engineer", "data analyst", "dbt"],
+  "titleKeywords": ["analytics", "data", "bi"],
+  "excludeKeywords": ["intern", "internship", "principal"],
+  "allowedLocations": ["Worldwide", "Europe", "EMEA", "Spain"],
+  "maxAgeDays": 30,
+  "shortlistSize": 20
+}

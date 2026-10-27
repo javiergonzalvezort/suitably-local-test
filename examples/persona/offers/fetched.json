@@ -1,0 +1,178 @@
+[
+  {
+    "id": "example:1",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/1",
+    "applyUrl": "https://example.com/jobs/1/apply",
+    "tags": [
+      "dbt",
+      "bigquery",
+      "looker",
+      "sql"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Analytics Engineer",
+    "company": "Lumen Parcel",
+    "locations": [
+      "Europe"
+    ],
+    "seniority": "Mid-level",
+    "employmentType": "Full Time",
+    "salary": "48,000 to 58,000 EUR a year",
+    "description": "Lumen Parcel runs same-day delivery in six European cities. We are looking for an Analytics Engineer to own our dbt project on BigQuery and the Looker layer used by operations.\n\nYou will: build and test dbt models for deliveries, couriers and customer support; work with operations managers to define metrics; review pull requests from analysts.\n\nRequirements: 3+ years writing production SQL; hands-on dbt experience including tests; experience with a BI tool such as Looker; fluent written English.\nNice to have: logistics or delivery data; Python; Airflow.\n\nRemote within Europe. Questions? Write to [email removed]."
+  },
+  {
+    "id": "example:2",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/2",
+    "applyUrl": "https://example.com/jobs/2/apply",
+    "tags": [
+      "sql",
+      "python",
+      "healthcare"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Senior Data Analyst",
+    "company": "Faro Health",
+    "locations": [
+      "Spain"
+    ],
+    "seniority": "Senior",
+    "employmentType": "Full Time",
+    "salary": "45,000 to 52,000 EUR a year",
+    "description": "Faro Health builds appointment software for private clinics in Spain. As Senior Data Analyst you will lead reporting for the commercial and clinic-success teams.\n\nRequirements: 5+ years in data analysis; advanced SQL; Python for analysis; experience presenting to non-technical stakeholders; Spanish and English.\nNice to have: healthcare data; dbt; mentoring experience.\n\nRemote from Spain, one day a month in Madrid."
+  },
+  {
+    "id": "example:3",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/3",
+    "applyUrl": "https://example.com/jobs/3/apply",
+    "tags": [
+      "spark",
+      "kafka",
+      "scala"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Data Engineer",
+    "company": "Kestrel Payments",
+    "locations": [
+      "Europe"
+    ],
+    "seniority": "Senior",
+    "employmentType": "Full Time",
+    "description": "Kestrel Payments processes card payments for small shops. We need a Data Engineer for our streaming platform.\n\nRequirements: 4+ years building streaming pipelines with Kafka and Spark; strong Scala or Java; experience with Kubernetes; on-call rotation.\nNice to have: payments domain; dbt.\n\nRemote in Europe."
+  },
+  {
+    "id": "example:4",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/4",
+    "applyUrl": "https://example.com/jobs/4/apply",
+    "tags": [
+      "power bi",
+      "sql"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "BI Developer",
+    "company": "Norte Gaming",
+    "locations": [
+      "Spain",
+      "Europe"
+    ],
+    "seniority": "Mid-level",
+    "employmentType": "Full Time",
+    "salary": "50,000 EUR a year",
+    "description": "Norte Gaming operates online sports betting and casino brands. Join our BI team to build Power BI reports on player activity and bonuses.\n\nRequirements: 3+ years with Power BI and SQL; experience with high-volume event data.\n\nHybrid in Valencia or remote in Spain."
+  },
+  {
+    "id": "example:5",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/5",
+    "applyUrl": "https://example.com/jobs/5/apply",
+    "tags": [
+      "dbt",
+      "snowflake"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Analytics Engineer",
+    "company": "Polar Grid",
+    "locations": [
+      "United States"
+    ],
+    "seniority": "Mid-level",
+    "employmentType": "Full Time",
+    "description": "Polar Grid manages battery storage sites across Texas. Analytics Engineer, dbt and Snowflake. Must be authorised to work in the United States."
+  },
+  {
+    "id": "example:6",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/6",
+    "applyUrl": "https://example.com/jobs/6/apply",
+    "tags": [
+      "sql",
+      "tableau"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Data Analyst",
+    "company": "Brückenwerk",
+    "locations": [
+      "Europe"
+    ],
+    "seniority": "Mid-level",
+    "employmentType": "Full Time",
+    "description": "Brückenwerk plans bridge maintenance for public clients in Austria and Germany.\n\nRequirements: 3+ years SQL; Tableau or a similar BI tool; fluent German (C1) for daily work with clients; English.\n\nRemote in Europe with quarterly visits to Vienna."
+  },
+  {
+    "id": "example:7",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/7",
+    "applyUrl": "https://example.com/jobs/7/apply",
+    "tags": [
+      "leadership",
+      "data"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Head of Data",
+    "company": "Atlas Seed",
+    "locations": [
+      "Worldwide"
+    ],
+    "seniority": "Executive",
+    "employmentType": "Full Time",
+    "description": "Atlas Seed, a seed-stage agritech startup, is hiring its first Head of Data to build and manage a team of five.\n\nRequirements: 8+ years in data, 3+ years managing data teams; budget ownership; experience hiring.\n\nRemote worldwide."
+  },
+  {
+    "id": "example:8",
+    "source": "example",
+    "sourceName": "Example data (invented)",
+    "url": "https://example.com/jobs/8",
+    "applyUrl": "https://example.com/jobs/8/apply",
+    "tags": [
+      "excel",
+      "sql"
+    ],
+    "postedAt": "2026-10-20T09:00:00.000Z",
+    "aiBlocked": false,
+    "title": "Data Analyst Intern",
+    "company": "Mirador Travel",
+    "locations": [
+      "Spain"
+    ],
+    "seniority": "Entry-level",
+    "employmentType": "Internship",
+    "description": "Six-month internship for students in their last year. Excel and basic SQL."
+  }
+]
