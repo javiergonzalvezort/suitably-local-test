@@ -17,17 +17,16 @@ Offers come from two places: the job sources the script fetches (Himalayas, Remo
 ## Fetch from the sources
 
 1. Check that `me/search.json` has `queries`, `titleKeywords`, and `searchLocations`. If not, run the setup skill first (step 3).
-2. The first time, tell the user in one or two sentences that LinkedIn's terms forbid automated access: the script reads its public job pages without logging in, at low volume, for their own search only, and they can turn it off with `"enabled": false` for `linkedin` in `config/sources.json`.
-3. `npm run find-offers` (add `-- --workspace demo-workspace` for a demo). It waits between requests, so it can take two or three minutes. If a source fails, say which one and carry on with the rest.
-4. `npm run shortlist`. It writes `offers/shortlist.json` and a readable `offers/shortlist.md`.
-5. **Show the shortlist.** Say how many offers were fetched and how many passed. Then list every shortlisted offer, numbered as in `shortlist.md`:
+2. `npm run find-offers` (add `-- --workspace demo-workspace` for a demo). It waits between requests, so it can take two or three minutes. If a source fails, say which one and carry on with the rest.
+3. `npm run shortlist`. It writes `offers/shortlist.json` and a readable `offers/shortlist.md`.
+4. **Show the shortlist.** Say how many offers were fetched and how many passed. Then list every shortlisted offer, numbered as in `shortlist.md`:
    - **N. Role, Company** (location; salary if stated; closes on DATE if stated)
    - One line, under 20 words, on what the job actually is, written by you from its description.
    - The link with its source: "via LinkedIn: <url>".
 
    Offers with `aiBlocked: true` get "text not available, open the link" instead of the line.
-6. If the shortlist is empty or very short, suggest one change to `search.json` (another query, a synonym in `titleKeywords`, a wider `allowedLocations` or `searchLocations`), make it only if the user agrees, and run both commands again.
-7. Suggest the next step: "Rank the offers".
+5. If the shortlist is empty or very short, suggest one change to `search.json` (another query, a synonym in `titleKeywords`, a wider `allowedLocations` or `searchLocations`), make it only if the user agrees, and run both commands again.
+6. Suggest the next step: "Rank the offers".
 
 ## Save pasted offers
 

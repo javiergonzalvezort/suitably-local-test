@@ -203,7 +203,7 @@ function cell(text: string): string {
 }
 
 const BEST_MATCHES = 10;
-const CLOSING_SOON_DAYS = 14;
+const CLOSING_SOON_DAYS = 7;
 
 function sourceLink(offer: Pick<Offer, "sourceName" | "url">): string {
   return `[via ${offer.sourceName}](${offer.url})`;
@@ -225,8 +225,9 @@ export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): strin
   const best = ranked.filter((item) => item.verdict !== "skip").slice(0, BEST_MATCHES);
   const bestIds = new Set(best.map((item) => item.offer.id));
   const soonLimit = generatedAt.getTime() + CLOSING_SOON_DAYS * DAY_MS;
+  // Offers outside the best matches that close soon: a last chance to look at them.
   const closingSoon = ranked
-    .filter((item) => item.verdict !== "skip" && item.offer.expiresAt)
+    .filter((item) => !bestIds.has(item.offer.id) && item.offer.expiresAt)
     .filter((item) => {
       const closes = new Date(item.offer.expiresAt as string).getTime();
       return closes >= generatedAt.getTime() && closes <= soonLimit;
@@ -255,12 +256,19 @@ export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): strin
     lines.push("");
   }
 
-  lines.push("## Closing soon", "", `Offers worth a look that close in the next ${CLOSING_SOON_DAYS} days. Only some sources give a closing date.`, "");
-  if (closingSoon.length === 0) lines.push("None with a known closing date.", "");
+  lines.push(
+    "## Closing soon",
+    "",
+    `Offers outside the best matches that close in the next ${CLOSING_SOON_DAYS} days. Only some sources give a closing date.`,
+    "",
+  );
+  if (closingSoon.length === 0) lines.push("None.", "");
   for (const item of closingSoon) {
     // Whole calendar days, so "today" counts as 0 whatever the hour.
     const days = Math.round((Date.parse(dateOnly(item.offer.expiresAt)) - Date.parse(dateOnly(generatedAt.toISOString()))) / DAY_MS);
-    lines.push(`- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}: closes ${dateOnly(item.offer.expiresAt)} (${days} days), score ${item.score}. ${sourceLink(item.offer)}`);
+    lines.push(
+      `- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}: closes ${dateOnly(item.offer.expiresAt)} (${days} days), score ${item.score} (${VERDICT_LABEL[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`,
+    );
   }
   if (closingSoon.length > 0) lines.push("");
 

@@ -25,7 +25,7 @@ You classify; the script scores. For each offer you run four gates and classify 
 3. Add the evaluations to `me/offers/evaluations.json` (a JSON list; create it with `[]` if missing). Never delete or rewrite earlier evaluations unless the user asks to re-evaluate an offer.
 4. Run `npm run score`. It writes `me/offers/ranking.md` with three sections. Show them in this order, keeping the ranking's numbers (#):
    - **Best matches** (up to ten): role, company, score, verdict, source with link, and one line on why it fits, from the evaluation's strengths.
-   - **Closing soon**: offers worth a look that close in the next 14 days, with the date. Say that only some sources give a closing date.
+   - **Closing soon**: offers outside the best matches that close in the next 7 days, with the date and why they scored lower, so the user can decide before they close. Say that only some sources give a closing date.
    - **The rest**: one line each on why it scored lower (the ranking gives the main reason: a gate, a deal-breaker, a missing must-have). Explain in plain words so the user can disagree: a "no" on a must-have that the user actually has is a profile gap, not a bad offer.
 
    Point out any hard stop that removed an offer the user might have expected near the top.

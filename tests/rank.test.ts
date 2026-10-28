@@ -92,7 +92,7 @@ test("the ranking credits the source with a link", () => {
   assert.match(markdown, /\[via Example data \(invented\)\]\(https:\/\/example\.com\/jobs\/1\)/);
 });
 
-test("the ranking lists the best matches, the ones closing soon, and why the rest scored lower", () => {
+test("the ranking lists the best matches, the others closing within 7 days, and why the rest scored lower", () => {
   const { ranked } = rankOffers(offers, evaluations);
   const markdown = rankingMarkdown(ranked, NOW);
   const best = markdown.slice(markdown.indexOf("## Best matches"), markdown.indexOf("## Closing soon"));
@@ -100,12 +100,13 @@ test("the ranking lists the best matches, the ones closing soon, and why the res
   const rest = markdown.slice(markdown.indexOf("## The rest"), markdown.indexOf("## Details"));
   assert.match(best, /Lumen Parcel/);
   assert.doesNotMatch(best, /Norte Gaming/); // a skip never counts as a best match
-  assert.match(soon, /#2 Senior Data Analyst, Faro Health: closes 2026-11-03 \(7 days\)/);
+  assert.match(soon, /#3 Data Engineer, Kestrel Payments: closes 2026-11-02 \(6 days\), score 19 \(Skip\): 3 must-haves missing/);
+  assert.doesNotMatch(soon, /Lumen Parcel|Faro Health/); // best matches are not repeated
   assert.match(rest, /#4 BI Developer, Norte Gaming \(10, Skip\): deal-breaker: Gambling/);
 });
 
 test("the shortlist has a readable copy with location, dates, and source link", () => {
   const { entries } = buildShortlist(offers, search, new Set(), NOW);
   const markdown = shortlistMarkdown(entries, NOW);
-  assert.match(markdown, /\| Senior Data Analyst \| Faro Health \| .* \| 2026-11-03 \| \[via Example data \(invented\)\]\(https:\/\/example\.com\/jobs\/2\) \|/);
+  assert.match(markdown, /\| Data Engineer \| Kestrel Payments \| .* \| 2026-11-02 \| \[via Example data \(invented\)\]\(https:\/\/example\.com\/jobs\/3\) \|/);
 });
