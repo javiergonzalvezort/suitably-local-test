@@ -23,8 +23,14 @@ You classify; the script scores. For each offer you run four gates and classify 
 1. Read the profile and preferences once. Read `me/offers/shortlist.json` and take every entry with `alreadyEvaluated: false`. If there are more than 10, do them in batches of 10 and save after each batch.
 2. For each offer, write an `Evaluation` (shape in `scripts/lib/types.ts`) as below.
 3. Add the evaluations to `me/offers/evaluations.json` (a JSON list; create it with `[]` if missing). Never delete or rewrite earlier evaluations unless the user asks to re-evaluate an offer.
-4. Run `npm run score`. Show the top five from `me/offers/ranking.md`: title, company, source with link, score, verdict, and one line on why. Point out any hard stop that removed an offer the user might have expected near the top.
-5. Suggest the next step: "Tailor my CV and cover letter for offer N".
+4. Run `npm run score`. It writes `me/offers/ranking.md` with three sections. Show them in this order, keeping the ranking's numbers (#):
+   - **Best matches** (up to ten): role, company, score, verdict, source with link, and one line on why it fits, from the evaluation's strengths.
+   - **Closing soon**: offers worth a look that close in the next 14 days, with the date. Say that only some sources give a closing date.
+   - **The rest**: one line each on why it scored lower (the ranking gives the main reason: a gate, a deal-breaker, a missing must-have). Explain in plain words so the user can disagree: a "no" on a must-have that the user actually has is a profile gap, not a bad offer.
+
+   Point out any hard stop that removed an offer the user might have expected near the top.
+5. If several `unknown` matches come from one thing the profile does not say, name the question in `profile/questions.md` that would settle it, or ask it now and save the answer there. Then offer to re-evaluate those offers.
+6. Suggest the next step: "Tailor my CV and cover letter for offer N", or going through the best matches one by one.
 
 ## The evaluation, field by field
 
@@ -68,4 +74,4 @@ When unsure whether a bar is higher, choose `flag`, not `pass`.
 
 If the user asks "is offer N a good fit?" for an offer already evaluated, answer from its evaluation and score. If it is not evaluated, evaluate it as above, save it, run `npm run score`, and then answer.
 
-If many `unknown` matches come from gaps in the profile (a skill the user has but never wrote down), say so and offer to add it with the setup skill, then re-evaluate.
+If many `unknown` matches come from gaps in the profile (a skill the user has but never wrote down), say so, write the user's answer in `profile/questions.md` (question 11 is for skills not on the CV), and re-evaluate.

@@ -1,6 +1,6 @@
 ---
 name: tailor
-description: Writes a tailored CV and cover letter for one offer from the profile, checks them for invented facts, reviews them, and renders the PDFs. Use when the user asks to tailor, write, or adapt a CV or cover letter for an offer.
+description: Writes a tailored CV and cover letter for an offer from the profile, checks them for invented facts, iterates on them with the user, and renders the PDFs; can go through the best matches one by one. Use when the user asks to tailor, write, or adapt a CV or cover letter for an offer, or to prepare applications for the top offers.
 ---
 
 <!-- The writing rules (no clichés, no long dashes, the interview backtrack test,
@@ -13,7 +13,8 @@ You write `cv.json` and `cover-letter.json` for one offer. A script checks them 
 
 ## Rules
 
-- **Every fact comes from the profile.** Companies, titles, dates, degrees, numbers, tools, and stories must be in `me/profile/*.md`. If the offer asks for something the profile does not show, leave it out or ask the user; never add it.
+- **Every fact comes from the profile.** Companies, titles, dates, degrees, numbers, tools, and stories must be in `me/profile/*.md`, which includes the user's answers in `profile/questions.md`. If the offer asks for something the profile does not show, leave it out or ask the user; never add it.
+- **Use the context layer.** Read `profile/questions.md` before writing: motivations (questions 1 to 3), achievements and stories (6 to 10), and how the user wants to sound (15) shape the summary and the letter. Past cover letters in `me/documents/` show the user's voice: follow it, but take facts only from the profile.
 - **Reframe emphasis, not substance.** Reordering, choosing what to lead with, and using the offer's word for the same thing are fine. Apply the **interview test**: could the user explain this line in an interview without "well, what I actually meant was..."? If not, it is too far.
   - Fine: leading with the most relevant role; "stakeholders" for "managers" when it is the same people.
   - Ask the user: describing adjacent work with the offer's exact terms; merging study and work into one claim. Show the line and ask "keep, soften, or drop?"
@@ -24,6 +25,7 @@ You write `cv.json` and `cover-letter.json` for one offer. A script checks them 
 ## Steps
 
 1. **Pick the offer.** Find it in `me/offers/ranking.md` by its number, or by title and company. If its verdict is "skip" or the score is under 50, tell the user why first and ask whether to go ahead. If it has no evaluation, run the rank skill on it first.
+   **Ask what the offer needs.** If a `must` requirement is `unknown`, or the letter needs a story the profile lacks, ask the matching question from `profile/questions.md` (at most two), and save the answers there before writing.
 2. **Folder.** `me/applications/<company>-<role>/` in lowercase with hyphens.
 3. **Language.** The language of the offer (`en` or `es`). If the offer is in another language, ask the user.
 4. **Write `cv.json`** (shape `Cv` in `scripts/lib/types.ts`; model: `examples/persona/applications/*/cv.json`):
@@ -51,3 +53,8 @@ You write `cv.json` and `cover-letter.json` for one offer. A script checks them 
    Run `npm run check-cv` again after changes.
 8. **Render.** `npm run render -- me/applications/<folder>`. If Typst is missing, run `npm run doctor` and show the fix.
 9. **Hand over.** Tell the user where the PDFs are, list the lines they should double-check (any "ask the user" reframes, the gap paragraph, contact details), and remind them that they apply themselves: you never send anything.
+10. **Iterate.** Ask for comments on both documents. In each round, change what they ask (new facts only after they confirm them, and into the profile first), run `npm run check-cv` and `npm run render` again, and say what changed. If a comment teaches something about the user ("I never say 'stakeholders'", "the migration saved 3 weeks"), write it in `profile/questions.md` so the next application starts from it.
+
+## Going through the best matches
+
+When the user asks to prepare applications for several offers ("the top five"), take the best matches from `ranking.md` in order, or the closing-soon ones first if the user prefers. Do one offer at a time with the steps above, finish its iteration, and ask before starting the next. At the end, list each folder with its offer and whether the user approved it.

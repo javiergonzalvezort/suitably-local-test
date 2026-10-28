@@ -17,6 +17,7 @@ export type WorkspacePaths = {
   fetched: string;
   pasted: string;
   shortlist: string;
+  shortlistMarkdown: string;
   evaluations: string;
   ranking: string;
   applicationsDir: string;
@@ -35,6 +36,7 @@ export function workspacePaths(workspace: string | undefined): WorkspacePaths {
     fetched: path.join(offersDir, "fetched.json"),
     pasted: path.join(offersDir, "pasted.json"),
     shortlist: path.join(offersDir, "shortlist.json"),
+    shortlistMarkdown: path.join(offersDir, "shortlist.md"),
     evaluations: path.join(offersDir, "evaluations.json"),
     ranking: path.join(offersDir, "ranking.md"),
     applicationsDir: path.join(root, "applications"),
@@ -59,7 +61,23 @@ export function readProfileText(paths: WorkspacePaths): string {
     .readdirSync(paths.profileDir)
     .filter((name) => name.endsWith(".md"))
     .sort();
-  const parts = files.map((name) => fs.readFileSync(path.join(paths.profileDir, name), "utf8"));
+  const parts = files.map((name) => {
+    const text = fs.readFileSync(path.join(paths.profileDir, name), "utf8");
+    return name === QUESTIONS_FILE ? answersOnly(text) : text;
+  });
   if (fs.existsSync(paths.preferences)) parts.push(fs.readFileSync(paths.preferences, "utf8"));
   return parts.join("\n\n");
+}
+
+// profile/questions.md: the user's context layer, read alongside the profile.
+export const QUESTIONS_FILE = "questions.md";
+
+// Keeps the user's answers and drops the numbered questions and the comment, so the
+// question numbers never count as facts ("12" in a CV must come from an answer).
+export function answersOnly(text: string): string {
+  return text
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .split("\n")
+    .filter((line) => !/^\s*\d+\.\s/.test(line))
+    .join("\n");
 }

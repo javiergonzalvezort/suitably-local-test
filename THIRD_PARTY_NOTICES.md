@@ -10,6 +10,7 @@ Some ideas and rules are adapted from it. They were rewritten and shortened, not
 |---|---|---|
 | `scripts/check-cv.ts` (cliché list and long-dash warning) | `.claude/skills/job-application-assistant/03-writing-style.md` | The "no clichés, no long dashes" writing rules |
 | `.agents/skills/rank/SKILL.md` (and its copy in `.claude/skills/`) | `.claude/skills/job-application-assistant/04-job-evaluation.md` | The eligibility gate (silence is not permission; a company-wide welcome does not cover a restricted role), the language gate (fail, flag, pass; flag when unsure), and function-over-title matching |
+| `scripts/sources/linkedin.ts` | `.agents/skills/linkedin-search/cli/src/helpers.ts` and `url-reference.md` | The LinkedIn public job page endpoints and their parameters, and the card, description, and job-criteria parsing |
 | `.agents/skills/tailor/SKILL.md` (and its copy in `.claude/skills/`) | `.claude/skills/job-application-assistant/03-writing-style.md` | The interview backtrack test (fine, ask, never), forward-looking letters, no clichés or long dashes, a specific headline instead of "Application for..." |
 
 Everything else in this project was written from scratch.

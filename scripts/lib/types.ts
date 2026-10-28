@@ -1,7 +1,7 @@
 // Shapes of the JSON files the scripts and the agent exchange.
 // The skills in .agents/skills/ describe the same shapes in plain words.
 
-export type SourceId = "himalayas" | "remoteok" | "pasted" | "example";
+export type SourceId = "himalayas" | "remoteok" | "arbeitnow" | "linkedin" | "pasted" | "example";
 
 // One job offer, the same shape whatever the source.
 export type Offer = {
@@ -18,7 +18,7 @@ export type Offer = {
   employmentType?: string;
   salary?: string;
   postedAt: string; // ISO date
-  expiresAt?: string; // ISO date, when the source gives one
+  expiresAt?: string; // ISO date: the source's expiry, or the closing date a pasted offer states
   description: string; // plain text, contact details removed; empty when aiBlocked
   aiBlocked: boolean; // the site's robots.txt opts out of AI agents: never send its text to the model
 };

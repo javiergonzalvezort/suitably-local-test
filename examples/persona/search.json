@@ -1,8 +1,29 @@
 {
-  "queries": ["analytics engineer", "data analyst", "dbt"],
-  "titleKeywords": ["analytics", "data", "bi"],
-  "excludeKeywords": ["intern", "internship", "principal"],
-  "allowedLocations": ["Worldwide", "Europe", "EMEA", "Spain"],
+  "queries": [
+    "analytics engineer",
+    "data analyst",
+    "dbt"
+  ],
+  "titleKeywords": [
+    "analytics",
+    "data",
+    "bi"
+  ],
+  "excludeKeywords": [
+    "intern",
+    "internship",
+    "principal"
+  ],
+  "allowedLocations": [
+    "Worldwide",
+    "Europe",
+    "EMEA",
+    "Spain"
+  ],
+  "searchLocations": [
+    "Spain"
+  ],
+  "workplace": "",
   "maxAgeDays": 30,
   "shortlistSize": 20
 }

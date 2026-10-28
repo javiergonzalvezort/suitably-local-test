@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import path from "node:path";
 import { test } from "node:test";
-import { buildShortlist, rankingMarkdown, rankOffers, scoreEvaluation, validateEvaluations } from "../scripts/rank.ts";
+import { buildShortlist, rankingMarkdown, rankOffers, scoreEvaluation, shortlistMarkdown, validateEvaluations } from "../scripts/rank.ts";
 import { loadSearchSettings } from "../scripts/lib/settings.ts";
 import type { Evaluation, Offer } from "../scripts/lib/types.ts";
 import { readJson, REPO_ROOT } from "../scripts/lib/workspace.ts";
@@ -90,4 +90,22 @@ test("the ranking credits the source with a link", () => {
   const { ranked } = rankOffers(offers, evaluations);
   const markdown = rankingMarkdown(ranked, NOW);
   assert.match(markdown, /\[via Example data \(invented\)\]\(https:\/\/example\.com\/jobs\/1\)/);
+});
+
+test("the ranking lists the best matches, the ones closing soon, and why the rest scored lower", () => {
+  const { ranked } = rankOffers(offers, evaluations);
+  const markdown = rankingMarkdown(ranked, NOW);
+  const best = markdown.slice(markdown.indexOf("## Best matches"), markdown.indexOf("## Closing soon"));
+  const soon = markdown.slice(markdown.indexOf("## Closing soon"), markdown.indexOf("## The rest"));
+  const rest = markdown.slice(markdown.indexOf("## The rest"), markdown.indexOf("## Details"));
+  assert.match(best, /Lumen Parcel/);
+  assert.doesNotMatch(best, /Norte Gaming/); // a skip never counts as a best match
+  assert.match(soon, /#2 Senior Data Analyst, Faro Health: closes 2026-11-03 \(7 days\)/);
+  assert.match(rest, /#4 BI Developer, Norte Gaming \(10, Skip\): deal-breaker: Gambling/);
+});
+
+test("the shortlist has a readable copy with location, dates, and source link", () => {
+  const { entries } = buildShortlist(offers, search, new Set(), NOW);
+  const markdown = shortlistMarkdown(entries, NOW);
+  assert.match(markdown, /\| Senior Data Analyst \| Faro Health \| .* \| 2026-11-03 \| \[via Example data \(invented\)\]\(https:\/\/example\.com\/jobs\/2\) \|/);
 });

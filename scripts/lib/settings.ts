@@ -10,6 +10,8 @@ export type SearchSettings = {
   titleKeywords: string[]; // an offer must contain one of these in its title or tags
   excludeKeywords: string[]; // an offer with one of these in its title is dropped
   allowedLocations: string[]; // offers restricted to other places are dropped
+  searchLocations: string[]; // places sent to sources that search by place (LinkedIn), e.g. "Spain", "Madrid, Spain"
+  workplace: string; // LinkedIn filter: "remote", "hybrid", "onsite", or "" for any
   maxAgeDays: number;
   shortlistSize: number;
 };
@@ -18,6 +20,7 @@ export type SourceConfig = SourceLimits & {
   name: string;
   enabled: boolean;
   maxQueries: number;
+  maxDetails?: number; // LinkedIn: how many job pages to open per run
 };
 
 export const DEFAULT_SEARCH: SearchSettings = {
@@ -25,6 +28,8 @@ export const DEFAULT_SEARCH: SearchSettings = {
   titleKeywords: [],
   excludeKeywords: [],
   allowedLocations: [],
+  searchLocations: [],
+  workplace: "",
   maxAgeDays: 30,
   shortlistSize: 20,
 };

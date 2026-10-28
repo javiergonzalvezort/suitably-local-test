@@ -1,6 +1,7 @@
 // A polite HTTP client for job sources. Before each request it:
 //   1. answers from the local cache when a fresh copy exists (no request at all),
-//   2. checks the site's robots.txt and refuses disallowed paths,
+//   2. checks the site's robots.txt and refuses disallowed paths (unless the source
+//      is configured with honourRobots: false, see docs/sources.md),
 //   3. waits so requests to one host are at least minDelayMs (or Crawl-delay) apart,
 //   4. counts requests per source per day and stops at the daily cap.
 // One request at a time: the scripts await each call before the next.
@@ -16,6 +17,7 @@ export type SourceLimits = {
   minDelayMs: number;
   dailyRequestCap: number;
   cacheHours: number;
+  honourRobots?: boolean; // default true; false only for sources documented in docs/sources.md
 };
 
 export type JsonResult = {
@@ -23,6 +25,8 @@ export type JsonResult = {
   fromCache: boolean;
   aiBlocked: boolean; // the site opts out of AI agents for this path
 };
+
+export type TextResult = Omit<JsonResult, "data"> & { data: string };
 
 export class SourceError extends Error {}
 
@@ -53,25 +57,45 @@ export class PoliteClient {
   }
 
   async getJson(sourceId: string, url: string, limits: SourceLimits): Promise<JsonResult> {
+    return this.get(sourceId, url, limits, "application/json", (response) => response.json());
+  }
+
+  // For sources that answer HTML (LinkedIn's public job pages).
+  async getText(sourceId: string, url: string, limits: SourceLimits): Promise<TextResult> {
+    const result = await this.get(sourceId, url, limits, "text/html", (response) => response.text());
+    return { ...result, data: String(result.data) };
+  }
+
+  private async get(
+    sourceId: string,
+    url: string,
+    limits: SourceLimits,
+    accept: string,
+    read: (response: Response) => Promise<unknown>,
+  ): Promise<JsonResult> {
     const cached = this.readCache(url, limits.cacheHours);
     if (cached) return { ...cached, fromCache: true };
 
     const target = new URL(url);
-    const robots = await this.robotsFor(target.origin, limits);
-    const pathAndQuery = target.pathname + target.search;
-    if (!isAllowed(robots, APP_NAME, pathAndQuery)) {
-      throw new SourceError(`robots.txt of ${target.host} does not allow ${pathAndQuery}; skipped`);
+    let aiBlocked = false;
+    let delay = limits.minDelayMs;
+    if (limits.honourRobots !== false) {
+      const robots = await this.robotsFor(target.origin, limits);
+      const pathAndQuery = target.pathname + target.search;
+      if (!isAllowed(robots, APP_NAME, pathAndQuery)) {
+        throw new SourceError(`robots.txt of ${target.host} does not allow ${pathAndQuery}; skipped`);
+      }
+      aiBlocked = blocksAiAgents(robots, pathAndQuery);
+      delay = Math.max(limits.minDelayMs, crawlDelayMs(robots, APP_NAME));
     }
-    const aiBlocked = blocksAiAgents(robots, pathAndQuery);
 
     this.countRequest(sourceId, limits.dailyRequestCap);
-    const delay = Math.max(limits.minDelayMs, crawlDelayMs(robots, APP_NAME));
-    const response = await this.politeFetch(url, delay, "application/json");
+    const response = await this.politeFetch(url, delay, accept);
     if (response.status === 429) {
       throw new SourceError(`${target.host} asked us to slow down (HTTP 429). Try again later.`);
     }
     if (!response.ok) throw new SourceError(`${target.host} answered HTTP ${response.status}`);
-    const data: unknown = await response.json();
+    const data = await read(response);
     this.writeCache(url, { data, aiBlocked });
     return { data, fromCache: false, aiBlocked };
   }

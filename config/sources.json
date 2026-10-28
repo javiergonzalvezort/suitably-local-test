@@ -28,6 +28,36 @@
       "dailyRequestCap": 4,
       "cacheHours": 6,
       "maxQueries": 1
+    },
+    "arbeitnow": {
+      "name": "Arbeitnow",
+      "enabled": true,
+      "kind": "free public JSON API (newest 300 jobs, one request)",
+      "apiDocs": "https://www.arbeitnow.com/blog/job-board-api",
+      "termsUrl": "https://www.arbeitnow.com/terms",
+      "termsReviewed": "2026-10-28",
+      "robotsChecked": "2026-10-28",
+      "duties": "Personal, non-commercial use only; link back to Arbeitnow; do not republish the jobs. The API may be withdrawn at any time.",
+      "minDelayMs": 2000,
+      "dailyRequestCap": 4,
+      "cacheHours": 6,
+      "maxQueries": 1
+    },
+    "linkedin": {
+      "name": "LinkedIn",
+      "enabled": true,
+      "kind": "public job pages without login (jobs-guest), as in ai-job-search",
+      "apiDocs": "none: not an official API",
+      "termsUrl": "https://www.linkedin.com/legal/user-agreement",
+      "termsReviewed": "2026-10-28",
+      "robotsChecked": "2026-10-28",
+      "honourRobots": false,
+      "duties": "LinkedIn's User Agreement forbids automated access and its robots.txt disallows these pages: use it only for your own search, at low volume, at your own risk. Never log in, never share or republish the jobs. Set enabled to false to turn it off.",
+      "minDelayMs": 3000,
+      "dailyRequestCap": 60,
+      "cacheHours": 6,
+      "maxQueries": 3,
+      "maxDetails": 15
     }
   }
 }

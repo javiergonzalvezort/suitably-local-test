@@ -2,7 +2,7 @@
 // search terms in your search.json, and writes them to offers/fetched.json.
 // Offers you pasted by hand (offers/pasted.json) are merged in.
 //
-// Usage: npm run find-offers [-- --workspace <folder>] [-- --source himalayas] [-- --dry-run]
+// Usage: npm run find-offers [-- --workspace <folder>] [-- --source linkedin] [-- --dry-run]
 
 import fs from "node:fs";
 import path from "node:path";
@@ -14,19 +14,24 @@ import type { SearchSettings, SourceConfig } from "./lib/settings.ts";
 import { normalise } from "./lib/text.ts";
 import type { Offer } from "./lib/types.ts";
 import { readJson, REPO_ROOT, workspacePaths, writeJson } from "./lib/workspace.ts";
+import { ARBEITNOW_URL, normaliseArbeitnow } from "./sources/arbeitnow.ts";
 import { himalayasSearchUrl, normaliseHimalayas } from "./sources/himalayas.ts";
+import { fetchLinkedIn, linkedinSearchUrls } from "./sources/linkedin.ts";
 import { normaliseRemoteOk, REMOTEOK_URL } from "./sources/remoteok.ts";
 
 // The URLs a source will request for these settings.
 export function plannedRequests(sourceId: string, source: SourceConfig, search: SearchSettings): string[] {
   if (sourceId === "himalayas") return search.queries.slice(0, source.maxQueries).map(himalayasSearchUrl);
   if (sourceId === "remoteok") return [REMOTEOK_URL];
+  if (sourceId === "arbeitnow") return [ARBEITNOW_URL];
+  if (sourceId === "linkedin") return linkedinSearchUrls(search, source.maxQueries);
   return [];
 }
 
 function normaliseFor(sourceId: string, data: unknown, aiBlocked: boolean): Offer[] {
   if (sourceId === "himalayas") return normaliseHimalayas(data, aiBlocked);
   if (sourceId === "remoteok") return normaliseRemoteOk(data, aiBlocked);
+  if (sourceId === "arbeitnow") return normaliseArbeitnow(data, aiBlocked);
   return [];
 }
 
@@ -61,7 +66,12 @@ async function main() {
   for (const [id, source] of sources) {
     const urls = plannedRequests(id, source, search);
     if (args.options["dry-run"]) {
-      console.log(`${source.name}: would request\n  ${urls.join("\n  ")}`);
+      const more = id === "linkedin" ? `\n  and up to ${source.maxDetails ?? 15} job pages whose titles match` : "";
+      console.log(`${source.name}: would request\n  ${urls.join("\n  ")}${more}`);
+      continue;
+    }
+    if (id === "linkedin") {
+      all.push(...(await fetchLinkedIn(client, source, search, (message) => console.log(message))));
       continue;
     }
     let count = 0;
@@ -86,11 +96,15 @@ async function main() {
   }
   if (args.options["dry-run"]) return;
 
+  // With --source, keep what the other sources found last time.
+  if (only && fs.existsSync(paths.fetched)) {
+    all.push(...readJson<Offer[]>(paths.fetched).filter((offer) => offer.source !== only && offer.source !== "pasted"));
+  }
   if (fs.existsSync(paths.pasted)) all.push(...readJson<Offer[]>(paths.pasted));
   const offers = dedupe(all);
   writeJson(paths.fetched, offers);
   console.log(`\nSaved ${offers.length} offers to ${path.relative(REPO_ROOT, paths.fetched)}.`);
-  console.log("Offers come from Himalayas and Remote OK: each one links back to its page at the source.");
+  console.log(`Offers come from ${sources.map(([, s]) => s.name).join(", ")}: each one links back to its page at the source.`);
   console.log('Next: "npm run shortlist", or ask your agent to rank the offers.');
 }
 

@@ -2,7 +2,15 @@
   "queries": [],
   "titleKeywords": [],
   "excludeKeywords": [],
-  "allowedLocations": ["Worldwide", "Europe", "Spain"],
+  "allowedLocations": [
+    "Worldwide",
+    "Europe",
+    "Spain"
+  ],
+  "searchLocations": [
+    "Spain"
+  ],
+  "workplace": "",
   "maxAgeDays": 30,
   "shortlistSize": 20
 }

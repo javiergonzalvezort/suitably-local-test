@@ -1,6 +1,6 @@
 // Ranking in two deterministic steps around the agent's judgment:
 //
-//   npm run shortlist  -> offers/shortlist.json   (filters offers before the agent reads them)
+//   npm run shortlist  -> offers/shortlist.json and shortlist.md (filters offers before the agent reads them)
 //   (the agent writes offers/evaluations.json, following .agents/skills/rank/SKILL.md)
 //   npm run score      -> offers/ranking.md       (turns the evaluations into a score)
 //
@@ -202,28 +202,83 @@ function cell(text: string): string {
   return text.replace(/\|/g, "/").replace(/\n/g, " ");
 }
 
+const BEST_MATCHES = 10;
+const CLOSING_SOON_DAYS = 14;
+
+function sourceLink(offer: Pick<Offer, "sourceName" | "url">): string {
+  return `[via ${offer.sourceName}](${offer.url})`;
+}
+
+function dateOnly(iso: string | undefined): string {
+  return iso ? iso.slice(0, 10) : "";
+}
+
+// The one-line reason an offer is not among the best matches.
+function whyLower(item: ScoredOffer): string {
+  return item.reasons[0] ?? item.evaluation.gaps[0] ?? item.evaluation.notes;
+}
+
+// Three views of the same list: the best matches, the ones closing soon, and the
+// rest with the reason each scored lower. Then the details of every offer.
 export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): string {
+  const position = new Map(ranked.map((item, i) => [item.offer.id, i + 1]));
+  const best = ranked.filter((item) => item.verdict !== "skip").slice(0, BEST_MATCHES);
+  const bestIds = new Set(best.map((item) => item.offer.id));
+  const soonLimit = generatedAt.getTime() + CLOSING_SOON_DAYS * DAY_MS;
+  const closingSoon = ranked
+    .filter((item) => item.verdict !== "skip" && item.offer.expiresAt)
+    .filter((item) => {
+      const closes = new Date(item.offer.expiresAt as string).getTime();
+      return closes >= generatedAt.getTime() && closes <= soonLimit;
+    })
+    .sort((a, b) => (a.offer.expiresAt as string).localeCompare(b.offer.expiresAt as string));
+  const rest = ranked.filter((item) => !bestIds.has(item.offer.id));
+
   const lines = [
     "# Ranking",
     "",
-    `Generated ${generatedAt.toISOString().slice(0, 10)} by \`npm run score\`. Scores come from the evaluations; see docs/ranking.md for the formula.`,
+    `Generated ${dateOnly(generatedAt.toISOString())} by \`npm run score\`. Scores come from the evaluations; see docs/ranking.md for the formula. The numbers (#) are the same in every section.`,
     "",
-    "| # | Score | Verdict | Role | Company | Source | Offer id |",
-    "|---|---|---|---|---|---|---|",
+    "## Best matches",
+    "",
   ];
-  ranked.forEach((item, i) => {
-    const { offer } = item;
-    lines.push(
-      `| ${i + 1} | ${item.score} | ${VERDICT_LABEL[item.verdict]} | ${cell(offer.title)} | ${cell(offer.company)} | [via ${offer.sourceName}](${offer.url}) | \`${offer.id}\` |`,
-    );
-  });
-  lines.push("", "## Details", "");
+  if (best.length === 0) {
+    lines.push("No offer passed the gates this time. The section below says why each one scored low.", "");
+  } else {
+    lines.push("| # | Score | Verdict | Role | Company | Closes | Source | Offer id |", "|---|---|---|---|---|---|---|---|");
+    for (const item of best) {
+      const { offer } = item;
+      lines.push(
+        `| ${position.get(offer.id)} | ${item.score} | ${VERDICT_LABEL[item.verdict]} | ${cell(offer.title)} | ${cell(offer.company)} | ${dateOnly(offer.expiresAt)} | ${sourceLink(offer)} | \`${offer.id}\` |`,
+      );
+    }
+    lines.push("");
+  }
+
+  lines.push("## Closing soon", "", `Offers worth a look that close in the next ${CLOSING_SOON_DAYS} days. Only some sources give a closing date.`, "");
+  if (closingSoon.length === 0) lines.push("None with a known closing date.", "");
+  for (const item of closingSoon) {
+    // Whole calendar days, so "today" counts as 0 whatever the hour.
+    const days = Math.round((Date.parse(dateOnly(item.offer.expiresAt)) - Date.parse(dateOnly(generatedAt.toISOString()))) / DAY_MS);
+    lines.push(`- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}: closes ${dateOnly(item.offer.expiresAt)} (${days} days), score ${item.score}. ${sourceLink(item.offer)}`);
+  }
+  if (closingSoon.length > 0) lines.push("");
+
+  lines.push("## The rest, and why they scored lower", "");
+  if (rest.length === 0) lines.push("Nothing else was evaluated.", "");
+  for (const item of rest) {
+    lines.push(`- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company} (${item.score}, ${VERDICT_LABEL[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`);
+  }
+  if (rest.length > 0) lines.push("");
+
+  lines.push("## Details", "");
   ranked.forEach((item, i) => {
     const { offer, evaluation } = item;
     lines.push(`### ${i + 1}. ${offer.title}, ${offer.company} (${item.score}, ${VERDICT_LABEL[item.verdict]})`, "");
     lines.push(`- Offer: [${offer.url}](${offer.url}) (via ${offer.sourceName})`);
     lines.push(`- Apply at: ${offer.applyUrl}`);
     if (offer.salary) lines.push(`- Salary: ${offer.salary}`);
+    if (offer.expiresAt) lines.push(`- Closes: ${dateOnly(offer.expiresAt)}`);
     if (item.reasons.length > 0) lines.push(`- Watch out: ${item.reasons.join("; ")}`);
     if (evaluation.strengths.length > 0) lines.push(`- Strengths: ${evaluation.strengths.join("; ")}`);
     if (evaluation.gaps.length > 0) lines.push(`- Gaps: ${evaluation.gaps.join("; ")}`);
@@ -231,6 +286,26 @@ export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): strin
     lines.push("");
   });
   return lines.join("\n");
+}
+
+// A readable copy of the shortlist, for the user. The agent adds a one-line
+// summary of each offer when it shows the list.
+export function shortlistMarkdown(entries: ShortlistEntry[], generatedAt: Date): string {
+  const lines = [
+    "# Shortlist",
+    "",
+    `Generated ${dateOnly(generatedAt.toISOString())} by \`npm run shortlist\`: offers that passed your search filters, before ranking.`,
+    "",
+    "| # | Role | Company | Location | Salary | Posted | Closes | Source |",
+    "|---|---|---|---|---|---|---|---|",
+  ];
+  entries.forEach((entry, i) => {
+    const where = entry.locations.length > 0 ? entry.locations.join(", ") : "not stated";
+    lines.push(
+      `| ${i + 1} | ${cell(entry.title)} | ${cell(entry.company)} | ${cell(where)} | ${cell(entry.salary ?? "")} | ${dateOnly(entry.postedAt)} | ${dateOnly(entry.expiresAt)} | ${sourceLink(entry)} |`,
+    );
+  });
+  return lines.join("\n") + "\n";
 }
 
 // ---------- Command line ----------
@@ -263,10 +338,11 @@ function main() {
       : new Set<string>();
     const { entries, dropped } = buildShortlist(offers, loadSearchSettings(paths.search), evaluated, now);
     writeJson(paths.shortlist, entries);
+    fs.writeFileSync(paths.shortlistMarkdown, shortlistMarkdown(entries, now), "utf8");
     const toDo = entries.filter((e) => !e.alreadyEvaluated).length;
     console.log(`${offers.length} offers, ${entries.length} shortlisted (${toDo} not evaluated yet).`);
     for (const [reason, count] of Object.entries(dropped)) console.log(`  dropped ${count}: ${reason}`);
-    console.log(`Saved ${rel(paths.shortlist)}. The agent now evaluates the new ones into ${rel(paths.evaluations)}.`);
+    console.log(`Saved ${rel(paths.shortlist)} (readable copy: ${rel(paths.shortlistMarkdown)}). The agent now evaluates the new ones into ${rel(paths.evaluations)}.`);
     return;
   }
 
