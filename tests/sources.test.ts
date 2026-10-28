@@ -7,6 +7,9 @@ import { dedupe } from "../scripts/find-offers.ts";
 import { PoliteClient, SourceError } from "../scripts/lib/http.ts";
 import { himalayasSearchUrl, normaliseHimalayas } from "../scripts/sources/himalayas.ts";
 import { normaliseRemoteOk } from "../scripts/sources/remoteok.ts";
+import { normaliseArbeitnow } from "../scripts/sources/arbeitnow.ts";
+import { cardsWorthOpening, linkedinOffer, linkedinSearchUrls, parseJobCards, parseJobDetail } from "../scripts/sources/linkedin.ts";
+import { DEFAULT_SEARCH } from "../scripts/lib/settings.ts";
 
 // Invented answers in the shape of the real APIs (checked 2026-10-27).
 const HIMALAYAS_ANSWER = {
@@ -151,4 +154,95 @@ test("client stops at the daily cap and on HTTP 429", async () => {
 test("a server error on robots.txt means: do not crawl", async () => {
   const net = fakeNetwork({ "https://down.test/robots.txt": { status: 503, body: "" } });
   await assert.rejects(clientWith(net.fetchFn).getJson("demo", "https://down.test/api", LIMITS), /robots\.txt/);
+});
+
+test("a source configured with honourRobots: false is fetched without reading robots.txt", async () => {
+  const net = fakeNetwork({ "https://jobs.test/page": { status: 200, body: "<li>job</li>" } });
+  const result = await clientWith(net.fetchFn).getText("demo", "https://jobs.test/page", { ...LIMITS, honourRobots: false });
+  assert.equal(result.data, "<li>job</li>");
+  assert.equal(result.aiBlocked, false);
+  assert.deepEqual(net.calls, ["https://jobs.test/page"]);
+});
+
+// Invented markup in the shape of LinkedIn's public job pages (checked 2026-10-28).
+const LINKEDIN_SEARCH = `
+<li><div class="base-card" data-entity-urn="urn:li:jobPosting:4000000001">
+  <a class="base-card__full-link" href="https://es.linkedin.com/jobs/view/data-analyst-at-fictional-co-4000000001?trk=x"></a>
+  <h3 class="base-search-card__title">
+    Data Analyst
+  </h3>
+  <h4 class="base-search-card__subtitle"><a href="https://es.linkedin.com/company/fictional-co">Fictional Co</a></h4>
+  <span class="job-search-card__location">
+    Barcelona, Catalonia, Spain
+  </span>
+  <time class="job-search-card__listdate" datetime="2026-10-25">3 days ago</time>
+</div></li>
+<li><div class="base-card" data-entity-urn="urn:li:jobPosting:4000000002">
+  <h3 class="base-search-card__title">Sales Intern</h3>
+  <h4 class="base-search-card__subtitle">Invented SL</h4>
+</div></li>`;
+
+const LINKEDIN_DETAIL = `
+<h2 class="top-card-layout__title topcard__title">Data Analyst</h2>
+<div class="description__text description__text--rich">
+  <div class="show-more-less-html__markup">
+    <p>SQL &amp; Looker every day.</p><ul><li>Write to jobs@fictional.test</li></ul>
+  </div>
+</div>
+<ul class="description__job-criteria-list">
+  <li><h3 class="description__job-criteria-subheader">Seniority level</h3>
+      <span class="description__job-criteria-text description__job-criteria-text--criteria">Mid-Senior level</span></li>
+  <li><h3 class="description__job-criteria-subheader">Employment type</h3>
+      <span class="description__job-criteria-text description__job-criteria-text--criteria">Full-time</span></li>
+</ul>`;
+
+test("LinkedIn: search URLs per query and place, within the age limit", () => {
+  const search = { ...DEFAULT_SEARCH, queries: ["data analyst", "bi"], searchLocations: ["Spain"], workplace: "remote", maxAgeDays: 7 };
+  const urls = linkedinSearchUrls(search, 1);
+  assert.equal(urls.length, 1);
+  assert.equal(
+    urls[0],
+    "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=data+analyst&location=Spain&f_TPR=r604800&f_WT=2&start=0",
+  );
+});
+
+test("LinkedIn: parses cards, opens only titles that match, and removes contacts", () => {
+  const cards = parseJobCards(LINKEDIN_SEARCH);
+  assert.equal(cards.length, 2);
+  assert.deepEqual(cards[0], {
+    id: "4000000001",
+    title: "Data Analyst",
+    company: "Fictional Co",
+    location: "Barcelona, Catalonia, Spain",
+    date: "2026-10-25",
+    url: "https://www.linkedin.com/jobs/view/4000000001",
+  });
+  const search = { ...DEFAULT_SEARCH, titleKeywords: ["data"], excludeKeywords: ["intern"] };
+  assert.deepEqual(cardsWorthOpening([...cards, cards[0]], search, 15).map((c) => c.id), ["4000000001"]);
+
+  const offer = linkedinOffer(cards[0], parseJobDetail(LINKEDIN_DETAIL));
+  assert.equal(offer.id, "linkedin:4000000001");
+  assert.equal(offer.sourceName, "LinkedIn");
+  assert.equal(offer.seniority, "Mid-Senior level");
+  assert.equal(offer.employmentType, "Full-time");
+  assert.match(offer.description, /SQL & Looker every day\./);
+  assert.match(offer.description, /\[email removed\]/);
+  assert.deepEqual(offer.locations, ["Barcelona, Catalonia, Spain"]);
+});
+
+test("Arbeitnow: remote jobs have no location limit, on-site jobs keep their city", () => {
+  const answer = {
+    data: [
+      { slug: "data-analyst-1", company_name: "Fictional GmbH", title: "Data Analyst", description: "<p>SQL</p>", remote: true, url: "https://www.arbeitnow.com/jobs/companies/fictional/data-analyst-1", tags: ["Data"], job_types: ["Full-time"], location: "Berlin", created_at: 1793175612 },
+      { slug: "bi-dev-2", company_name: "Invented AG", title: "BI Developer", description: "", remote: false, url: "https://www.arbeitnow.com/jobs/companies/invented/bi-dev-2", tags: [], job_types: [], location: "Munich", created_at: 1793175612 },
+      { title: "No slug" },
+    ],
+  };
+  const [remote, onsite, ...others] = normaliseArbeitnow(answer, false);
+  assert.equal(others.length, 0);
+  assert.equal(remote.id, "arbeitnow:data-analyst-1");
+  assert.deepEqual(remote.locations, []);
+  assert.ok(remote.tags.includes("Remote"));
+  assert.deepEqual(onsite.locations, ["Munich"]);
+  assert.equal(onsite.sourceName, "Arbeitnow");
 });

@@ -8,12 +8,14 @@ A job search helper that runs on your own computer, inside the coding agent you 
 
 | Step | What happens | Who does the work |
 |---|---|---|
-| Setup | A conversation that turns your CV and your answers into profile files | The agent asks; you answer and check |
-| Find offers | Searches Himalayas and Remote OK through their official APIs | A script (rate-limited, honours robots.txt) |
-| Rank | Picks likely offers, then classifies each requirement against your profile | The agent classifies; a script computes the score |
-| Tailor | Writes a CV and a cover letter for one offer, then checks for invented facts | The agent writes; a script checks and renders the PDF |
+| Setup | Reads your documents (CVs, past letters, LinkedIn PDF), asks three to five questions, and drafts your profile | The agent asks; you answer and check |
+| Find offers | Searches Himalayas, Remote OK, and Arbeitnow through their public APIs, and LinkedIn's public job pages | A script (rate-limited, low volume) |
+| Rank | Classifies each requirement against your profile, then lists the best matches, the ones closing soon, and why the rest scored lower | The agent classifies; a script computes the score |
+| Tailor | Writes a CV and a cover letter per offer, checks for invented facts, and revises them with you | The agent writes; a script checks and renders the PDF |
 
-It does **not**: scrape LinkedIn or other login-protected sites, submit applications, or send anything on your behalf.
+It does **not**: log in to any site, submit applications, or send anything on your behalf.
+
+Your profile grows over time: `me/profile/questions.md` holds deeper questions (motivations, achievements, stories, tone) that you answer as you go. Every CV and cover letter is written from those answers.
 
 ## Requirements
 
@@ -59,10 +61,11 @@ This copies the persona in `examples/persona/` to `demo-workspace/`, ranks its s
 
 Open the project folder in your agent (for Claude Code: `cd` into the folder and run `claude`), then ask in plain words:
 
-- "Set up my profile" (imports your CV and asks questions)
+- "Get started" or "Set up my profile" (reads the documents you put in `me/documents/` and asks a few questions)
 - "Find offers"
 - "Rank the offers"
-- "Tailor my CV and cover letter for offer 3"
+- "Tailor my CV and cover letter for offer 3", or "Prepare applications for the top five"
+- "Answer question 7: ..." (adds to your context layer in `me/profile/questions.md`)
 
 The agent follows the instructions in [AGENTS.md](AGENTS.md). What is planned next is in [NEXT_STEPS.md](NEXT_STEPS.md).
 
@@ -72,7 +75,7 @@ Read [SECURITY.md](SECURITY.md). In short: everything personal stays in `me/`, w
 
 ## Job sources
 
-Only sources whose terms allow this kind of use are included, listed in [config/sources.json](config/sources.json) with their terms and review date. See [docs/sources.md](docs/sources.md). You are responsible for complying with each site's terms if you change the configuration.
+The sources are listed in [config/sources.json](config/sources.json) with their terms and review date; see [docs/sources.md](docs/sources.md). Himalayas, Remote OK, and Arbeitnow offer public APIs for this. **LinkedIn does not**: its terms forbid automated access. The LinkedIn source reads its public job pages without logging in, at low volume, for your own search; you use it at your own risk, and you can turn it off in `config/sources.json`. You are responsible for complying with each site's terms.
 
 ## Licence
 
@@ -84,4 +87,4 @@ Parts are adapted from [ai-job-search](https://github.com/ai-job-search-dev/ai-j
 
 Issues are welcome; pull requests are not accepted yet ([CONTRIBUTING.md](CONTRIBUTING.md)).
 
-Not affiliated with Anthropic, Himalayas, or Remote OK. Product names are used only to describe compatibility.
+Not affiliated with Anthropic, Himalayas, Remote OK, Arbeitnow, or LinkedIn. Product names are used only to describe compatibility.

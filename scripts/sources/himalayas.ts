@@ -1,6 +1,6 @@
 // Himalayas (https://himalayas.app/api): official public JSON API for remote jobs.
 // Terms: name Himalayas and link to the job page, keep applicationLink unchanged,
-// drop expired jobs, personal use only.
+// drop expired jobs, never pass the offers on to other boards (terms clause 113).
 //
 // Only the first page of each search is requested: Himalayas' robots.txt
 // disallows paths with "&page=" or "?page=", and we follow it for the API too.
