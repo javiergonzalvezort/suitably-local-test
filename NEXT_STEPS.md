@@ -7,7 +7,7 @@ State after the first session (2026-10-27). Done: repo skeleton (AGPL-3.0), doct
 1. ~~Workflow skills~~ Done 2026-10-28: `setup`, `find-offers`, `rank`, `tailor` in `.agents/skills/`, copied to `.claude/skills/` by `npm run sync-skills` (a test fails if the copy drifts). Pointers: `GEMINI.md`, `.cursor/rules/main.mdc`. Not yet tried by an agent: step 4.
 3. **Test the installers on clean machines**: a Windows laptop without Git/Node/Typst, and a Mac without Homebrew. Only dry runs were tested (`$env:DRY_RUN='1'` / `DRY_RUN=1`). The clone path (`irm ... | iex`) needs the pushed repo.
 4. **One real run with Claude Code** on the persona (`demo-workspace`): setup, rank of the live shortlist, tailor. Measure tokens and time on a Pro plan.
-5. **Re-read the terms** of Himalayas and Remote OK for personal, local use (the dates in `config/sources.json` come from a review written for hosted use) and record the date.
+5. ~~Re-read the terms~~ Done 2026-10-28: both allow this use; see `docs/sources.md`.
 
 ## Later
 
@@ -15,6 +15,7 @@ State after the first session (2026-10-27). Done: repo skeleton (AGPL-3.0), doct
 - Supervised apply (field plan, never submit; email drafts only) and interview prep.
 - Public ATS boards (Greenhouse, Lever, Ashby) over a user-maintained company list.
 - `applications.csv` log of what was sent where.
+- Himalayas: drop jobs that closed before their expiry date (the single-job endpoint answers 410). Today only `expiresAt` is checked.
 - CI (GitHub Actions) that runs `npm test`, `npm run typecheck`, and the demo with Typst.
 - Second agent (Codex or Gemini CLI) tested end to end.
 - A contributor agreement (DCO or CLA) before accepting pull requests.
