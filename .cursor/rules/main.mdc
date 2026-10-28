@@ -1,0 +1,10 @@
+---
+description: Instructions for the job search helper
+alwaysApply: true
+---
+
+Follow AGENTS.md at the root of this project: its hard rules always apply.
+
+The workflow skills are in `.agents/skills/<name>/SKILL.md` (setup, find-offers, rank, tailor). Before a workflow, read its skill file and follow it.
+
+Not tested end to end with Cursor yet.

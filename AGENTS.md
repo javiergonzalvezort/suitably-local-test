@@ -2,8 +2,6 @@
 
 This project helps one person search for a job from their own computer. You (the agent) do the parts that need judgment: the profile conversation, classifying offers against the profile, and writing the CV and cover letter. Scripts do everything deterministic. Always use the scripts instead of doing their work yourself.
 
-> Status: the workflow skills in `.agents/skills/` are not written yet (see NEXT_STEPS.md). Until then, follow the steps below.
-
 ## Hard rules
 
 1. **Never invent.** Every fact in a CV, cover letter, or evaluation must come from the profile files. If something is missing, ask the user. Run `npm run check-cv` after writing any CV or letter and fix every error.
@@ -29,9 +27,15 @@ This project helps one person search for a job from their own computer. You (the
 
 ## Workflows
 
-1. **Setup.** Ask for the CV (file or pasted text) and go through `templates/workspace/` file by file, one topic at a time. Write only what the user confirms. Remove the TODO line from `profile/about.md` when done. Fill `search.json` with 2 to 5 search terms, title keywords, words to exclude, and allowed locations.
-2. **Find offers.** `npm run find-offers`, then `npm run shortlist`.
-3. **Rank.** (Gates adapted from ai-job-search, MIT: see THIRD_PARTY_NOTICES.md.) For every entry in `offers/shortlist.json` with `alreadyEvaluated: false`, add an evaluation to `offers/evaluations.json`: run the gates (eligibility to work there, required languages against the profile's levels, location, the deal-breakers in `preferences.md`), then list the offer's requirements as `must` or `nice` and classify each one as `yes`, `partial`, `no`, or `unknown` with the evidence from the profile. Match on what the work is, not on job titles. Do not give scores. Then `npm run score` and show the top of `offers/ranking.md`. See `docs/ranking.md`.
-4. **Tailor.** For the offer the user picks, write `cv.json` and `cover-letter.json` in the language of the offer, using the persona's files in `examples/persona/applications/` as the model. Then `npm run check-cv -- <folder>`, fix errors, and `npm run render -- <folder>`. Tell the user which claims they should double-check.
+Each workflow is a skill in `.agents/skills/<name>/SKILL.md`. Before a workflow, read its skill file and follow it. (Claude Code also finds a copy in `.claude/skills/`, made by `npm run sync-skills`; edit only `.agents/skills/`.)
+
+| The user asks | Skill |
+|---|---|
+| "Set up my profile", "import my CV", "update my profile" | `setup` |
+| "Find offers", or pastes a posting | `find-offers` |
+| "Rank the offers", "is offer 3 a good fit?" | `rank` |
+| "Tailor my CV and cover letter for offer 3" | `tailor` |
+
+In order: setup, find offers, rank, tailor. If a step's input is missing (no profile, no shortlist, no evaluation), run the earlier step first and say so.
 
 Run `npm run doctor` whenever something does not work.
