@@ -12,6 +12,8 @@ A job search helper that runs on your own computer, inside the coding agent you 
 | Find offers | Searches Himalayas, Remote OK, and Arbeitnow through their public APIs, and LinkedIn's public job pages | A script (rate-limited, low volume) |
 | Rank | Classifies each requirement against your profile, then lists the best matches, the ones closing soon, and why the rest scored lower | The agent classifies; a script computes the score |
 | Tailor | Writes a CV and a cover letter per offer, checks for invented facts, and revises them with you | The agent writes; a script checks and renders the PDF |
+| Track | Logs each application with what you sent and declared (salary expectation, notice period) in an Excel file | The agent asks; a script writes `applications.xlsx` |
+| Prepare interviews | Likely questions with the stories that answer them, the company from public sources, questions to ask, and a practice run | The agent researches and writes; you practise |
 
 It does **not**: log in to any site, submit applications, or send anything on your behalf.
 
@@ -21,7 +23,7 @@ Your profile grows over time: `me/profile/questions.md` holds deeper questions (
 
 - Windows 10/11 or macOS (Linux works if you install the tools yourself)
 - A coding agent: [Claude Code](https://claude.com/claude-code) with a paid Claude plan (Pro is enough to start)
-- Git, Node.js 22.18 or newer, and [Typst](https://typst.app) (for PDFs). The installer sets these up.
+- Git, Node.js 22.18 or newer, [Typst](https://typst.app) (for PDFs), and Claude Code. The installer sets these up (Claude Code with Anthropic's official installer; set `SKIP_CLAUDE=1` to skip it). On macOS, install [Homebrew](https://brew.sh) first.
 
 ## Install
 
@@ -39,7 +41,7 @@ curl -fsSL https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-t
 
 If you already downloaded the project, run `powershell -ExecutionPolicy Bypass -File install.ps1` (Windows) or `bash install.sh` (macOS) from its folder instead.
 
-The installer checks and installs Git, Node.js, and Typst, turns on the privacy check for commits, creates your private `me/` folder, and runs the **doctor**. Run the doctor again at any time:
+The installer checks and installs Git, Node.js, Typst, and Claude Code, turns on the privacy check for commits, creates your private `me/` folder, and runs the **doctor**. Run the doctor again at any time:
 
 ```bash
 npm run doctor
@@ -65,6 +67,8 @@ Open the project folder in your agent (for Claude Code: `cd` into the folder and
 - "Find offers"
 - "Rank the offers"
 - "Tailor my CV and cover letter for offer 3", or "Prepare applications for the top five"
+- "I sent the Lumen Parcel one" (logs it in `me/applications/applications.xlsx`)
+- "I have an interview with Lumen Parcel on Tuesday", or "Let's practise"
 - "Answer question 7: ..." (adds to your context layer in `me/profile/questions.md`)
 
 The agent follows the instructions in [AGENTS.md](AGENTS.md). What is planned next is in [NEXT_STEPS.md](NEXT_STEPS.md).

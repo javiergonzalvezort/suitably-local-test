@@ -7,12 +7,14 @@
 #   bash install.sh
 #
 # What it does: installs Git, Node.js, and Typst with Homebrew if they are missing,
+# installs Claude Code with Anthropic's official installer if it is missing,
 # downloads the project (unless you run it from inside the project), turns on the
 # privacy check for commits, creates your private me/ folder, and runs the doctor.
 #
 # Options, as environment variables:
 #   INSTALL_DIR=/path   where to download the project (default: your home folder)
 #   DRY_RUN=1           show what would be installed, change nothing
+#   SKIP_CLAUDE=1       do not install Claude Code (you use another agent)
 
 set -euo pipefail
 
@@ -62,6 +64,20 @@ fi
 step "Typst"
 if has typst; then ok "$(typst --version)"; else install_pkg typst Typst; fi
 
+# Claude Code (the agent), with Anthropic's official installer, in ~/.local/bin.
+step "Claude Code"
+if has claude; then ok "$(claude --version)"
+elif [ "${SKIP_CLAUDE:-0}" = "1" ]; then ok "Skipped (SKIP_CLAUDE=1)"
+elif [ "$DRY_RUN" = "1" ]; then echo "    (dry run) would run Anthropic's installer: curl -fsSL https://claude.ai/install.sh | bash"
+else
+  echo "    Installing Claude Code with Anthropic's official installer (https://claude.ai/install.sh)."
+  if curl -fsSL https://claude.ai/install.sh | bash; then
+    export PATH="$HOME/.local/bin:$PATH"
+  fi
+  if has claude; then ok "$(claude --version)"
+  else printf '    \033[33mClaude Code did not install. The doctor below says how to install it by hand.\033[0m\n'; fi
+fi
+
 if [ "$DRY_RUN" = "1" ]; then printf '\nDry run finished. Nothing was changed.\n'; exit 0; fi
 
 step "Project files"
@@ -94,5 +110,6 @@ node scripts/doctor.ts --online || true
 
 printf '\nNext steps:\n'
 printf '  1. See the sample first:   cd "%s" && npm run demo\n' "$PROJECT_DIR"
-printf '  2. Open your agent here:   claude\n'
+printf '  2. Open Claude Code here:  claude   (the first time it opens the browser to sign in)\n'
 printf '  3. Ask it:                 Set up my profile\n\n'
+printf "If 'claude' is not found, open a new Terminal window and try again.\n\n"
