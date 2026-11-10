@@ -30,7 +30,7 @@ export const DEFAULT_SEARCH: SearchSettings = {
   allowedLocations: [],
   searchLocations: [],
   workplace: "",
-  maxAgeDays: 30,
+  maxAgeDays: 7,
   shortlistSize: 20,
 };
 

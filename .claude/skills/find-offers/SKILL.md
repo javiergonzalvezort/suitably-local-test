@@ -17,16 +17,17 @@ Offers come from two places: the job sources the script fetches (Himalayas, Remo
 ## Fetch from the sources
 
 1. Check that `me/search.json` has `queries`, `titleKeywords`, and `searchLocations`. If not, run the setup skill first (step 3).
-2. `npm run find-offers` (add `-- --workspace demo-workspace` for a demo). It waits between requests, so it can take two or three minutes. If a source fails, say which one and carry on with the rest.
-3. `npm run shortlist`. It writes `offers/shortlist.json` and a readable `offers/shortlist.md`.
-4. **Show the shortlist.** Say how many offers were fetched and how many passed. Then list every shortlisted offer, numbered as in `shortlist.md`:
+2. **Ask how recent the offers must be**, every time, before fetching: "Offers published when? Today, last 3 days, last 7 days, or last 14 days?" Say which one was used last time (the current `maxAgeDays`) and that they can just say "same". Save the answer to `maxAgeDays` in `me/search.json` as `1`, `3`, `7`, or `14`; if the current value is not one of these, suggest 7. LinkedIn searches only that window, and the shortlist drops older offers from every source.
+3. `npm run find-offers` (add `-- --workspace demo-workspace` for a demo). It waits between requests, so it can take two or three minutes. If a source fails, say which one and carry on with the rest.
+4. `npm run shortlist`. It writes `offers/shortlist.json` and a readable `offers/shortlist.md`.
+5. **Show the shortlist.** Say how many offers were fetched and how many passed. Then list every shortlisted offer, numbered as in `shortlist.md`:
    - **N. Role, Company** (location; salary if stated; closes on DATE if stated)
    - One line, under 20 words, on what the job actually is, written by you from its description.
    - The link with its source: "via LinkedIn: <url>".
 
    Offers with `aiBlocked: true` get "text not available, open the link" instead of the line.
-5. If the shortlist is empty or very short, suggest one change to `search.json` (another query, a synonym in `titleKeywords`, a wider `allowedLocations` or `searchLocations`), make it only if the user agrees, and run both commands again.
-6. Suggest the next step: "Rank the offers".
+6. If the shortlist is empty or very short, suggest one change to `search.json` (a wider date range, another query, a synonym in `titleKeywords`, a wider `allowedLocations` or `searchLocations`), make it only if the user agrees, and run both commands again.
+7. Suggest the next step: "Rank the offers".
 
 ## Save pasted offers
 
