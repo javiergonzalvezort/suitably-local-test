@@ -49,6 +49,10 @@ test("a cover letter may quote numbers from the offer, and clichés are warned",
 });
 
 test("PDF names are what a recruiter should see", () => {
-  assert.deepEqual(pdfNames("Alba Ferrer Soler", "en"), { cv: "Alba Ferrer Soler - CV.pdf", letter: "Alba Ferrer Soler - Cover letter.pdf" });
+  assert.deepEqual(pdfNames("Alba Ferrer Soler", "en"), {
+    cv: "Alba Ferrer Soler - CV.pdf",
+    letter: "Alba Ferrer Soler - Cover letter.pdf",
+    prep: "Alba Ferrer Soler - Interview prep.pdf",
+  });
   assert.equal(pdfNames('A/B:"C"', "es").letter, "ABC - Carta de presentacion.pdf");
 });

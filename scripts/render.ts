@@ -1,4 +1,5 @@
-// Turns cv.json and cover-letter.json in an application folder into PDFs with Typst.
+// Turns cv.json, cover-letter.json, and interview-prep.json in an application folder
+// into PDFs with Typst (each one only if it exists).
 // Usage: npm run render -- <application folder>
 //   e.g. npm run render -- me/applications/lumen-parcel-analytics-engineer
 
@@ -12,11 +13,11 @@ import { readJson, REPO_ROOT } from "./lib/workspace.ts";
 const TEMPLATES = path.join(REPO_ROOT, "templates");
 
 // File names a recruiter will see, for example "Alba Ferrer Soler - CV.pdf".
-export function pdfNames(name: string, language: string): { cv: string; letter: string } {
+export function pdfNames(name: string, language: string): { cv: string; letter: string; prep: string } {
   const safe = name.replace(/[\\/:*?"<>|]/g, "").trim() || "Candidate";
   return language === "es"
-    ? { cv: `${safe} - CV.pdf`, letter: `${safe} - Carta de presentacion.pdf` }
-    : { cv: `${safe} - CV.pdf`, letter: `${safe} - Cover letter.pdf` };
+    ? { cv: `${safe} - CV.pdf`, letter: `${safe} - Carta de presentacion.pdf`, prep: `${safe} - Preparacion entrevista.pdf` }
+    : { cv: `${safe} - CV.pdf`, letter: `${safe} - Cover letter.pdf`, prep: `${safe} - Interview prep.pdf` };
 }
 
 function compile(template: string, dataFile: string, output: string): boolean {
@@ -41,12 +42,14 @@ export function renderApplication(folder: string): string[] {
   const written: string[] = [];
   const cvFile = path.join(folder, "cv.json");
   const letterFile = path.join(folder, "cover-letter.json");
-  if (!fs.existsSync(cvFile) && !fs.existsSync(letterFile)) {
-    throw new Error(`No cv.json or cover-letter.json in ${folder}`);
+  const prepFile = path.join(folder, "interview-prep.json");
+  if (![cvFile, letterFile, prepFile].some((file) => fs.existsSync(file))) {
+    throw new Error(`No cv.json, cover-letter.json, or interview-prep.json in ${folder}`);
   }
   for (const [file, template, kind] of [
     [cvFile, "cv.typ", "cv"],
     [letterFile, "cover-letter.typ", "letter"],
+    [prepFile, "interview-prep.typ", "prep"],
   ] as const) {
     if (!fs.existsSync(file)) continue;
     const { name, language } = readJson<{ name: string; language: string }>(file);

@@ -16,6 +16,7 @@
     "score": "node scripts/rank.ts score",
     "check-cv": "node scripts/check-cv.ts",
     "render": "node scripts/render.ts",
+    "applications": "node scripts/applications.ts",
     "demo": "node scripts/demo.ts",
     "sync-skills": "node scripts/sync-skills.ts",
     "test": "node --test \"tests/**/*.test.ts\"",

@@ -1,6 +1,6 @@
 // Runs the whole flow on the fictional persona, without network or model calls:
 // copies examples/persona to demo-workspace/ (ignored by git), then shortlists,
-// scores, checks the tailored CV, and renders the PDFs.
+// scores, checks the tailored CV, renders the PDFs, and writes the applications log.
 // Usage: npm run demo
 
 import fs from "node:fs";
@@ -29,11 +29,12 @@ const steps = [
   run("2. Score (the evaluations were written by the agent beforehand)", "rank.ts", ["score", "--workspace", "demo-workspace", "--now", DEMO_TODAY]),
   run("3. Check the tailored CV and cover letter for invented facts", "check-cv.ts", [APPLICATION, "--workspace", "demo-workspace"]),
   run("4. Render the PDFs", "render.ts", [APPLICATION]),
+  run("5. Write the applications log (Excel)", "applications.ts", ["--workspace", "demo-workspace"]),
 ];
 
 console.log(
   steps.every(Boolean)
-    ? `\nDone. Open ${APPLICATION} to see the PDFs, and demo-workspace/offers/ranking.md for the ranking.`
+    ? `\nDone. Open ${APPLICATION} to see the PDFs, demo-workspace/offers/ranking.md for the ranking, and demo-workspace/applications/applications.xlsx for the log.`
     : "\nSome steps failed: see the messages above, and run npm run doctor.",
 );
 process.exitCode = steps.every(Boolean) ? 0 : 1;
