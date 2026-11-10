@@ -1,0 +1,117 @@
+{
+  "language": "en",
+  "name": "Alba Ferrer Soler",
+  "company": "Lumen Parcel",
+  "role": "Analytics Engineer",
+  "interview": {
+    "stage": "First interview with the hiring manager",
+    "date": "2026-11-05, 10:00",
+    "format": "Video call, 45 minutes",
+    "with": "Head of Data"
+  },
+  "pitch": "I am an analytics engineer with six years turning operational data into reporting that teams rely on. At Brisamar Retail I own dbt models on BigQuery with Looker on top, and I agree metric definitions with the managers who use them. I started in delivery data, forecasting parcel volumes per depot, which is why your dbt project for deliveries and couriers is the job I want next.",
+  "alreadySaid": [
+    "dbt tests on the 25 most used models at Brisamar Retail: incidents reported by managers from about 10 a month to 2",
+    "Weekly sales reporting rebuilt in dbt: from 2 days to 3 hours a week, after agreeing margin and stock-out with finance",
+    "Delivery data background: daily parcel volume forecast per depot at Tallerum Logistics (error from 18% to 11%)",
+    "Gap admitted in the letter: code review done informally, mentoring 2 junior analysts",
+    "Declared: salary expectation 52,000 EUR gross a year; notice period 1 month"
+  ],
+  "companyFacts": [
+    {
+      "text": "Runs same-day delivery in six European cities (from the offer; an invented company for this example).",
+      "url": "https://example.com/jobs/1"
+    },
+    {
+      "text": "The data team owns a dbt project on BigQuery and the Looker layer used by operations (from the offer).",
+      "url": "https://example.com/jobs/1"
+    }
+  ],
+  "questions": [
+    {
+      "group": "About the role",
+      "question": "How do you decide which dbt tests to write first?",
+      "why": "Testing is a must-have, and your letter promises to start with tests.",
+      "answer": [
+        "Start where users feel the pain: the most used models and the ones managers complain about",
+        "At Brisamar: the 25 most used models first, plus an alert channel for failures",
+        "Then not_null and unique on keys, relationships between models, and accepted values on statuses"
+      ],
+      "story": {
+        "title": "Fewer surprises for managers",
+        "situation": "Managers kept finding wrong numbers in dashboards before the data team did.",
+        "action": "Added dbt tests to the 25 most used models and an alert channel for failures.",
+        "result": "Incidents reported by managers fell from about 10 a month to 2."
+      }
+    },
+    {
+      "group": "About the role",
+      "question": "Tell us about a time you had to agree a metric with people who saw it differently.",
+      "why": "The role works with operations managers to define metrics.",
+      "answer": [
+        "Agree the definition before building anything",
+        "Write it down where the model lives, so the dashboard and the meeting use the same words"
+      ],
+      "story": {
+        "title": "The two-day report",
+        "situation": "The weekly sales report took two analysts two days of copy-paste in Excel.",
+        "action": "Agreed margin and stock-out with finance first, then rebuilt it as dbt models with a Looker dashboard.",
+        "result": "From 2 days to 3 hours a week; managers stopped asking which number was right."
+      }
+    },
+    {
+      "group": "About your gaps",
+      "question": "How much experience do you have reviewing other people's SQL?",
+      "why": "Reviewing analysts' pull requests is part of the role, and your letter says it is the part you have done least formally.",
+      "answer": [
+        "Be direct: informal so far, mentoring 2 junior analysts on SQL and code review",
+        "Say what you look for in a review: tests, naming, one model per grain",
+        "Say you want to make it a regular part of your work"
+      ]
+    },
+    {
+      "group": "Motivation",
+      "question": "Why Lumen Parcel?",
+      "why": "They want to know if you chose them or any data role.",
+      "answer": [
+        "Delivery data is where you started (the parcel forecast)",
+        "Same stack you use today (dbt, BigQuery, Looker), applied to operations in six cities"
+      ]
+    },
+    {
+      "group": "Practical",
+      "question": "What are your salary expectations?",
+      "why": "You already declared a figure in the form.",
+      "answer": [
+        "Stay consistent: 52,000 EUR gross a year, inside their stated range of 48,000 to 58,000"
+      ]
+    }
+  ],
+  "salary": [
+    "Declared: 52,000 EUR gross a year. Stay consistent with it.",
+    "The offer states 48,000 to 58,000 EUR a year; your minimum target is 45,000 EUR.",
+    "Notice period declared: 1 month."
+  ],
+  "askThem": [
+    "Which dbt models break most often today, and how do operations find out?",
+    "How do analysts and analytics engineers split the work on the dbt project?",
+    "What would a good first three months look like for this role?",
+    "How are metric definitions agreed with operations today?"
+  ],
+  "read": [
+    {
+      "text": "The offer again (saved in offer.md)",
+      "url": "https://example.com/jobs/1"
+    }
+  ],
+  "lookUpYourself": [
+    "The company's LinkedIn page: recent posts about cities, launches, or the data team",
+    "The roles in the data team (how many analysts and engineers)",
+    "The Head of Data's public profile, if you know the name"
+  ],
+  "onTheDay": [
+    "Have at hand: the CV and letter as sent, offer.md, and your questions",
+    "Test the video link ten minutes before",
+    "Write down the questions they ask, to prepare the next round"
+  ]
+}

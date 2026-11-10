@@ -197,6 +197,8 @@ export function rankOffers(offers: Offer[], evaluations: Evaluation[]): { ranked
 }
 
 const VERDICT_LABEL: Record<Verdict, string> = { apply: "Apply", maybe: "Maybe", skip: "Skip" };
+// The same verdicts with a colour marker, for ranking.md: easier to scan than words alone.
+const VERDICT_BADGE: Record<Verdict, string> = { apply: "🟢 Apply", maybe: "🟡 Maybe", skip: "🔴 Skip" };
 
 function cell(text: string): string {
   return text.replace(/\|/g, "/").replace(/\n/g, " ");
@@ -240,24 +242,26 @@ export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): strin
     "",
     `Generated ${dateOnly(generatedAt.toISOString())} by \`npm run score\`. Scores come from the evaluations; see docs/ranking.md for the formula. The numbers (#) are the same in every section.`,
     "",
-    "## Best matches",
+    "🟢 Apply: worth applying · 🟡 Maybe: read the gaps first · 🔴 Skip: a hard stop or too many gaps",
+    "",
+    "## 🏆 Best matches",
     "",
   ];
   if (best.length === 0) {
     lines.push("No offer passed the gates this time. The section below says why each one scored low.", "");
   } else {
-    lines.push("| # | Score | Verdict | Role | Company | Closes | Source | Offer id |", "|---|---|---|---|---|---|---|---|");
+    lines.push("| # | Score | Verdict | Role | Company | Closes | Source |", "|---|---|---|---|---|---|---|");
     for (const item of best) {
       const { offer } = item;
       lines.push(
-        `| ${position.get(offer.id)} | ${item.score} | ${VERDICT_LABEL[item.verdict]} | ${cell(offer.title)} | ${cell(offer.company)} | ${dateOnly(offer.expiresAt)} | ${sourceLink(offer)} | \`${offer.id}\` |`,
+        `| ${position.get(offer.id)} | ${item.score} | ${VERDICT_BADGE[item.verdict]} | ${cell(offer.title)} | ${cell(offer.company)} | ${dateOnly(offer.expiresAt)} | ${sourceLink(offer)} |`,
       );
     }
     lines.push("");
   }
 
   lines.push(
-    "## Closing soon",
+    "## ⏰ Closing soon",
     "",
     `Offers outside the best matches that close in the next ${CLOSING_SOON_DAYS} days. Only some sources give a closing date.`,
     "",
@@ -267,30 +271,37 @@ export function rankingMarkdown(ranked: ScoredOffer[], generatedAt: Date): strin
     // Whole calendar days, so "today" counts as 0 whatever the hour.
     const days = Math.round((Date.parse(dateOnly(item.offer.expiresAt)) - Date.parse(dateOnly(generatedAt.toISOString()))) / DAY_MS);
     lines.push(
-      `- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}: closes ${dateOnly(item.offer.expiresAt)} (${days} days), score ${item.score} (${VERDICT_LABEL[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`,
+      `- **#${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}**: closes ${dateOnly(item.offer.expiresAt)} (${days} days), score ${item.score} (${VERDICT_BADGE[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`,
     );
   }
   if (closingSoon.length > 0) lines.push("");
 
-  lines.push("## The rest, and why they scored lower", "");
+  lines.push("## 📉 The rest, and why they scored lower", "");
   if (rest.length === 0) lines.push("Nothing else was evaluated.", "");
   for (const item of rest) {
-    lines.push(`- #${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company} (${item.score}, ${VERDICT_LABEL[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`);
+    lines.push(`- **#${position.get(item.offer.id)} ${item.offer.title}, ${item.offer.company}** (${item.score}, ${VERDICT_BADGE[item.verdict]}): ${whyLower(item)}. ${sourceLink(item.offer)}`);
   }
   if (rest.length > 0) lines.push("");
 
-  lines.push("## Details", "");
+  lines.push("## 🔍 Details", "");
   ranked.forEach((item, i) => {
     const { offer, evaluation } = item;
-    lines.push(`### ${i + 1}. ${offer.title}, ${offer.company} (${item.score}, ${VERDICT_LABEL[item.verdict]})`, "");
-    lines.push(`- Offer: [${offer.url}](${offer.url}) (via ${offer.sourceName})`);
-    lines.push(`- Apply at: ${offer.applyUrl}`);
-    if (offer.salary) lines.push(`- Salary: ${offer.salary}`);
-    if (offer.expiresAt) lines.push(`- Closes: ${dateOnly(offer.expiresAt)}`);
-    if (item.reasons.length > 0) lines.push(`- Watch out: ${item.reasons.join("; ")}`);
-    if (evaluation.strengths.length > 0) lines.push(`- Strengths: ${evaluation.strengths.join("; ")}`);
-    if (evaluation.gaps.length > 0) lines.push(`- Gaps: ${evaluation.gaps.join("; ")}`);
-    if (evaluation.notes) lines.push(`- Notes: ${evaluation.notes}`);
+    lines.push(`### ${i + 1}. ${offer.title}, ${offer.company} (${item.score}, ${VERDICT_BADGE[item.verdict]})`, "");
+    if (evaluation.notes) lines.push(`> ${evaluation.notes}`, "");
+    lines.push(`- 🔗 Offer: ${sourceLink(offer)}`);
+    if (offer.applyUrl && offer.applyUrl !== offer.url) lines.push(`- 📨 Apply at: ${offer.applyUrl}`);
+    if (offer.salary) lines.push(`- 💶 Salary: ${offer.salary}`);
+    if (offer.expiresAt) lines.push(`- 📅 Closes: ${dateOnly(offer.expiresAt)}`);
+    // One sub-item per point: easier to read than a single line joined with semicolons.
+    const group = (title: string, items: string[]) => {
+      if (items.length === 0) return;
+      lines.push(`- ${title}`);
+      for (const text of items) lines.push(`  - ${text}`);
+    };
+    group("🚫 Watch out:", item.reasons);
+    group("✅ Strengths:", evaluation.strengths);
+    group("⚠️ Gaps:", evaluation.gaps);
+    lines.push(`- 🆔 Offer id: \`${offer.id}\``);
     lines.push("");
   });
   return lines.join("\n");

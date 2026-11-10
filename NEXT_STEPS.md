@@ -13,11 +13,11 @@ State after the first session (2026-10-27). Done: repo skeleton (AGPL-3.0), doct
 ## Later
 
 - `docs/` in Spanish (setup guide for non-developers, costs per agent, privacy, FAQ); README in Spanish.
-- Supervised apply (field plan, never submit; email drafts only) and interview prep.
+- Supervised apply (field plan, never submit; email drafts only). Interview prep: done 2026-11-10 (`interview-prep` skill), not yet tried by an agent.
 - Public ATS boards (Greenhouse, Lever, Ashby) over a user-maintained company list (question 4 of `questions.md` collects it).
 - InfoJobs: has an official API with per-user app registration, but its developer terms page was empty on 2026-10-28; add it once the terms are published.
 - Adzuna: terms allow personal job search with a free per-user key, but its API host's robots.txt disallows everything and listings need its logo; revisit if Spanish coverage is thin.
-- `applications.csv` log of what was sent where.
+- ~~Applications log~~ Done 2026-11-10: `applications/log.json` written by the agent, `npm run applications` turns it into `applications.xlsx` (no dependencies).
 - Himalayas: drop jobs that closed before their expiry date (the single-job endpoint answers 410). Today only `expiresAt` is checked.
 - CI (GitHub Actions) that runs `npm test`, `npm run typecheck`, and the demo with Typst.
 - Second agent (Codex or Gemini CLI) tested end to end.

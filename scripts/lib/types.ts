@@ -97,3 +97,54 @@ export type CoverLetter = {
   paragraphs: string[];
   closing: string;
 };
+
+// Where an application stands. "prepared": documents written, not sent yet.
+export type ApplicationStatus = "prepared" | "applied" | "interview" | "offer" | "rejected" | "withdrawn";
+
+// One entry of applications/log.json (written by the tailor and interview-prep
+// skills, turned into applications.xlsx by `npm run applications`).
+export type Application = {
+  offerId: string;
+  company: string;
+  role: string;
+  location?: string;
+  sourceName: string;
+  url: string; // the offer's page
+  folder: string; // relative to the workspace, e.g. "applications/acme-data-analyst"
+  status: ApplicationStatus;
+  preparedAt: string; // YYYY-MM-DD
+  appliedAt?: string; // YYYY-MM-DD, once the user confirms they sent it
+  offerSummary: string; // two lines on what the job is; the full text is in <folder>/offer.md
+  keyPoints: string[]; // what the CV and cover letter claimed, to keep the story consistent
+  declared: { label: string; value: string }[]; // what the user stated when applying (salary expectation, notice period...)
+  nextStep?: string; // e.g. "Interview with the hiring manager on 2026-11-20"
+  notes?: string;
+};
+
+// A link with what it is, for the company facts and the reading list.
+export type SourceLink = { text: string; url?: string; date?: string };
+
+// An interview guide (written by the interview-prep skill, rendered by
+// templates/interview-prep.typ into a PDF).
+export type InterviewPrep = {
+  language: "en" | "es"; // the language the user writes in
+  name: string; // the candidate, for the file name
+  company: string;
+  role: string;
+  interview: { stage: string; date?: string; format?: string; with?: string };
+  pitch: string; // 30 seconds, three or four sentences
+  alreadySaid: string[]; // key points and declared items to stay consistent with
+  companyFacts: SourceLink[]; // each fact with its source
+  questions: {
+    group: string; // "About the role", "About your gaps", "Motivation", "Practical"
+    question: string;
+    why: string; // why they ask it, one line
+    answer: string[]; // outline in bullets, not a script
+    story?: { title: string; situation: string; action: string; result: string }; // from stories.md
+  }[];
+  salary: string[];
+  askThem: string[];
+  read: SourceLink[]; // links to read, in priority order
+  lookUpYourself: string[]; // what the user checks on their own (LinkedIn page, team roles...)
+  onTheDay: string[];
+};

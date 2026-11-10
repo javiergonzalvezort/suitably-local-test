@@ -25,16 +25,19 @@ You write `cv.json` and `cover-letter.json` for one offer. A script checks them 
 ## Steps
 
 1. **Pick the offer.** Find it in `me/offers/ranking.md` by its number, or by title and company. If its verdict is "skip" or the score is under 50, tell the user why first and ask whether to go ahead. If it has no evaluation, run the rank skill on it first.
-   **Ask what the offer needs.** If a `must` requirement is `unknown`, or the letter needs a story the profile lacks, ask the matching question from `profile/questions.md` (at most two), and save the answers there before writing.
-2. **Folder.** `me/applications/<company>-<role>/` in lowercase with hyphens.
+   **Ask what the offer needs.** Look at the evaluation's `gaps` and at the requirements with `unknown` or `partial`. Pick **at most two** questions from `profile/questions.md` whose answers would give evidence for those gaps (or that the letter needs for a story the profile lacks), ask them, and save the answers there before writing. Skip questions already answered.
+2. **Folder.** `me/applications/<company>-<role>/` in lowercase with hyphens. **Save the offer there as `offer.md`**: a `# Role, Company` title, then the link with its source, location, salary and closing date if stated, the date you saved it, and the full description. Offers disappear from the sites once they close; this copy is what the user will re-read before an interview. Skip the description for `aiBlocked` offers unless the user pasted it.
 3. **Language.** The language of the offer (`en` or `es`). If the offer is in another language, ask the user.
-4. **Write `cv.json`** (shape `Cv` in `scripts/lib/types.ts`; model: `examples/persona/applications/*/cv.json`):
+4. **Keywords.** Before writing, pick the offer's 5 to 8 keywords: its `must` requirements, what it says the "ideal candidate" has, and what it explicitly values. Use the offer's own words. Note also anything the offer explicitly counts against (a stack it is moving away from, "not a consulting role"). Use these keywords in the headline, the summary, and the names of the skill groups, wherever the profile backs them.
+5. **Write `cv.json`** (shape `Cv` in `scripts/lib/types.ts`; model: `examples/persona/applications/*/cv.json`):
    - `name`, `contact`: from `about.md`. Leave out a field the user did not give.
-   - `headline`: one line, what the user does plus the offer's main keyword (for example "Data analyst specialising in dbt and Looker"). Not "Application for...".
-   - `summary`: three sentences aimed at this offer, from the profile's summary and the evaluation's strengths.
-   - `experience`: newest first, titles and companies **exactly** as in `experience.md`, dates as `YYYY-MM`. Up to 6 bullets per role; the bullets that match the offer's `must` requirements go first. Older or unrelated roles get one or two bullets.
-   - `education`, `skills` (groups that mirror the offer's requirements, only skills in the profile), `languages` (levels as in the profile).
-5. **Write `cover-letter.json`** (shape `CoverLetter`; model: `examples/persona/applications/*/cover-letter.json`):
+   - `headline`: one line, what the user does plus the offer's top keywords (for example "Data analyst specialising in dbt and Looker"). Not "Application for...".
+   - `summary`: three or four sentences. **Each sentence covers one of the offer's requirements with proof from the profile** (a role, a project, a number). No sentence without a requirement behind it.
+   - `experience`: newest first, titles and companies **exactly** as in `experience.md`. Dates in the **same format as `experience.md`**: `YYYY-MM` if it gives months, `YYYY` if it gives years only; never add months the profile does not state, and use one format throughout. Up to 6 bullets per role; the bullets that match the offer's `must` requirements go first. Older or unrelated roles get one or two bullets.
+   - **Rewrite every bullet for this offer**: lead with what the offer asks for, in its keywords, keeping the facts and numbers. Do not copy bullets word for word from `experience.md`, and do not cut a detail that matches a requirement to make a bullet shorter.
+   - `skills`: groups named after the offer's keywords, only skills in the profile. **Leave out skills the offer counts against.** Personal projects (`experience.md` or `stories.md`) that cover a gap from the evaluation go in a skill group too (for example "AI projects: ..."), since the CV format has no projects section.
+   - `education`, `languages` (levels as in the profile).
+6. **Write `cover-letter.json`** (shape `CoverLetter`; model: `examples/persona/applications/*/cover-letter.json`):
    - `subject`: role plus the specific angle, not "Application for...".
    - Three or four paragraphs, under 400 words, one page:
      1. The role and the most direct link between the user's work and it.
@@ -44,17 +47,33 @@ You write `cv.json` and `cover-letter.json` for one offer. A script checks them 
    - Forward-looking: what the user will do for this employer, not a repeat of the CV.
    - Tone: direct and warm, first person, active voice. Not humble ("I think I could"), not grand.
    - No clichés ("passionate about", "team player", "results-driven", "apasionado por", "orientado a resultados") and no long dashes: use a comma or a full stop.
-6. **Check.** `npm run check-cv -- me/applications/<folder>`. Fix every ERROR by removing or correcting the claim, never by editing the profile to match. Look at each WARNING and fix it unless there is a reason not to.
-7. **Review pass.** Read both documents once more as a recruiter would, against the offer, and fix what you find:
+7. **Check.** `npm run check-cv -- me/applications/<folder>`. Fix every ERROR by removing or correcting the claim, never by editing the profile to match. Look at each WARNING and fix it unless there is a reason not to.
+8. **Review pass.** Read both documents once more as a recruiter would, against the offer, and fix what you find:
    - Does each `must` requirement the profile covers appear, with evidence, in the CV?
+   - Do the keywords from step 4 appear in the headline, the summary, and the skill groups? Is any bullet still a copy of `experience.md`?
    - Does every sentence pass the interview test?
    - Is anything generic enough to fit any company? Make it specific or cut it.
    - Same language, spelling, and date format throughout.
    Run `npm run check-cv` again after changes.
-8. **Render.** `npm run render -- me/applications/<folder>`. If Typst is missing, run `npm run doctor` and show the fix.
-9. **Hand over.** Tell the user where the PDFs are, list the lines they should double-check (any "ask the user" reframes, the gap paragraph, contact details), and remind them that they apply themselves: you never send anything.
-10. **Iterate.** Ask for comments on both documents. In each round, change what they ask (new facts only after they confirm them, and into the profile first), run `npm run check-cv` and `npm run render` again, and say what changed. If a comment teaches something about the user ("I never say 'stakeholders'", "the migration saved 3 weeks"), write it in `profile/questions.md` so the next application starts from it.
+9. **Render.** `npm run render -- me/applications/<folder>`. If Typst is missing, run `npm run doctor` and show the fix.
+10. **Hand over.** Tell the user where the PDFs are, list the lines they should double-check (any "ask the user" reframes, the gap paragraph, contact details), and remind them that they apply themselves: you never send anything.
+11. **Iterate.** Ask for comments on both documents. In each round, change what they ask (new facts only after they confirm them, and into the profile first), run `npm run check-cv` and `npm run render` again, and say what changed. If a comment teaches something about the user ("I never say 'stakeholders'", "the migration saved 3 weeks"), write it in `profile/questions.md` so the next application starts from it.
+12. **Log the application.** When the user approves the documents, add an entry to `me/applications/log.json` (a JSON list, shape `Application` in `scripts/lib/types.ts`; model: `examples/persona/applications/log.json`; create it with `[]` if missing; never remove entries):
+    - `offerId`, `company`, `role`, `location`, `sourceName`, `url` from the offer; `folder` as `applications/<company>-<role>`; `preparedAt` today; `status: "prepared"`.
+    - `offerSummary`: two lines on what the job is, in your words.
+    - `keyPoints`: 3 to 6 lines with **what the documents claim**: the headline angle, the stories and numbers used, any reframed line, and the gap the letter admits. This is what the user must not contradict in an interview.
+    - `declared: []` for now.
+
+    Then ask: **"Have you sent it?"**
+    - **Yes**: set `status: "applied"` and `appliedAt` (today unless they say otherwise). Ask what they stated in the application form or email that is not in the documents: **salary expectation**, notice period or start date, willingness to relocate or travel, answers to screening questions, anything else they want to remember. Save each as `{ "label", "value" }` in `declared`, in their words. If they wrote nothing beyond the documents, leave it empty.
+    - **Not yet**: leave it `prepared`, and tell them you will ask next time.
+
+    Run `npm run applications`. It writes `me/applications/applications.xlsx` (if it says the file is open, ask them to close it in Excel and run it again). Tell the user where it is and what it holds.
 
 ## Going through the best matches
 
-When the user asks to prepare applications for several offers ("the top five"), take the best matches from `ranking.md` in order, or the closing-soon ones first if the user prefers. Do one offer at a time with the steps above, finish its iteration, and ask before starting the next. At the end, list each folder with its offer and whether the user approved it.
+When the user asks to prepare applications for several offers ("the top five"), take the best matches from `ranking.md` in order, or the closing-soon ones first if the user prefers. Do one offer at a time with the steps above, finish its iteration and log it, and ask before starting the next. At the end, list each folder with its offer and whether the user approved and sent it.
+
+## Keeping the log up to date
+
+Whenever the user mentions news about an application ("I sent the Acme one", "they called me for an interview on Tuesday", "rejected by Lumen"), update its entry in `log.json`: `status` (`prepared`, `applied`, `interview`, `offer`, `rejected`, `withdrawn`), `appliedAt` when it is sent (and ask what they declared, as in step 12), `nextStep` with any date, and a short dated line in `notes`. Run `npm run applications` after each change. For an interview, offer the interview-prep skill.

@@ -95,14 +95,14 @@ test("the ranking credits the source with a link", () => {
 test("the ranking lists the best matches, the others closing within 7 days, and why the rest scored lower", () => {
   const { ranked } = rankOffers(offers, evaluations);
   const markdown = rankingMarkdown(ranked, NOW);
-  const best = markdown.slice(markdown.indexOf("## Best matches"), markdown.indexOf("## Closing soon"));
-  const soon = markdown.slice(markdown.indexOf("## Closing soon"), markdown.indexOf("## The rest"));
-  const rest = markdown.slice(markdown.indexOf("## The rest"), markdown.indexOf("## Details"));
+  const best = markdown.slice(markdown.indexOf("Best matches"), markdown.indexOf("Closing soon"));
+  const soon = markdown.slice(markdown.indexOf("Closing soon"), markdown.indexOf("The rest"));
+  const rest = markdown.slice(markdown.indexOf("The rest"), markdown.indexOf("Details"));
   assert.match(best, /Lumen Parcel/);
   assert.doesNotMatch(best, /Norte Gaming/); // a skip never counts as a best match
-  assert.match(soon, /#3 Data Engineer, Kestrel Payments: closes 2026-11-02 \(6 days\), score 19 \(Skip\): 3 must-haves missing/);
+  assert.match(soon, /#3 Data Engineer, Kestrel Payments\*\*: closes 2026-11-02 \(6 days\), score 19 \(🔴 Skip\): 3 must-haves missing/);
   assert.doesNotMatch(soon, /Lumen Parcel|Faro Health/); // best matches are not repeated
-  assert.match(rest, /#4 BI Developer, Norte Gaming \(10, Skip\): deal-breaker: Gambling/);
+  assert.match(rest, /#4 BI Developer, Norte Gaming\*\* \(10, 🔴 Skip\): deal-breaker: Gambling/);
 });
 
 test("the shortlist has a readable copy with location, dates, and source link", () => {
