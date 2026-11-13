@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de uso · suitably</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Same palette as the landing (apps/web/src/app/globals.css in suitably). */
+  :root {
+    --paper: #f1f3ec;
+    --surface: #fbfcf8;
+    --ink: #18241d;
+    --ink-soft: #4e5b53;
+    --rule: #cbd3c6;
+    --forest: #24573f;
+    --on-forest: #f1f3ec;
+    --marker: #f3d54e;
+    --panel: #e2e8dc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #121814;
+      --surface: #18201b;
+      --ink: #e4eae2;
+      --ink-soft: #9eaba2;
+      --rule: #2c3730;
+      --forest: #86c7a2;
+      --on-forest: #121814;
+      --marker: #e5c94a;
+      --panel: #1a221d;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Schibsted Grotesk", "Segoe UI", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+  }
+  .brand { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; }
+  .tag { font-size: 0.85rem; color: var(--ink-soft); }
+
+  .hero { padding: 36px 0 28px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { color: var(--forest); font-weight: 600; margin: 0 0 10px; }
+  h1 {
+    font-size: clamp(2.3rem, 7vw, 3.6rem); line-height: 1.02;
+    letter-spacing: -0.02em; font-weight: 800; margin: 0 0 18px; max-width: 14ch;
+  }
+  h1 mark { background: var(--marker); color: #18241d; padding: 0 0.12em; }
+  .lead { color: var(--ink-soft); font-size: 1.12rem; max-width: 60ch; margin: 0; }
+
+  .route {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px; margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .route li {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 10px 12px; font-size: 0.88rem; line-height: 1.3;
+  }
+  .route b { display: block; color: var(--forest); font-size: 0.78rem; font-weight: 600; }
+
+  section { padding: 30px 0 6px; }
+  h2 {
+    display: flex; align-items: baseline; gap: 12px;
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 12px;
+  }
+  .num {
+    flex: none; display: inline-grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--forest); color: var(--on-forest);
+    font-size: 1rem; font-weight: 800; transform: translateY(-2px);
+  }
+  .together {
+    display: inline-block; font-size: 0.78rem; font-weight: 600;
+    background: var(--marker); color: #18241d; border-radius: 999px;
+    padding: 2px 10px; margin-left: 4px; vertical-align: middle; white-space: nowrap;
+  }
+  p, li { max-width: 66ch; }
+  ul, ol { padding-left: 1.3em; }
+  li { margin: 4px 0; }
+  a { color: var(--forest); text-underline-offset: 3px; }
+  strong { font-weight: 600; }
+
+  code {
+    font-family: "Geist Mono", Consolas, monospace; font-size: 0.86em;
+    background: var(--panel); border-radius: 5px; padding: 1px 5px;
+  }
+  .cmd {
+    font-family: "Geist Mono", Consolas, monospace; font-size: 0.8rem;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px 12px; margin: 10px 0; overflow-x: auto; white-space: nowrap;
+  }
+  .say {
+    display: inline-block; background: var(--forest); color: var(--on-forest);
+    border-radius: 8px 8px 8px 2px; padding: 2px 10px; font-weight: 600;
+  }
+  .note {
+    background: var(--panel); border-left: 4px solid var(--forest);
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0;
+  }
+  .note p { margin: 0; }
+  .note p + p { margin-top: 6px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 8px 0; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--rule); }
+  th { font-weight: 600; color: var(--ink-soft); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td:first-child { width: 42%; }
+  
+  footer.end {
+    margin: 36px 0 0; padding: 22px 0 40px; border-top: 1px solid var(--rule);
+    color: var(--ink-soft); font-size: 0.88rem;
+  }
+
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    td:first-child { width: auto; }
+    table, tbody, tr, td { display: block; }
+    thead { display: none; }
+    tr { border-bottom: 1px solid var(--rule); padding: 6px 0; }
+    td { border: 0; padding: 4px 0; }
+    td:first-child { font-weight: 600; }
+  }
+
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  @media print {
+    :root {
+      --paper: #ffffff; --surface: #f7f8f4; --ink: #18241d; --ink-soft: #4e5b53;
+      --rule: #cbd3c6; --forest: #24573f; --on-forest: #f1f3ec; --marker: #f3d54e; --panel: #eaeee5;
+    }
+    body { font-size: 10pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .wrap { max-width: none; padding: 0; }
+    header.top { padding: 0 0 8px; }
+    .hero { padding: 12px 0 18px; }
+    h1 { font-size: 28pt; }
+    section { padding: 14px 0 0; }
+    .note, .cmd, li { break-inside: avoid; }
+    h2 { font-size: 15pt; break-after: avoid; }
+    .num { width: 26px; height: 26px; font-size: 11pt; }
+    .cmd { font-size: 7.2pt; white-space: nowrap; overflow: visible; }
+    
+    tr { break-inside: avoid; }
+    a { text-decoration: none; }
+    footer.end { padding-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="brand">suitably</span>
+  <span class="tag">Guía de uso · versión local</span>
+</header>
+
+<div class="hero">
+  <p class="eyebrow">Para tu sesión y para después</p>
+  <h1>De cero a tu <mark>primera candidatura</mark></h1>
+  <p class="lead">En la sesión lo hacemos juntos; después te sirve para repetirlo por tu cuenta. Todo funciona en tu ordenador: tus documentos y tu perfil se quedan en la carpeta <code>me/</code> y solo se envían a Claude, el asistente que hace el trabajo, cuando se lo pides.</p>
+  <ol class="route">
+    <li><b>Pasos 1–5</b>Preparar el ordenador</li>
+    <li><b>Paso 6</b>Tu perfil</li>
+    <li><b>Pasos 7–8</b>Buscar y evaluar ofertas</li>
+    <li><b>Pasos 9–10</b>CV, carta y entrevistas</li>
+    <li><b>Paso 11</b>Tu opinión</li>
+  </ol>
+</div>
+
+<section>
+  <h2>Antes de empezar</h2>
+  <ul>
+    <li>Un ordenador con Windows 10/11 o macOS.</li>
+    <li>Tu CV en PDF o Word. Si tienes varias versiones, trae todas, incluidas las antiguas o más largas: a veces tienen detalles que la última quitó.</li>
+    <li>Opcional: cartas de presentación que hayas escrito, tu perfil de LinkedIn en PDF (en tu perfil, «Más» o «Recursos» y luego «Guardar en PDF»), certificados.</li>
+    <li>No necesitas cuenta de GitHub ni saber programar.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">1</span><span>Suscribirte a Claude Pro <span class="together">lo hacemos juntos</span></span></h2>
+  <p>Claude lee tus documentos, evalúa ofertas y escribe tus CV y cartas. Para usarlo desde esta herramienta necesitas una suscripción de pago. Con Pro basta para empezar.</p>
+  <ol>
+    <li>Entra en <a href="https://claude.ai">claude.ai</a> y crea una cuenta (con tu correo o con Google).</li>
+    <li>Ve a la página de planes y elige <strong>Pro</strong>. El precio actual está en <a href="https://claude.com/pricing">claude.com/pricing</a>. Es mensual y puedes cancelarlo cuando quieras desde la configuración de tu cuenta.</li>
+    <li>Paga con tarjeta. La suscripción es tuya, con Anthropic: nosotros no vemos tus datos de pago ni cobramos nada por ella.</li>
+  </ol>
+  <div class="note"><p>Pro tiene un límite de uso que se renueva cada pocas horas. Si un día te avisa de que lo has alcanzado, espera y sigue más tarde.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">2</span><span>Instalar Git y VS Code</span></h2>
+  <ul>
+    <li><strong>Git</strong> es lo que descarga el proyecto. Descárgalo de <a href="https://git-scm.com/downloads">git-scm.com</a> e instálalo dejando todas las opciones por defecto. En Mac, si al clonar (paso 4) te pide instalar las «herramientas de línea de comandos», acepta.</li>
+    <li><strong>VS Code</strong> es el programa donde trabajarás: a la izquierda ves tus carpetas y archivos, a la derecha hablas con Claude. Entra en <a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a> y elige tu sistema:
+      <ul>
+        <li><strong>Windows:</strong> descarga el instalador de Windows, ábrelo y deja las opciones por defecto.</li>
+        <li><strong>Mac:</strong> pulsa el botón de Mac. Se descarga un <code>.zip</code>: ábrelo y arrastra <strong>Visual Studio Code</strong> a la carpeta <strong>Aplicaciones</strong>. La primera vez que lo abras, el Mac te pedirá confirmar que quieres abrirlo.</li>
+      </ul></li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">3</span><span>La extensión de Claude y el login <span class="together">lo hacemos juntos</span></span></h2>
+  <ol>
+    <li>Abre VS Code. En la barra de la izquierda, pulsa el icono de <strong>Extensiones</strong> (cuatro cuadrados).</li>
+    <li>Busca <strong>Claude Code</strong>, comprueba que el autor es <strong>Anthropic</strong> y pulsa <strong>Instalar</strong>.</li>
+    <li>Abre Claude con su icono (arriba a la derecha del editor o en la barra lateral).</li>
+    <li>Cuando te pida entrar, elige <strong>la cuenta de Claude con suscripción</strong> (no la opción de «Console» o API).</li>
+    <li>Se abre el navegador: entra con la misma cuenta del paso 1 y pulsa <strong>Autorizar</strong>. Vuelve a VS Code.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">4</span><span>Descargar el proyecto</span></h2>
+  <ol>
+    <li>En VS Code pulsa <code>Ctrl+Shift+P</code> (Mac: <code>Cmd+Shift+P</code>), escribe <strong>Git: Clone</strong> y pulsa Intro.</li>
+    <li>Pega esta dirección y pulsa Intro:
+      <div class="cmd">https://github.com/javiergonzalvezort/suitably-local-test.git</div></li>
+    <li>Elige dónde guardarlo (por ejemplo, Documentos) y, cuando pregunte, pulsa <strong>Abrir</strong>.</li>
+    <li>Si pregunta si confías en los autores de la carpeta, responde que sí.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">5</span><span>Poner en marcha</span></h2>
+  <p>Abre Claude, escribe <span class="say">/setup</span> y pulsa Intro. Es el comando que pone en marcha la herramienta (también vale escribir «Empecemos»).</p>
+  <p>Claude comprueba tu ordenador e instala lo que falte: Node.js (para los programas del proyecto) y Typst (para los PDF). También activa una protección que impide subir por error tus datos personales a internet.</p>
+  <div class="note">
+    <p>Cada vez que quiera ejecutar algo en tu ordenador te pedirá permiso. Para estas instalaciones, acepta.</p>
+    <p><strong>Si ha instalado algo, cierra VS Code del todo y vuelve a abrirlo</strong>, para que reconozca los programas nuevos. Después vuelve a escribir <span class="say">/setup</span>: sigue donde lo dejó.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">6</span><span>Tu perfil</span></h2>
+  <ol>
+    <li>Arrastra tus documentos a la carpeta <code>me/documents/</code> en el panel de la izquierda de VS Code.</li>
+    <li>Dile a Claude que ya están.</li>
+    <li>Leerá tus documentos y te hará entre tres y cinco preguntas: qué puestos buscas, dónde, si te mudarías, salario, qué descartas. Puedes saltarte cualquiera.</li>
+    <li>Con eso redacta tu perfil. Revísalo: todo lo que digan tus CV y cartas sale de ahí.</li>
+  </ol>
+  <p>Tu perfil crece con el tiempo. En <code>me/profile/questions.md</code> hay preguntas más profundas (motivaciones, logros, historias que contar en una entrevista). Respóndelas cuando puedas, por ejemplo: <span class="say">Respondo a la pregunta 7: …</span> Cuanto más contestes, mejores serán los CV.</p>
+</section>
+
+<section>
+  <h2><span class="num">7</span><span>Buscar ofertas</span></h2>
+  <p>Escribe: <span class="say">Busca ofertas</span></p>
+  <p>Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará en cuatro portales:</p>
+  <ul>
+    <li><strong>Himalayas:</strong> portal de empleo 100% en remoto, con ofertas de todo el mundo y a menudo con el salario indicado.</li>
+    <li><strong>Remote OK:</strong> otro portal de trabajo en remoto, con mucho peso de tecnología, producto, diseño y marketing.</li>
+    <li><strong>Arbeitnow:</strong> portal europeo, sobre todo de Alemania, con muchas ofertas en inglés, remotas en Europa o con ayuda para mudarse.</li>
+    <li><strong>LinkedIn:</strong> la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.</li>
+  </ul>
+  <p>¿Has visto una oferta en otro sitio (InfoJobs, Indeed, la web de una empresa)? Pega el texto o el enlace en Claude y la guarda junto a las demás.</p>
+</section>
+
+<section>
+  <h2><span class="num">8</span><span>Ver cuáles encajan</span></h2>
+  <p>Escribe: <span class="say">Evalúa las ofertas</span></p>
+  <p>Compara cada requisito con tu perfil y te devuelve tres grupos: las que mejor encajan, otras que cierran pronto y el resto con el motivo por el que puntúan menos. El resultado queda en <code>me/offers/</code>.</p>
+</section>
+
+<section>
+  <h2><span class="num">9</span><span>CV y carta para una oferta</span></h2>
+  <p>Escribe, por ejemplo: <span class="say">Prepárame el CV y la carta para la oferta 3</span> o <span class="say">Prepara candidaturas para las cinco mejores</span></p>
+  <p>Escribe un CV y una carta adaptados a esa oferta, comprueba que no se ha inventado nada y te los enseña. Pídele cambios hasta que te gusten y genera los PDF, que puedes abrir desde el panel de la izquierda.</p>
+  <div class="note"><p><strong>Claude no envía nada.</strong> La candidatura la mandas tú, desde la web de la empresa o por correo.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">10</span><span>Llevar la cuenta y preparar entrevistas</span></h2>
+  <ul>
+    <li>Cuando envíes una: <span class="say">He enviado la de [empresa]</span> Te pregunta qué declaraste (salario, preaviso) y lo apunta en <code>me/applications/applications.xlsx</code>, que puedes abrir con Excel.</li>
+    <li>Si te llaman: <span class="say">Tengo entrevista con [empresa] el martes</span> Prepara preguntas probables con las historias de tu perfil que las responden, información pública de la empresa y preguntas para hacer tú. Con <span class="say">Vamos a practicar</span> te hace una entrevista de prueba.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">11</span><span>Cuéntanos qué tal</span></h2>
+  <p>Son dos encuestas cortas y anónimas. Nos ayudan a mejorar la herramienta y las sesiones.</p>
+  <ul>
+    <li><strong>Al terminar la sesión:</strong> <a href="https://docs.google.com/forms/d/1FhqAbEyvsL2Yv9Me4uARv8oPXZor-2eRhS97c_EAU8o/viewform">Tu opinión sobre la sesión</a></li>
+    <li><strong>Dentro de dos semanas:</strong> <a href="https://docs.google.com/forms/d/1k6i0RjOyCLbWjdF6I9oF0MWo8gPOwHN5wC644Fsm6O4/viewform">¿Qué tal te va con Suitably?</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Para volver otro día</h2>
+  <p>Abre VS Code (se abre en el proyecto) y abre Claude. Sigue donde lo dejaste. Para tener la última versión de la herramienta, pídele: <span class="say">Actualiza el proyecto</span> No toca tu carpeta <code>me/</code>.</p>
+</section>
+
+<section class="long">
+  <h2>Si algo falla</h2>
+  <table>
+    <thead><tr><th>Qué pasa</th><th>Qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td>Claude no encuentra <code>node</code>, <code>git</code> o <code>typst</code> justo después de instalarlos</td><td>Cierra VS Code del todo, ábrelo de nuevo y escribe <code>/setup</code>.</td></tr>
+      <tr><td>No sabes qué falta</td><td>Pídele a Claude: «Comprueba mi ordenador».</td></tr>
+      <tr><td>VS Code no deja clonar</td><td>Falta Git: instálalo (paso 2) y reinicia VS Code.</td></tr>
+      <tr><td>LinkedIn no devuelve ofertas (error 429)</td><td>LinkedIn limita las consultas. Espera unas horas y busca una sola vez por sesión. Las demás fuentes siguen funcionando.</td></tr>
+      <tr><td>Claude dice que has llegado al límite de uso</td><td>Es el límite de Pro. Espera a que se renueve (te dice cuándo) y sigue.</td></tr>
+      <tr><td>Nada de lo anterior funciona</td><td>Plan B, el instalador automático (abajo).</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <p><strong>Plan B: instalador automático.</strong> Instala todo y descarga el proyecto en tu carpeta personal. Windows, en PowerShell:</p>
+    <div class="cmd">irm https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.ps1 | iex</div>
+    <p>Mac, en Terminal:</p>
+    <div class="cmd">curl -fsSL https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.sh | bash</div>
+  </div>
+</section>
+
+<section>
+  <h2>Tus datos</h2>
+  <ul>
+    <li>Todo lo personal está en <code>me/</code>. No se sube a ningún sitio.</li>
+    <li>Claude (Anthropic) recibe lo que necesita para cada tarea, con tu suscripción y según sus condiciones.</li>
+    <li>Si algún día quieres copia de seguridad en GitHub, que sea en un repositorio <strong>privado</strong>, nunca público.</li>
+  </ul>
+</section>
+
+<footer class="end">suitably · versión local, código abierto (AGPL-3.0) · Sin relación con Anthropic, Himalayas, Remote OK, Arbeitnow ni LinkedIn.</footer>
+
+</div>
+</body>
+</html>

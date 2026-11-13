@@ -21,97 +21,106 @@ Claude es el asistente que lee tus documentos, evalúa ofertas y escribe tus CV 
 
 Pro tiene un límite de uso que se renueva cada pocas horas. Si un día te avisa de que lo has alcanzado, espera y sigue más tarde.
 
-## Paso 2. Instalar la herramienta
+## Paso 2. Instalar Git y VS Code
 
-Abre la terminal:
+- **Git** es lo que descarga el proyecto. Descárgalo de [git-scm.com](https://git-scm.com/downloads) e instálalo dejando todas las opciones por defecto. En Mac, si al clonar (paso 4) te pide instalar las "herramientas de línea de comandos", acepta.
+- **VS Code** es el programa donde trabajarás: a la izquierda ves tus carpetas y archivos, a la derecha hablas con Claude. Entra en [code.visualstudio.com/download](https://code.visualstudio.com/download) y elige tu sistema:
+  - **Windows:** descarga el instalador de Windows, ábrelo y deja las opciones por defecto.
+  - **Mac:** pulsa el botón de Mac. Se descarga un `.zip`: ábrelo y arrastra **Visual Studio Code** a la carpeta **Aplicaciones**. La primera vez que lo abras, el Mac te pedirá confirmar que quieres abrirlo.
 
-- **Windows:** pulsa la tecla de Windows, escribe `PowerShell` y ábrelo.
-- **Mac:** abre **Terminal** (Aplicaciones > Utilidades). En Mac necesitas antes [Homebrew](https://brew.sh): copia el comando que aparece en su página, pégalo en Terminal y sigue las instrucciones.
+## Paso 3. La extensión de Claude y el login (lo hacemos juntos)
 
-Copia y pega esta línea y pulsa Intro:
+1. Abre VS Code. En la barra de la izquierda, pulsa el icono de **Extensiones** (cuatro cuadrados).
+2. Busca **Claude Code**, comprueba que el autor es **Anthropic** y pulsa **Instalar**.
+3. Abre Claude con su icono (arriba a la derecha del editor o en la barra lateral).
+4. Cuando te pida entrar, elige **la cuenta de Claude con suscripción** (no la opción de "Console" o API).
+5. Se abre el navegador: entra con la misma cuenta del paso 1 y pulsa **Autorizar**. Vuelve a VS Code.
 
-**Windows**
+## Paso 4. Descargar el proyecto
 
-```powershell
-irm https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.ps1 | iex
-```
+1. En VS Code pulsa `Ctrl+Shift+P` (Mac: `Cmd+Shift+P`), escribe **Git: Clone** y pulsa Intro.
+2. Pega esta dirección y pulsa Intro:
 
-**Mac**
+   ```
+   https://github.com/javiergonzalvezort/suitably-local-test.git
+   ```
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.sh | bash
-```
+3. Elige dónde guardarlo (por ejemplo, Documentos) y, cuando pregunte, pulsa **Abrir**.
+4. Si pregunta si confías en los autores de la carpeta, responde que sí.
 
-El instalador pone lo necesario (Git, Node.js, Typst para los PDF y Claude Code), descarga el proyecto en tu carpeta personal (`suitably-local-test`) y al final comprueba que todo esté bien. Si Windows te pide permiso para instalar algo, acepta. Tarda unos minutos.
+## Paso 5. Poner en marcha
 
-Cuando termine, **cierra la terminal y abre una nueva**, para que reconozca los programas recién instalados.
+Abre Claude, escribe **`/setup`** y pulsa Intro. Es el comando que pone en marcha la herramienta (también vale escribir "Empecemos").
 
-## Paso 3. Entrar en Claude desde la terminal (lo hacemos juntos)
+Claude comprueba tu ordenador e instala lo que falte: Node.js (para los programas del proyecto) y Typst (para los PDF). También activa una protección que impide subir por error tus datos personales a internet.
 
-En la terminal nueva:
+- Cada vez que quiera ejecutar algo en tu ordenador te pedirá permiso. Para estas instalaciones, acepta.
+- **Si ha instalado algo, cierra VS Code del todo y vuelve a abrirlo**, para que reconozca los programas nuevos. Después vuelve a escribir **`/setup`**: sigue donde lo dejó.
 
-```bash
-cd suitably-local-test
-claude
-```
+Cuando todo esté listo, pasa directamente a crear tu perfil.
 
-La primera vez, Claude Code te hace unas preguntas:
+## Paso 6. Tu perfil
 
-1. Elige un tema de colores (el que quieras).
-2. Cuando te pregunte cómo entrar, elige **la cuenta de Claude con suscripción** (no la opción de "Console" o API).
-3. Se abre el navegador: entra con la misma cuenta del paso 1 y pulsa **Autorizar**. Si el navegador no se abre solo, copia el enlace que aparece en la terminal, ábrelo, y pega en la terminal el código que te dé la página.
-4. Si te pregunta si confías en los archivos de esta carpeta, responde que sí.
-
-Ya estás dentro. A partir de aquí le hablas en español, con frases normales.
-
-Para salir, escribe `/exit`. Para volver otro día: abre la terminal, `cd suitably-local-test` y `claude`.
-
-## Paso 4. Tu perfil
-
-1. Copia tus documentos en la carpeta `suitably-local-test/me/documents/` (con el explorador de archivos o el Finder, como cualquier carpeta).
-2. En Claude escribe: **"Empecemos"**.
+1. Arrastra tus documentos a la carpeta `me/documents/` en el panel de la izquierda de VS Code.
+2. Dile a Claude que ya están.
 3. Leerá tus documentos y te hará entre tres y cinco preguntas: qué puestos buscas, dónde, si te mudarías, salario, qué descartas. Puedes saltarte cualquiera.
-4. Con eso redacta tu perfil. Revísalo: todo lo que diga tus CV y cartas sale de ahí.
+4. Con eso redacta tu perfil. Revísalo: todo lo que digan tus CV y cartas sale de ahí.
 
 Tu perfil crece con el tiempo. En `me/profile/questions.md` hay preguntas más profundas (motivaciones, logros, historias que contar en una entrevista). Respóndelas cuando puedas, por ejemplo: "Respondo a la pregunta 7: ...". Cuanto más contestes, mejores serán los CV.
 
-## Paso 5. Buscar ofertas
+## Paso 7. Buscar ofertas
 
 Escribe: **"Busca ofertas"**.
 
-Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará en Himalayas, Remote OK, Arbeitnow y LinkedIn.
+Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará en cuatro portales:
 
-También puedes pegar una oferta que hayas visto tú (el texto o el enlace) y la guarda.
+- **Himalayas:** portal de empleo 100% en remoto, con ofertas de todo el mundo y a menudo con el salario indicado.
+- **Remote OK:** otro portal de trabajo en remoto, con mucho peso de tecnología, producto, diseño y marketing.
+- **Arbeitnow:** portal europeo, sobre todo de Alemania, con muchas ofertas en inglés, remotas en Europa o con ayuda para mudarse.
+- **LinkedIn:** la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.
 
-## Paso 6. Ver cuáles encajan
+¿Has visto una oferta en otro sitio (InfoJobs, Indeed, la web de una empresa)? Pega el texto o el enlace en Claude y la guarda junto a las demás.
+
+## Paso 8. Ver cuáles encajan
 
 Escribe: **"Evalúa las ofertas"**.
 
 Compara cada requisito con tu perfil y te devuelve tres grupos: las que mejor encajan, otras que cierran pronto y el resto con el motivo por el que puntúan menos. El resultado queda en `me/offers/`.
 
-## Paso 7. CV y carta para una oferta
+## Paso 9. CV y carta para una oferta
 
 Escribe, por ejemplo: **"Prepárame el CV y la carta para la oferta 3"** o **"Prepara candidaturas para las cinco mejores"**.
 
-Escribe un CV y una carta adaptados a esa oferta, comprueba que no se ha inventado nada y te los enseña. Pídele cambios hasta que te gusten y genera los PDF.
+Escribe un CV y una carta adaptados a esa oferta, comprueba que no se ha inventado nada y te los enseña. Pídele cambios hasta que te gusten y genera los PDF, que puedes abrir desde el panel de la izquierda.
 
-**Él no envía nada.** La candidatura la mandas tú, desde la web de la empresa o por correo.
+**Claude no envía nada.** La candidatura la mandas tú, desde la web de la empresa o por correo.
 
-## Paso 8. Llevar la cuenta y preparar entrevistas
+## Paso 10. Llevar la cuenta y preparar entrevistas
 
 - Cuando envíes una: **"He enviado la de [empresa]"**. Te pregunta qué declaraste (salario, preaviso) y lo apunta en `me/applications/applications.xlsx`, que puedes abrir con Excel.
 - Si te llaman: **"Tengo entrevista con [empresa] el martes"**. Prepara preguntas probables con las historias de tu perfil que las responden, información pública de la empresa y preguntas para hacer tú. Con **"Vamos a practicar"** te hace una entrevista de prueba.
+
+## Paso 11. Cuéntanos qué tal
+
+Son dos encuestas cortas y anónimas. Nos ayudan a mejorar la herramienta y las sesiones.
+
+- **Al terminar la sesión:** [Tu opinión sobre la sesión](https://docs.google.com/forms/d/1FhqAbEyvsL2Yv9Me4uARv8oPXZor-2eRhS97c_EAU8o/viewform)
+- **Dentro de dos semanas:** [¿Qué tal te va con Suitably?](https://docs.google.com/forms/d/1k6i0RjOyCLbWjdF6I9oF0MWo8gPOwHN5wC644Fsm6O4/viewform)
+
+## Para volver otro día
+
+Abre VS Code (se abre en el proyecto) y abre Claude. Sigue donde lo dejaste.
 
 ## Si algo falla
 
 | Qué pasa | Qué hacer |
 |---|---|
-| La terminal dice que no encuentra `claude`, `node` o `git` | Cierra la terminal, abre una nueva y vuelve a probar. |
-| No sabes qué falta | En la carpeta del proyecto, escribe `npm run doctor`. Te dice qué falta y cómo arreglarlo. |
-| No se generan los PDF (falta Typst) | Dentro de Claude, en Windows: `! winget install --id Typst.Typst -e`. En Mac: `! brew install typst`. Después sal con `/exit` y vuelve a entrar con `claude`. |
+| Claude dice que no encuentra `node`, `git` o `typst` justo después de instalarlos | Cierra VS Code del todo, ábrelo de nuevo y escribe `/setup`. |
+| No sabes qué falta | Pídele a Claude: "Comprueba mi ordenador". |
+| VS Code no deja clonar | Falta Git: instálalo (paso 2) y reinicia VS Code. |
 | LinkedIn no devuelve ofertas (error 429) | LinkedIn limita las consultas. Espera unas horas y busca una sola vez por sesión. Las demás fuentes siguen funcionando. |
 | Claude dice que has llegado al límite de uso | Es el límite de Pro. Espera a que se renueve (te dice cuándo) y sigue. |
-| Windows dice que `winget` no está disponible | Instala "Instalador de aplicación" (App Installer) desde la Microsoft Store y repite el paso 2. |
+| Nada de lo anterior funciona | Plan B: el instalador automático. Windows, en PowerShell: `irm https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.ps1 \| iex`. Mac, en Terminal: `curl -fsSL https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.sh \| bash`. |
 
 ## Tus datos
 
@@ -121,4 +130,4 @@ Escribe un CV y una carta adaptados a esa oferta, comprueba que no se ha inventa
 
 ## Para actualizar la herramienta
 
-Repite la línea del paso 2. Descarga la versión nueva sin tocar tu carpeta `me/`.
+Pídele a Claude: **"Actualiza el proyecto"**. Descarga la versión nueva sin tocar tu carpeta `me/`.
