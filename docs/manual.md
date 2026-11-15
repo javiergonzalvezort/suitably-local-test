@@ -104,7 +104,7 @@ Cuando todo esté listo, pasa directamente a crear tu perfil.
 2. Dile a Claude que ya están.
 3. Leerá tus documentos y te hará entre tres y cinco preguntas: qué puestos buscas, dónde, si te mudarías, salario, qué descartas. Puedes saltarte cualquiera.
 4. Con eso redacta tu perfil. Revísalo: todo lo que digan tus CV y cartas sale de ahí.
-5. Antes de la primera búsqueda te dirá dónde va a buscar y te ofrecerá portales complementarios según tu perfil (por ejemplo, portales de trabajo en remoto si buscas teletrabajo o en inglés). Elige los que quieras, o ninguno. Puedes cambiarlo cuando quieras: "Busca también en Himalayas".
+5. Antes de la primera búsqueda te propondrá tres o cuatro fuentes complementarias pensadas para ti (la bolsa de empleo de tu colegio profesional, un portal de tu sector, la web de empleo de una empresa grande de tu zona). Dile cuáles quieres; comprobará que se pueden consultar y te confirmará las que añade. Puedes añadir más cuando quieras: "Busca también en la bolsa de empleo de mi colegio".
 
 Tu perfil crece con el tiempo. En `me/profile/questions.md` hay preguntas más profundas (motivaciones, logros, historias que contar en una entrevista). Respóndelas cuando puedas, por ejemplo: "Respondo a la pregunta 7: ...". Cuanto más contestes, mejores serán los CV.
 
@@ -118,11 +118,7 @@ Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y b
 - **InfoJobs:** el portal de empleo generalista más usado en España, con ofertas de todos los sectores y provincias.
 - **Indeed:** otro gran portal generalista. De cada oferta solo trae un extracto corto; si una te interesa, ábrela y pega el texto completo en Claude para evaluarla bien.
 
-Y en los complementarios que hayas elegido:
-
-- **Himalayas:** portal de empleo 100% en remoto, con ofertas de todo el mundo y a menudo con el salario indicado.
-- **Remote OK:** otro portal de trabajo en remoto, con mucho peso de tecnología, producto, diseño y marketing.
-- **Arbeitnow:** portal europeo, sobre todo de Alemania, con muchas ofertas en inglés, remotas en Europa o con ayuda para mudarse.
+Y en las fuentes complementarias que hayas elegido. De muchas solo trae un extracto, como Indeed.
 
 ¿Has visto una oferta en otro sitio (un portal de tu sector, la web de una empresa)? Pega el texto en Claude y la guarda junto a las demás.
 

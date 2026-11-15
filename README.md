@@ -9,7 +9,7 @@ A job search helper that runs on your own computer, inside the coding agent you 
 | Step | What happens | Who does the work |
 |---|---|---|
 | Setup | Reads your documents (CVs, past letters, LinkedIn PDF), asks three to five questions, and drafts your profile | The agent asks; you answer and check |
-| Find offers | Searches LinkedIn, InfoJobs, and Indeed (their public pages, without login), plus the complementary sources you choose: Himalayas, Remote OK, and Arbeitnow (public APIs for remote and international jobs) | A script (rate-limited, low volume) |
+| Find offers | Searches LinkedIn, InfoJobs, and Indeed (their public pages, without login), plus complementary sources chosen for you (your professional association's board, a sector board, a careers page), each one checked before it is added | A script (rate-limited, low volume) |
 | Rank | Classifies each requirement against your profile, then lists the best matches, the ones closing soon, and why the rest scored lower | The agent classifies; a script computes the score |
 | Tailor | Writes a CV and a cover letter per offer, checks for invented facts, and revises them with you | The agent writes; a script checks and renders the PDF |
 | Track | Logs each application with what you sent and declared (salary expectation, notice period) in an Excel file | The agent asks; a script writes `applications.xlsx` |
@@ -79,7 +79,7 @@ Read [SECURITY.md](SECURITY.md). In short: everything personal stays in `me/`, w
 
 ## Job sources
 
-The sources are listed in [config/sources.json](config/sources.json) with their terms and review date; see [docs/sources.md](docs/sources.md). Himalayas, Remote OK, and Arbeitnow offer public APIs for this. **LinkedIn, InfoJobs, and Indeed do not.** Their sources read public pages without logging in, at low volume, for your own search: LinkedIn's terms forbid automated access, InfoJobs' terms could not be read by a script, and Indeed allows personal job search but only its search pages to crawlers (so Indeed offers come with a short extract). You use them at your own risk, and you can turn each one off in `config/sources.json`. You are responsible for complying with each site's terms.
+The sources are listed in [config/sources.json](config/sources.json) with their terms and review date; see [docs/sources.md](docs/sources.md). **None of the default sources offers a public API for this.** The LinkedIn, InfoJobs, and Indeed sources read public pages without logging in, at low volume, for your own search: LinkedIn's terms forbid automated access, InfoJobs' terms could not be read by a script, and Indeed allows personal job search but only its search pages to crawlers (so Indeed offers come with a short extract). You use them at your own risk, and you can turn each one off in `config/sources.json`. Complementary sources are checked for robots.txt, logins, and captchas before they are added, but their terms are not read. You are responsible for complying with each site's terms.
 
 ## Licence
 
@@ -91,4 +91,4 @@ Parts are adapted from [ai-job-search](https://github.com/ai-job-search-dev/ai-j
 
 Issues are welcome; pull requests are not accepted yet ([CONTRIBUTING.md](CONTRIBUTING.md)).
 
-Not affiliated with Anthropic, Himalayas, Remote OK, Arbeitnow, LinkedIn, InfoJobs, or Indeed. Product names are used only to describe compatibility.
+Not affiliated with Anthropic, LinkedIn, InfoJobs, Indeed, or any other job site. Product names are used only to describe compatibility.

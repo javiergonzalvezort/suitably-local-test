@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { blocksAiAgents, crawlDelayMs, isAllowed, parseRobots } from "../scripts/lib/robots.ts";
 
-// Shaped like the real Himalayas robots.txt seen on 2026-10-27 (shortened).
-const HIMALAYAS_LIKE = `
+// Shaped like a real job board's robots.txt seen on 2026-10-27 (shortened).
+const JOB_BOARD_LIKE = `
 User-Agent: *
 Allow: /
 Disallow: /apply
@@ -13,7 +13,7 @@ Sitemap: https://example.com/sitemap.xml
 `;
 
 test("follows the most specific rule, including wildcards", () => {
-  const robots = parseRobots(HIMALAYAS_LIKE);
+  const robots = parseRobots(JOB_BOARD_LIKE);
   assert.equal(isAllowed(robots, "my-tool", "/jobs/api/search?q=data&sort=recent"), true);
   assert.equal(isAllowed(robots, "my-tool", "/jobs/api/search?q=data&sort=recent&page=2"), false);
   assert.equal(isAllowed(robots, "my-tool", "/jobs/api/search?page=2"), false);

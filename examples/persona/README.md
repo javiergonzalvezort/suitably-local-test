@@ -8,7 +8,7 @@ The folder has the same layout as your private `me/` workspace, so it shows what
 |---|---|---|
 | `profile/*.md`, `preferences.md` | the setup skill | Alba's profile and what she is looking for |
 | `search.json` | the setup skill | search terms and filters for the scripts |
-| `offers/fetched.json` | `find-offers` script | eight invented offers (normally fetched from Himalayas and Remote OK) |
+| `offers/fetched.json` | `find-offers` script | eight invented offers (normally fetched from LinkedIn, InfoJobs, and Indeed) |
 | `offers/evaluations.json` | the rank skill | the agent's classification of each shortlisted offer |
 | `applications/lumen-parcel-analytics-engineer/` | the tailor skill | a tailored CV and cover letter for the best offer |
 
