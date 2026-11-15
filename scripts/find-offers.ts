@@ -1,5 +1,7 @@
-// Fetches offers from the enabled sources in config/sources.json, using the
-// search terms in your search.json, and writes them to offers/fetched.json.
+// Fetches offers from the job sources, using the search terms in your
+// search.json, and writes them to offers/fetched.json. The sources are the
+// default ones in config/sources.json plus the complementary ones listed in
+// "extraSources" in your search.json.
 // Offers you pasted by hand (offers/pasted.json) are merged in.
 //
 // Usage: npm run find-offers [-- --workspace <folder>] [-- --source linkedin] [-- --dry-run]
@@ -9,13 +11,15 @@ import path from "node:path";
 import { parseArgs, stringOption } from "./lib/args.ts";
 import { PoliteClient, SourceError } from "./lib/http.ts";
 import { isMain } from "./lib/main.ts";
-import { loadSearchSettings, loadSources } from "./lib/settings.ts";
+import { activeSources, loadSearchSettings, loadSources } from "./lib/settings.ts";
 import type { SearchSettings, SourceConfig } from "./lib/settings.ts";
 import { normalise } from "./lib/text.ts";
 import type { Offer } from "./lib/types.ts";
 import { readJson, REPO_ROOT, workspacePaths, writeJson } from "./lib/workspace.ts";
 import { ARBEITNOW_URL, normaliseArbeitnow } from "./sources/arbeitnow.ts";
 import { himalayasSearchUrl, normaliseHimalayas } from "./sources/himalayas.ts";
+import { indeedSearchUrls, normaliseIndeed, parseIndeedPage } from "./sources/indeed.ts";
+import { infojobsSearchUrls, normaliseInfojobs, parseInfojobsPage } from "./sources/infojobs.ts";
 import { fetchLinkedIn, linkedinSearchUrls } from "./sources/linkedin.ts";
 import { normaliseRemoteOk, REMOTEOK_URL } from "./sources/remoteok.ts";
 
@@ -25,6 +29,25 @@ export function plannedRequests(sourceId: string, source: SourceConfig, search: 
   if (sourceId === "remoteok") return [REMOTEOK_URL];
   if (sourceId === "arbeitnow") return [ARBEITNOW_URL];
   if (sourceId === "linkedin") return linkedinSearchUrls(search, source.maxQueries);
+  if (sourceId === "infojobs") return infojobsSearchUrls(search, source.maxQueries);
+  if (sourceId === "indeed") return indeedSearchUrls(search, source.maxQueries);
+  return [];
+}
+
+// Sources that answer an HTML search page with the offers embedded in it.
+const HTML_SOURCES = new Set(["infojobs", "indeed"]);
+
+// The offers in one HTML search page, or null if it has no search results
+// (the site answered something else, such as a captcha page).
+function normaliseHtmlFor(sourceId: string, html: string, aiBlocked: boolean): Offer[] | null {
+  if (sourceId === "infojobs") {
+    const offers = parseInfojobsPage(html);
+    return offers && normaliseInfojobs(offers, aiBlocked);
+  }
+  if (sourceId === "indeed") {
+    const cards = parseIndeedPage(html);
+    return cards && normaliseIndeed(cards, aiBlocked);
+  }
   return [];
 }
 
@@ -59,7 +82,11 @@ async function main() {
     process.exit(1);
   }
   const only = stringOption(args, "source");
-  const sources = Object.entries(loadSources()).filter(([id, s]) => s.enabled && (!only || id === only));
+  const sources = activeSources(loadSources(), search, only);
+  if (sources.length === 0) {
+    console.error(only ? `No enabled source called "${only}" in config/sources.json.` : "No enabled sources in config/sources.json.");
+    process.exit(1);
+  }
   const client = new PoliteClient({ cacheDir: paths.cacheDir });
 
   const all: Offer[] = [];
@@ -78,10 +105,24 @@ async function main() {
     let cachedCount = 0;
     for (const url of urls) {
       try {
-        const result = await client.getJson(id, url, source);
-        const offers = normaliseFor(id, result.data, result.aiBlocked);
+        let offers: Offer[];
+        let fromCache: boolean;
+        if (HTML_SOURCES.has(id)) {
+          const result = await client.getText(id, url, source);
+          const found = normaliseHtmlFor(id, result.data, result.aiBlocked);
+          if (found === null) {
+            console.warn(`${source.name}: the answer had no search results (the site may be asking for a captcha); stopped for this run`);
+            break;
+          }
+          offers = found;
+          fromCache = result.fromCache;
+        } else {
+          const result = await client.getJson(id, url, source);
+          offers = normaliseFor(id, result.data, result.aiBlocked);
+          fromCache = result.fromCache;
+        }
         count += offers.length;
-        if (result.fromCache) cachedCount++;
+        if (fromCache) cachedCount++;
         all.push(...offers);
       } catch (error) {
         if (error instanceof SourceError) {

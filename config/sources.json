@@ -1,9 +1,58 @@
 {
-  "_read_me": "Allowlist of job sources. Safe defaults: only change the limits if you have read the source's terms and accept the responsibility. Never add sites that need a login or whose terms forbid automated access. See docs/sources.md.",
+  "_read_me": "Allowlist of job sources. \"default\": true sources are searched for every user; the others are complementary and only searched when the user lists them in \"extraSources\" in their search.json (the setup skill offers them). \"enabled\": false turns a source off for everyone. Safe defaults: only change the limits if you have read the source's terms and accept the responsibility. Never add sites that need a login. See docs/sources.md.",
   "sources": {
+    "linkedin": {
+      "name": "LinkedIn",
+      "enabled": true,
+      "default": true,
+      "kind": "public job pages without login (jobs-guest), as in ai-job-search",
+      "apiDocs": "none: not an official API",
+      "termsUrl": "https://www.linkedin.com/legal/user-agreement",
+      "termsReviewed": "2026-10-28",
+      "robotsChecked": "2026-10-28",
+      "honourRobots": false,
+      "duties": "LinkedIn's User Agreement forbids automated access and its robots.txt disallows these pages: use it only for your own search, at low volume, at your own risk. Never log in, never share or republish the jobs. Set enabled to false to turn it off.",
+      "minDelayMs": 3000,
+      "dailyRequestCap": 60,
+      "cacheHours": 6,
+      "maxQueries": 3,
+      "maxDetails": 15
+    },
+    "infojobs": {
+      "name": "InfoJobs",
+      "enabled": true,
+      "default": true,
+      "kind": "public search page without login (offers embedded as JSON in the page)",
+      "apiDocs": "https://developer.infojobs.net (official API, needs an app registered with an InfoJobs account; not used)",
+      "termsUrl": "https://www.infojobs.net/lex.xhtml",
+      "termsReviewed": "not readable on 2026-11-15: the legal page refuses automated access",
+      "robotsChecked": "2026-11-15",
+      "duties": "robots.txt allows the search page and is followed. The terms could not be read and job boards usually forbid automated extraction: use it only for your own search, at low volume, at your own risk. Never log in, never share or republish the offers. Set enabled to false to turn it off.",
+      "minDelayMs": 3000,
+      "dailyRequestCap": 30,
+      "cacheHours": 6,
+      "maxQueries": 3
+    },
+    "indeed": {
+      "name": "Indeed",
+      "enabled": true,
+      "default": true,
+      "kind": "public search page without login (job cards embedded as JSON; job pages are not opened)",
+      "apiDocs": "none: Indeed has no public jobs API",
+      "termsUrl": "https://es.indeed.com/legal",
+      "termsReviewed": "2026-11-15 (terms dated 1 April 2026)",
+      "robotsChecked": "2026-11-15",
+      "duties": "Personal, non-commercial job search only. robots.txt allows search pages and disallows job pages (/viewjob), so only the short extract on the search page is kept. Never log in, never apply automatically, never share or republish the offers. Set enabled to false to turn it off.",
+      "minDelayMs": 3000,
+      "dailyRequestCap": 30,
+      "cacheHours": 6,
+      "maxQueries": 3
+    },
     "himalayas": {
       "name": "Himalayas",
       "enabled": true,
+      "default": false,
+      "goodFor": "Remote jobs open to candidates in Spain or Europe, often with the salary stated; strong in tech, product, design, marketing and operations.",
       "kind": "official public JSON API",
       "apiDocs": "https://himalayas.app/api",
       "termsUrl": "https://himalayas.app/terms",
@@ -18,6 +67,8 @@
     "remoteok": {
       "name": "Remote OK",
       "enabled": true,
+      "default": false,
+      "goodFor": "Remote jobs worldwide, mostly in English; strong in software, product, design and marketing.",
       "kind": "official public JSON API (latest jobs, one request)",
       "apiDocs": "https://remoteok.com/api",
       "termsUrl": "https://remoteok.com/legal",
@@ -32,6 +83,8 @@
     "arbeitnow": {
       "name": "Arbeitnow",
       "enabled": true,
+      "default": false,
+      "goodFor": "Jobs in Germany and remote in Europe, many in English, some with relocation help; for people open to moving or working in English.",
       "kind": "free public JSON API (newest 300 jobs, one request)",
       "apiDocs": "https://www.arbeitnow.com/blog/job-board-api",
       "termsUrl": "https://www.arbeitnow.com/terms",
@@ -42,22 +95,6 @@
       "dailyRequestCap": 4,
       "cacheHours": 6,
       "maxQueries": 1
-    },
-    "linkedin": {
-      "name": "LinkedIn",
-      "enabled": true,
-      "kind": "public job pages without login (jobs-guest), as in ai-job-search",
-      "apiDocs": "none: not an official API",
-      "termsUrl": "https://www.linkedin.com/legal/user-agreement",
-      "termsReviewed": "2026-10-28",
-      "robotsChecked": "2026-10-28",
-      "honourRobots": false,
-      "duties": "LinkedIn's User Agreement forbids automated access and its robots.txt disallows these pages: use it only for your own search, at low volume, at your own risk. Never log in, never share or republish the jobs. Set enabled to false to turn it off.",
-      "minDelayMs": 3000,
-      "dailyRequestCap": 60,
-      "cacheHours": 6,
-      "maxQueries": 3,
-      "maxDetails": 15
     }
   }
 }

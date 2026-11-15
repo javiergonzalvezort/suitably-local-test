@@ -1,11 +1,11 @@
 ---
 name: setup
-description: Gets the project started and builds the user's profile from their documents and a few questions. Use when the user asks to initialise, start, or get started ("inicializa", "empecemos"), to set up, create, or update their profile, to import their CV, or when `me/profile/about.md` still has its TODO line.
+description: Gets the project started, builds the user's profile from their documents and a few questions, and chooses where to search (default and complementary job sources). Use when the user asks to initialise, start, or get started ("inicializa", "empecemos"), to set up, create, or update their profile, to import their CV, to add or remove job sources ("busca también en..."), or when `me/profile/about.md` still has its TODO line.
 ---
 
 # Setup: start, documents, first questions, profile
 
-You get the user from a fresh clone to a profile and a search they can run. The profile is the only source of facts for rankings, CVs, and cover letters, so it must be true. Keep the start short: documents, a few questions, a profile drafted from the documents. Depth comes later, from `profile/questions.md`.
+You get the user from a fresh clone to a profile and a search they can run. The profile is the only source of facts for rankings, CVs, and cover letters, so it must be true. Keep the start short: documents, a few questions, a profile drafted from the documents, and where to search. Depth comes later, from `profile/questions.md`.
 
 ## Rules
 
@@ -29,12 +29,12 @@ You get the user from a fresh clone to a profile and a search they can run. The 
    5. **Rule-outs**: anything that rules an offer out whatever else it has (a sector, a contract type, travel, a language), and what matters most.
 
    Write the answers to `preferences.md` (roles, deal-breakers, location and remote, salary) and fill `search.json`, explaining each field in one line:
-   - `queries`: two to five search terms from the roles, in English for Himalayas, Remote OK, and Arbeitnow; LinkedIn also understands the user's language.
+   - `queries`: two to five search terms from the roles, as job titles are written in Spain (usually Spanish, sometimes English: "fisioterapeuta", "data analyst"). LinkedIn, InfoJobs, and Indeed search with them. If the user later adds Himalayas, Remote OK, or Arbeitnow (step 5), add the English form too.
    - `titleKeywords`: words that must appear in a title or tag (synonyms, English and Spanish forms).
    - `excludeKeywords`: title words that rule an offer out ("intern", "principal", "sales").
    - `allowedLocations`: where the user may be hired from, as the sources write it ("Worldwide", "Europe", "EMEA", "Spain"); add the relocation places.
-   - `searchLocations`: the places LinkedIn searches ("Spain", "Madrid, Spain", or "European Union").
-   - `workplace`: "remote", "hybrid", "onsite", or "" for any (LinkedIn only).
+   - `searchLocations`: the places LinkedIn, InfoJobs, and Indeed search: a city or province ("Madrid, Spain", "Valencia, Spain"), or "Spain" for the whole country. Each place costs one request per term and source, so keep it to one or two.
+   - `workplace`: "remote", "hybrid", "onsite", or "" for any (LinkedIn and InfoJobs).
    - Keep `maxAgeDays` and `shortlistSize` unless the user wants otherwise.
 
 4. **Draft the profile from the documents.** Fill `profile/about.md`, `experience.md` (`## Title | Company | City | YYYY-MM to YYYY-MM`, newest first, company names and titles exactly as the user wants them on a CV), `education.md`, and `skills.md` (strong, working knowledge, learning now). Show a short summary of all of it in one message and ask for corrections; do not walk through it topic by topic. Where documents disagree (two dates for one job), ask which is right.
@@ -42,10 +42,18 @@ You get the user from a fresh clone to a profile and a search they can run. The 
    - **Work authorisation**: where they can work without sponsorship, and permit limits. This feeds the eligibility gate.
    - **Languages with levels** (native, C2 to A1; "fluent" is not a level). This feeds the language gate.
 
-5. **The context layer.** Tell the user about `profile/questions.md`: about fifteen deeper questions (why they are looking, achievements with real numbers, stories, how they want to sound). None is needed now. The more they answer, as they search and apply, the more specific and true every CV and cover letter gets, because the tailor skill writes from these answers. If the documents already answer one (a cover letter that tells a story), offer to copy it in with their yes. Put stories they tell you in `profile/stories.md` too.
+5. **Where to search.** Before the first search, tell the user in two lines that every search uses LinkedIn, InfoJobs, and Indeed, and that Indeed only gives a short extract of each offer (the full text is at its link). Then offer the complementary sources, so the search fits their profile:
+   - Read `config/sources.json`: the complementary sources are those with `"default": false` and `"enabled": true`. Each has a `goodFor` line.
+   - From the documents and the answers to step 3, recommend the ones that fit, each with one line on why ("You want remote work in English: Himalayas has remote jobs open to Spain, often with the salary"). Mention the others in one line, so the user can pick them too. If none fits (an on-site job in one city), say so and recommend none.
+   - Ask which to add; "none" is a fine answer. Write their ids to `extraSources` in `search.json` (for example `["himalayas", "remoteok"]`), and add English forms to `queries` if an English-language source was chosen.
+   - Tell them that boards not in the list (a sector or professional association board, a company's careers page, another portal) work by pasting: they open the offer and paste its text in the chat.
 
-6. **Finish.** Remove the TODO line from `profile/about.md`. Suggest the next step: "Find offers".
+   Never add a site to `config/sources.json` yourself to satisfy a request: say it is not supported and offer pasting.
+
+6. **The context layer.** Tell the user about `profile/questions.md`: about fifteen deeper questions (why they are looking, achievements with real numbers, stories, how they want to sound). None is needed now. The more they answer, as they search and apply, the more specific and true every CV and cover letter gets, because the tailor skill writes from these answers. If the documents already answer one (a cover letter that tells a story), offer to copy it in with their yes. Put stories they tell you in `profile/stories.md` too.
+
+7. **Finish.** Remove the TODO line from `profile/about.md`. Suggest the next step: "Find offers".
 
 ## Updating an existing profile
 
-If the profile is already filled in, ask what changed (new document, new role, new preferences) and edit only those sections. When the user answers a question from `profile/questions.md` in the chat, write the answer under it, and update `preferences.md` or `search.json` if the answer changes the search.
+If the profile is already filled in, ask what changed (new document, new role, new preferences) and edit only those sections. When the user answers a question from `profile/questions.md` in the chat, write the answer under it, and update `preferences.md` or `search.json` if the answer changes the search. To add or remove complementary sources, repeat step 5 and update `extraSources`.

@@ -25,5 +25,9 @@
   ],
   "workplace": "",
   "maxAgeDays": 30,
-  "shortlistSize": 20
+  "shortlistSize": 20,
+  "extraSources": [
+    "himalayas",
+    "remoteok"
+  ]
 }

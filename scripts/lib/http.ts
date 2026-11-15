@@ -94,6 +94,10 @@ export class PoliteClient {
     if (response.status === 429) {
       throw new SourceError(`${target.host} asked us to slow down (HTTP 429). Try again later.`);
     }
+    // A bot check (captcha) instead of the page. The scripts never try to get past one.
+    if (response.headers.get("cf-mitigated") === "challenge") {
+      throw new SourceError(`${target.host} answered with a bot check (captcha), which the scripts do not get past. Try again later, or paste offers from this site.`);
+    }
     if (!response.ok) throw new SourceError(`${target.host} answered HTTP ${response.status}`);
     const data = await read(response);
     this.writeCache(url, { data, aiBlocked });

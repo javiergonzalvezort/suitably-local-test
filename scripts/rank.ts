@@ -78,7 +78,9 @@ export function buildShortlist(
       ...rest,
       description: offer.aiBlocked
         ? "(text withheld: this site opts out of AI agents; open the link to read it)"
-        : truncate(offer.description, MAX_DESCRIPTION_CHARS),
+        : offer.snippetOnly
+          ? `(only the short extract from the search page; open the link for the full offer) ${offer.description}`
+          : truncate(offer.description, MAX_DESCRIPTION_CHARS),
       keywordHits,
       alreadyEvaluated: evaluatedIds.has(offer.id),
     });

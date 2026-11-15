@@ -104,6 +104,7 @@ Cuando todo esté listo, pasa directamente a crear tu perfil.
 2. Dile a Claude que ya están.
 3. Leerá tus documentos y te hará entre tres y cinco preguntas: qué puestos buscas, dónde, si te mudarías, salario, qué descartas. Puedes saltarte cualquiera.
 4. Con eso redacta tu perfil. Revísalo: todo lo que digan tus CV y cartas sale de ahí.
+5. Antes de la primera búsqueda te dirá dónde va a buscar y te ofrecerá portales complementarios según tu perfil (por ejemplo, portales de trabajo en remoto si buscas teletrabajo o en inglés). Elige los que quieras, o ninguno. Puedes cambiarlo cuando quieras: "Busca también en Himalayas".
 
 Tu perfil crece con el tiempo. En `me/profile/questions.md` hay preguntas más profundas (motivaciones, logros, historias que contar en una entrevista). Respóndelas cuando puedas, por ejemplo: "Respondo a la pregunta 7: ...". Cuanto más contestes, mejores serán los CV.
 
@@ -111,14 +112,19 @@ Tu perfil crece con el tiempo. En `me/profile/questions.md` hay preguntas más p
 
 Escribe: **"Busca ofertas"**.
 
-Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará en cuatro portales:
+Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará siempre en tres portales:
+
+- **LinkedIn:** la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.
+- **InfoJobs:** el portal de empleo generalista más usado en España, con ofertas de todos los sectores y provincias.
+- **Indeed:** otro gran portal generalista. De cada oferta solo trae un extracto corto; si una te interesa, ábrela y pega el texto completo en Claude para evaluarla bien.
+
+Y en los complementarios que hayas elegido:
 
 - **Himalayas:** portal de empleo 100% en remoto, con ofertas de todo el mundo y a menudo con el salario indicado.
 - **Remote OK:** otro portal de trabajo en remoto, con mucho peso de tecnología, producto, diseño y marketing.
 - **Arbeitnow:** portal europeo, sobre todo de Alemania, con muchas ofertas en inglés, remotas en Europa o con ayuda para mudarse.
-- **LinkedIn:** la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.
 
-¿Has visto una oferta en otro sitio (InfoJobs, Indeed, la web de una empresa)? Pega el texto o el enlace en Claude y la guarda junto a las demás.
+¿Has visto una oferta en otro sitio (un portal de tu sector, la web de una empresa)? Pega el texto en Claude y la guarda junto a las demás.
 
 ## Paso 8. Ver cuáles encajan
 
@@ -159,6 +165,7 @@ Abre VS Code (se abre en el proyecto) y abre Claude. Sigue donde lo dejaste.
 | Claude no consigue instalar Node.js | Instálalo tú: en [nodejs.org](https://nodejs.org) descarga la versión **LTS** y deja las opciones por defecto. En Windows, deja sin marcar "Tools for Native Modules". Cierra VS Code del todo, ábrelo y comprueba con `node --version` en la terminal de VS Code: tiene que ser 22.18 o superior. |
 | VS Code no deja clonar | Falta Git: instálalo (paso 2) y reinicia VS Code. |
 | LinkedIn no devuelve ofertas (error 429) | LinkedIn limita las consultas. Espera unas horas y busca una sola vez por sesión. Las demás fuentes siguen funcionando. |
+| Indeed o InfoJobs dicen "bot check (captcha)" o error 403 | El portal ha pedido una comprobación de que eres una persona. El programa no intenta saltársela. Prueba más tarde, o abre el portal tú y pega las ofertas que te interesen. |
 | Claude dice que has llegado al límite de uso | Es el límite de Pro. Espera a que se renueve (te dice cuándo) y sigue. |
 | Nada de lo anterior funciona | Plan B: el instalador automático. Windows, en PowerShell: `irm https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.ps1 \| iex`. Mac, en Terminal: `curl -fsSL https://raw.githubusercontent.com/javiergonzalvezort/suitably-local-test/main/install.sh \| bash`. |
 
