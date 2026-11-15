@@ -331,11 +331,18 @@ export function shortlistMarkdown(entries: ShortlistEntry[], generatedAt: Date):
 
 // ---------- Command line ----------
 
-function loadOffers(fetched: string, pasted: string): Offer[] {
+// The fetched offers, plus pasted ones and those the agent extracted from the
+// saved pages of complementary sources.
+function loadOffers(fetched: string, ...others: string[]): Offer[] {
   const offers: Offer[] = fs.existsSync(fetched) ? readJson<Offer[]>(fetched) : [];
-  if (fs.existsSync(pasted)) {
-    const known = new Set(offers.map((o) => o.id));
-    for (const offer of readJson<Offer[]>(pasted)) if (!known.has(offer.id)) offers.push(offer);
+  const known = new Set(offers.map((o) => o.id));
+  for (const file of others) {
+    if (!fs.existsSync(file)) continue;
+    for (const offer of readJson<Offer[]>(file)) {
+      if (known.has(offer.id)) continue;
+      known.add(offer.id);
+      offers.push(offer);
+    }
   }
   return offers;
 }
@@ -347,7 +354,7 @@ function main() {
   const nowOption = stringOption(args, "now");
   const now = nowOption ? new Date(nowOption) : new Date();
   const rel = (file: string) => path.relative(REPO_ROOT, file);
-  const offers = loadOffers(paths.fetched, paths.pasted);
+  const offers = loadOffers(paths.fetched, paths.pasted, paths.extracted);
 
   if (command === "shortlist") {
     if (offers.length === 0) {

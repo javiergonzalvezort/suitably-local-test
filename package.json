@@ -12,6 +12,7 @@
     "doctor": "node scripts/doctor.ts",
     "init-workspace": "node scripts/init-workspace.ts",
     "find-offers": "node scripts/find-offers.ts",
+    "check-source": "node scripts/check-source.ts",
     "shortlist": "node scripts/rank.ts shortlist",
     "score": "node scripts/rank.ts score",
     "check-cv": "node scripts/check-cv.ts",

@@ -23,19 +23,18 @@ Left out on purpose:
 - `docs/` in Spanish (setup guide for non-developers, costs per agent, privacy, FAQ); README in Spanish.
 - Supervised apply (field plan, never submit; email drafts only). Interview prep: done 2026-11-10 (`interview-prep` skill), not yet tried by an agent.
 - Public ATS boards (Greenhouse, Lever, Ashby) over a user-maintained company list (question 4 of `questions.md` collects it).
-- ~~InfoJobs and Indeed~~ Done 2026-11-15: default sources with LinkedIn (public search pages, no login; Indeed only keeps the search extract, robots.txt disallows job pages). Himalayas, Remote OK, and Arbeitnow became complementary sources, offered by the setup skill before the first search (`extraSources` in `search.json`). To check in a workshop: Indeed answered the scripts User-Agent with a Cloudflare bot check on 2026-11-15, so it may often give no offers.
-- More complementary sources: Infoempleo (robots.txt allows its search pages; terms and an HTML parser pending), EURES (find the current search endpoint), sector boards for non-tech profiles (health, dental, administration). Tecnoempleo is out: its robots.txt disallows Claude.
+- ~~InfoJobs and Indeed~~ Done 2026-11-15: default sources with LinkedIn (public search pages, no login; Indeed only keeps the search extract, robots.txt disallows job pages). Same day: Himalayas, Remote OK, and Arbeitnow removed. Complementary sources are now proposed per person by the setup skill (three or four), checked with `npm run check-source`, and saved to `extraSources` in `search.json`; pages without JobPosting data are saved to `offers/sources/` for the agent to extract into `offers/extracted.json`. To check in a workshop: Indeed answered the scripts User-Agent with a Cloudflare bot check on 2026-11-15, so it may often give no offers.
+- Complementary sources to try in a workshop: how often the proposed sites pass check-source, how many offers the agent extracts from saved pages, and the token cost of reading them (a saved page is up to about 35 KB).
 - InfoJobs official API as an option for users who register an app (more stable than the public page if InfoJobs adds a captcha).
 - Adzuna: terms allow personal job search with a free per-user key, but its API host's robots.txt disallows everything and listings need its logo; revisit if Spanish coverage is thin.
 - ~~Applications log~~ Done 2026-11-10: `applications/log.json` written by the agent, `npm run applications` turns it into `applications.xlsx` (no dependencies).
-- Himalayas: drop jobs that closed before their expiry date (the single-job endpoint answers 410). Today only `expiresAt` is checked.
 - CI (GitHub Actions) that runs `npm test`, `npm run typecheck`, and the demo with Typst.
 - Second agent (Codex or Gemini CLI) tested end to end.
 - A contributor agreement (DCO or CLA) before accepting pull requests.
 
 ## Known limits
 
-- Himalayas: only the first page per search term (robots.txt disallows `page=` URLs).
+- Only the first results page per search term and source.
 - The shortlist's location filter is text matching; offers with no stated location pass.
 - `check-cv` checks facts and numbers, not wording: a human still reads every document.
 - Fonts: Arial on Windows and macOS; elsewhere Typst falls back to its bundled Libertinus Serif.

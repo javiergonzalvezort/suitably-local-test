@@ -183,17 +183,15 @@ test("client reports a bot check (captcha) and does not try to get past it", asy
   assert.equal(calls.length, 2); // robots.txt and the page, no retry
 });
 
-test("sources: defaults always, complementary ones only when chosen, switched-off ones never", () => {
+test("default sources: every enabled one, or only the one asked for", () => {
   const limits = { minDelayMs: 1, dailyRequestCap: 1, cacheHours: 1, maxQueries: 1 };
   const sources: Record<string, SourceConfig> = {
-    linkedin: { ...limits, name: "LinkedIn", enabled: true, default: true },
-    indeed: { ...limits, name: "Indeed", enabled: false, default: true },
-    himalayas: { ...limits, name: "Himalayas", enabled: true, default: false },
-    arbeitnow: { ...limits, name: "Arbeitnow", enabled: true, default: false },
+    linkedin: { ...limits, name: "LinkedIn", enabled: true },
+    infojobs: { ...limits, name: "InfoJobs", enabled: true },
+    indeed: { ...limits, name: "Indeed", enabled: false },
   };
   const ids = (list: [string, SourceConfig][]) => list.map(([id]) => id);
-  assert.deepEqual(ids(activeSources(sources, DEFAULT_SEARCH)), ["linkedin"]);
-  assert.deepEqual(ids(activeSources(sources, { ...DEFAULT_SEARCH, extraSources: ["himalayas", "indeed"] })), ["linkedin", "himalayas"]);
-  assert.deepEqual(ids(activeSources(sources, DEFAULT_SEARCH, "arbeitnow")), ["arbeitnow"]);
-  assert.deepEqual(ids(activeSources(sources, DEFAULT_SEARCH, "indeed")), []);
+  assert.deepEqual(ids(activeSources(sources)), ["linkedin", "infojobs"]);
+  assert.deepEqual(ids(activeSources(sources, "infojobs")), ["infojobs"]);
+  assert.deepEqual(ids(activeSources(sources, "indeed")), []);
 });

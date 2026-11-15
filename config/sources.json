@@ -1,10 +1,9 @@
 {
-  "_read_me": "Allowlist of job sources. \"default\": true sources are searched for every user; the others are complementary and only searched when the user lists them in \"extraSources\" in their search.json (the setup skill offers them). \"enabled\": false turns a source off for everyone. Safe defaults: only change the limits if you have read the source's terms and accept the responsibility. Never add sites that need a login. See docs/sources.md.",
+  "_read_me": "Allowlist of the default job sources, searched for every user. The complementary sources each user chooses are not listed here: they live in \"extraSources\" in that user's search.json, after the check-source script found them technically viable. \"enabled\": false turns a source off. Safe defaults: only change the limits if you have read the source's terms and accept the responsibility. Never add sites that need a login. See docs/sources.md.",
   "sources": {
     "linkedin": {
       "name": "LinkedIn",
       "enabled": true,
-      "default": true,
       "kind": "public job pages without login (jobs-guest), as in ai-job-search",
       "apiDocs": "none: not an official API",
       "termsUrl": "https://www.linkedin.com/legal/user-agreement",
@@ -21,7 +20,6 @@
     "infojobs": {
       "name": "InfoJobs",
       "enabled": true,
-      "default": true,
       "kind": "public search page without login (offers embedded as JSON in the page)",
       "apiDocs": "https://developer.infojobs.net (official API, needs an app registered with an InfoJobs account; not used)",
       "termsUrl": "https://www.infojobs.net/lex.xhtml",
@@ -36,7 +34,6 @@
     "indeed": {
       "name": "Indeed",
       "enabled": true,
-      "default": true,
       "kind": "public search page without login (job cards embedded as JSON; job pages are not opened)",
       "apiDocs": "none: Indeed has no public jobs API",
       "termsUrl": "https://es.indeed.com/legal",
@@ -47,54 +44,6 @@
       "dailyRequestCap": 30,
       "cacheHours": 6,
       "maxQueries": 3
-    },
-    "himalayas": {
-      "name": "Himalayas",
-      "enabled": true,
-      "default": false,
-      "goodFor": "Remote jobs open to candidates in Spain or Europe, often with the salary stated; strong in tech, product, design, marketing and operations.",
-      "kind": "official public JSON API",
-      "apiDocs": "https://himalayas.app/api",
-      "termsUrl": "https://himalayas.app/terms",
-      "termsReviewed": "2026-10-28",
-      "robotsChecked": "2026-10-27",
-      "duties": "Name Himalayas and link to the job page; keep applicationLink unchanged; drop expired or closed jobs; show the jobs only in apps you operate, never pass them on to other job boards or aggregators.",
-      "minDelayMs": 2000,
-      "dailyRequestCap": 30,
-      "cacheHours": 6,
-      "maxQueries": 5
-    },
-    "remoteok": {
-      "name": "Remote OK",
-      "enabled": true,
-      "default": false,
-      "goodFor": "Remote jobs worldwide, mostly in English; strong in software, product, design and marketing.",
-      "kind": "official public JSON API (latest jobs, one request)",
-      "apiDocs": "https://remoteok.com/api",
-      "termsUrl": "https://remoteok.com/legal",
-      "termsReviewed": "2026-10-28",
-      "robotsChecked": "2026-10-27",
-      "duties": "Name Remote OK as the source and link to the Remote OK job page; do not use the Remote OK logo.",
-      "minDelayMs": 2000,
-      "dailyRequestCap": 4,
-      "cacheHours": 6,
-      "maxQueries": 1
-    },
-    "arbeitnow": {
-      "name": "Arbeitnow",
-      "enabled": true,
-      "default": false,
-      "goodFor": "Jobs in Germany and remote in Europe, many in English, some with relocation help; for people open to moving or working in English.",
-      "kind": "free public JSON API (newest 300 jobs, one request)",
-      "apiDocs": "https://www.arbeitnow.com/blog/job-board-api",
-      "termsUrl": "https://www.arbeitnow.com/terms",
-      "termsReviewed": "2026-10-28",
-      "robotsChecked": "2026-10-28",
-      "duties": "Personal, non-commercial use only; link back to Arbeitnow; do not republish the jobs. The API may be withdrawn at any time.",
-      "minDelayMs": 2000,
-      "dailyRequestCap": 4,
-      "cacheHours": 6,
-      "maxQueries": 1
     }
   }
 }

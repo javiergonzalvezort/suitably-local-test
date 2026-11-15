@@ -1,7 +1,8 @@
 // Shapes of the JSON files the scripts and the agent exchange.
 // The skills in .agents/skills/ describe the same shapes in plain words.
 
-export type SourceId = "linkedin" | "infojobs" | "indeed" | "himalayas" | "remoteok" | "arbeitnow" | "pasted" | "example";
+// "custom": a complementary source the user chose (see extraSources in search.json).
+export type SourceId = "linkedin" | "infojobs" | "indeed" | "custom" | "pasted" | "example";
 
 // One job offer, the same shape whatever the source.
 export type Offer = {
@@ -21,7 +22,7 @@ export type Offer = {
   expiresAt?: string; // ISO date: the source's expiry, or the closing date a pasted offer states
   description: string; // plain text, contact details removed; empty when aiBlocked
   aiBlocked: boolean; // the site's robots.txt opts out of AI agents: never send its text to the model
-  snippetOnly?: boolean; // the description is only the short extract shown on a search page (Indeed)
+  snippetOnly?: boolean; // the description is only the short extract shown on a search page (Indeed, most custom sources)
 };
 
 export type Match = "yes" | "partial" | "no" | "unknown";

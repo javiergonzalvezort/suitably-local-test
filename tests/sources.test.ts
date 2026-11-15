@@ -5,88 +5,28 @@ import path from "node:path";
 import { test } from "node:test";
 import { dedupe } from "../scripts/find-offers.ts";
 import { PoliteClient, SourceError } from "../scripts/lib/http.ts";
-import { himalayasSearchUrl, normaliseHimalayas } from "../scripts/sources/himalayas.ts";
-import { normaliseRemoteOk } from "../scripts/sources/remoteok.ts";
-import { normaliseArbeitnow } from "../scripts/sources/arbeitnow.ts";
 import { cardsWorthOpening, linkedinOffer, linkedinSearchUrls, parseJobCards, parseJobDetail } from "../scripts/sources/linkedin.ts";
 import { DEFAULT_SEARCH } from "../scripts/lib/settings.ts";
+import type { Offer } from "../scripts/lib/types.ts";
 
-// Invented answers in the shape of the real APIs (checked 2026-10-27).
-const HIMALAYAS_ANSWER = {
-  totalCount: 1,
-  jobs: [
-    {
-      title: "Analytics Engineer",
-      companyName: "Fictional Co",
-      description: "<p>Build dbt models. Write to hiring@fictional.test</p>",
-      employmentType: "Full Time",
-      seniority: ["Mid-level"],
-      minSalary: 50000,
-      maxSalary: 60000,
-      currency: "EUR",
-      salaryPeriod: "annual",
-      locationRestrictions: ["Spain", "Portugal"],
-      categories: ["Analytics-Engineer"],
-      pubDate: 1793116526,
-      expiryDate: 1798300525,
-      applicationLink: "https://himalayas.app/companies/fictional-co/jobs/analytics-engineer?utm_source=api",
-      guid: "https://himalayas.app/companies/fictional-co/jobs/analytics-engineer",
-    },
-  ],
+const OFFER: Offer = {
+  id: "infojobs:abc",
+  source: "infojobs",
+  sourceName: "InfoJobs",
+  title: "Analytics Engineer",
+  company: "Fictional Co",
+  url: "https://www.infojobs.net/madrid/analytics-engineer/of-iabc",
+  applyUrl: "https://www.infojobs.net/madrid/analytics-engineer/of-iabc",
+  locations: ["Madrid, Spain"],
+  tags: [],
+  postedAt: "2026-11-14T09:00:00.000Z",
+  description: "Build dbt models.",
+  aiBlocked: false,
 };
 
-const REMOTEOK_ANSWER = [
-  { last_updated: 1793001612, legal: "API Terms of Service: please link back..." },
-  {
-    id: "123",
-    position: "Data Analyst ",
-    company: "Invented Ltd",
-    description: "<p>SQL and Looker. Call +44 20 7946 0000</p>",
-    tags: ["sql", "looker"],
-    location: "Europe",
-    salary_min: 0,
-    salary_max: 0,
-    date: "2026-10-26T08:00:12+00:00",
-    url: "https://remoteOK.com/remote-jobs/123",
-    apply_url: "https://remoteOK.com/remote-jobs/123",
-  },
-];
-
-test("Himalayas: keeps the application link unchanged and removes contacts", () => {
-  const [offer] = normaliseHimalayas(HIMALAYAS_ANSWER, false);
-  assert.equal(offer.id, "himalayas:companies/fictional-co/jobs/analytics-engineer");
-  assert.equal(offer.applyUrl, HIMALAYAS_ANSWER.jobs[0].applicationLink);
-  assert.equal(offer.sourceName, "Himalayas");
-  assert.deepEqual(offer.locations, ["Spain", "Portugal"]);
-  assert.equal(offer.salary, "50,000 to 60,000 EUR (annual)");
-  assert.match(offer.description, /\[email removed\]/);
-  assert.ok(offer.expiresAt);
-});
-
-test("Himalayas: never keeps text when the site opts out of AI agents", () => {
-  const [offer] = normaliseHimalayas(HIMALAYAS_ANSWER, true);
-  assert.equal(offer.description, "");
-  assert.equal(offer.aiBlocked, true);
-});
-
-test("Himalayas: search URL has no page parameter (robots.txt)", () => {
-  assert.equal(himalayasSearchUrl("data analyst"), "https://himalayas.app/jobs/api/search?q=data%20analyst&sort=recent");
-});
-
-test("Remote OK: skips the legal notice and keeps the attribution link", () => {
-  const offers = normaliseRemoteOk(REMOTEOK_ANSWER, false);
-  assert.equal(offers.length, 1);
-  assert.equal(offers[0].title, "Data Analyst");
-  assert.equal(offers[0].url, "https://remoteOK.com/remote-jobs/123");
-  assert.equal(offers[0].sourceName, "Remote OK");
-  assert.equal(offers[0].salary, undefined);
-  assert.match(offers[0].description, /\[phone removed\]/);
-});
-
 test("dedupe drops the same company and title from a second source", () => {
-  const [a] = normaliseHimalayas(HIMALAYAS_ANSWER, false);
-  const b = { ...a, id: "remoteok:9", source: "remoteok" as const, company: "fictional co" };
-  assert.equal(dedupe([a, b, a]).length, 1);
+  const b = { ...OFFER, id: "indeed:9", source: "indeed" as const, company: "fictional co" };
+  assert.equal(dedupe([OFFER, b, OFFER]).length, 1);
 });
 
 // A fake network: records the URLs asked for and answers from a table.
@@ -228,21 +168,4 @@ test("LinkedIn: parses cards, opens only titles that match, and removes contacts
   assert.match(offer.description, /SQL & Looker every day\./);
   assert.match(offer.description, /\[email removed\]/);
   assert.deepEqual(offer.locations, ["Barcelona, Catalonia, Spain"]);
-});
-
-test("Arbeitnow: remote jobs have no location limit, on-site jobs keep their city", () => {
-  const answer = {
-    data: [
-      { slug: "data-analyst-1", company_name: "Fictional GmbH", title: "Data Analyst", description: "<p>SQL</p>", remote: true, url: "https://www.arbeitnow.com/jobs/companies/fictional/data-analyst-1", tags: ["Data"], job_types: ["Full-time"], location: "Berlin", created_at: 1793175612 },
-      { slug: "bi-dev-2", company_name: "Invented AG", title: "BI Developer", description: "", remote: false, url: "https://www.arbeitnow.com/jobs/companies/invented/bi-dev-2", tags: [], job_types: [], location: "Munich", created_at: 1793175612 },
-      { title: "No slug" },
-    ],
-  };
-  const [remote, onsite, ...others] = normaliseArbeitnow(answer, false);
-  assert.equal(others.length, 0);
-  assert.equal(remote.id, "arbeitnow:data-analyst-1");
-  assert.deepEqual(remote.locations, []);
-  assert.ok(remote.tags.includes("Remote"));
-  assert.deepEqual(onsite.locations, ["Munich"]);
-  assert.equal(onsite.sourceName, "Arbeitnow");
 });

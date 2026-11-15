@@ -16,6 +16,8 @@ export type WorkspacePaths = {
   offersDir: string;
   fetched: string;
   pasted: string;
+  extracted: string; // offers the agent read from the saved pages of complementary sources
+  sourcePagesDir: string; // those saved pages
   shortlist: string;
   shortlistMarkdown: string;
   evaluations: string;
@@ -35,6 +37,8 @@ export function workspacePaths(workspace: string | undefined): WorkspacePaths {
     offersDir,
     fetched: path.join(offersDir, "fetched.json"),
     pasted: path.join(offersDir, "pasted.json"),
+    extracted: path.join(offersDir, "extracted.json"),
+    sourcePagesDir: path.join(offersDir, "sources"),
     shortlist: path.join(offersDir, "shortlist.json"),
     shortlistMarkdown: path.join(offersDir, "shortlist.md"),
     evaluations: path.join(offersDir, "evaluations.json"),
