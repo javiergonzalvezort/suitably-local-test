@@ -10,6 +10,14 @@ State after the first session (2026-10-27). Done: repo skeleton (AGPL-3.0), doct
 5. ~~Re-read the terms~~ Done 2026-10-28: both allow this use; see `docs/sources.md`.
 6. ~~Session flow~~ Done 2026-10-28: setup starts from `me/documents/` and three to five questions, `profile/questions.md` as the context layer, Arbeitnow and LinkedIn (public job pages, as in ai-job-search) as sources, ranking with best matches, others closing within 7 days, and the rest explained, tailor iterates offer by offer. Step 4 should try this flow.
 
+## Guide fixes from the first workshop (2026-11-14)
+
+Done 2026-11-15 in `docs/manual.md`, `docs/guia.html` and `docs/guia-suitably.pdf`. Step 2 is now split into Git and VS Code. Git on Windows: which download to pick (64-bit or ARM64), Notepad as the editor (VS Code is not installed yet, and the default is Vim), `main` as the initial branch, and Next on every other screen. Git on Mac: Terminal, `git --version`, and the Command Line Tools prompt, because git-scm has no Mac download button. There is now a `git --version` check. VS Code on Mac: install from Applications, not Downloads. Logins: the Claude extension is the only one (Google accounts choose "Continue with Google"), so ignore the VS Code "Sign in" prompt. Troubleshooting gained a manual Node.js row.
+
+Left out on purpose:
+- `git config user.name` / `user.email`, because participants clone and pull but never commit.
+- `core.editor "code --wait"` and the Mac `code` PATH command, because the session never opens a Git editor.
+
 ## Later
 
 - `docs/` in Spanish (setup guide for non-developers, costs per agent, privacy, FAQ); README in Spanish.

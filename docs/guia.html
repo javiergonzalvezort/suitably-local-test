@@ -88,6 +88,11 @@
     background: var(--marker); color: #18241d; border-radius: 999px;
     padding: 2px 10px; margin-left: 4px; vertical-align: middle; white-space: nowrap;
   }
+  h3 { font-size: 1.15rem; font-weight: 800; margin: 22px 0 6px; }
+  .os {
+    font-size: 0.78rem; font-weight: 600; color: var(--forest);
+    text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 2px;
+  }
   p, li { max-width: 66ch; }
   ul, ol { padding-left: 1.3em; }
   li { margin: 4px 0; }
@@ -148,6 +153,7 @@
     section { padding: 14px 0 0; }
     .note, .cmd, li { break-inside: avoid; }
     h2 { font-size: 15pt; break-after: avoid; }
+    h3, .os { break-after: avoid; }
     .num { width: 26px; height: 26px; font-size: 11pt; }
     .cmd { font-size: 7.2pt; white-space: nowrap; overflow: visible; }
     
@@ -201,14 +207,49 @@
 
 <section>
   <h2><span class="num">2</span><span>Instalar Git y VS Code</span></h2>
-  <ul>
-    <li><strong>Git</strong> es lo que descarga el proyecto. Descárgalo de <a href="https://git-scm.com/downloads">git-scm.com</a> e instálalo dejando todas las opciones por defecto. En Mac, si al clonar (paso 4) te pide instalar las «herramientas de línea de comandos», acepta.</li>
-    <li><strong>VS Code</strong> es el programa donde trabajarás: a la izquierda ves tus carpetas y archivos, a la derecha hablas con Claude. Entra en <a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a> y elige tu sistema:
+  <p>Instala primero Git y después VS Code. Ninguno de los dos necesita cuenta ni login.</p>
+
+  <h3>Git</h3>
+  <p>Git es lo que descarga el proyecto.</p>
+  <p class="os">Windows</p>
+  <ol>
+    <li>Entra en <a href="https://git-scm.com/downloads/win">git-scm.com/downloads/win</a> y pulsa <strong>Click here to download</strong>. Se descarga el instalador de 64 bits. Si tu portátil es ARM (Snapdragon, Copilot+ PC), elige <strong>ARM64 Setup</strong>. La versión Portable no te hace falta.</li>
+    <li>Ábrelo y pulsa <strong>Next</strong> en cada pantalla, salvo en dos:
       <ul>
-        <li><strong>Windows:</strong> descarga el instalador de Windows, ábrelo y deja las opciones por defecto.</li>
-        <li><strong>Mac:</strong> pulsa el botón de Mac. Se descarga un <code>.zip</code>: ábrelo y arrastra <strong>Visual Studio Code</strong> a la carpeta <strong>Aplicaciones</strong>. La primera vez que lo abras, el Mac te pedirá confirmar que quieres abrirlo.</li>
+        <li><strong>Choosing the default editor used by Git:</strong> elige <strong>Notepad</strong>. La opción de VS Code no funciona todavía porque aún no lo has instalado, y la que viene por defecto (Vim) es difícil de usar.</li>
+        <li><strong>Adjusting the name of the initial branch:</strong> marca <strong>Override the default branch name</strong> y deja <code>main</code>.</li>
       </ul></li>
+    <li>Al terminar, pulsa <strong>Finish</strong>.</li>
+  </ol>
+  <p>En el resto de pantallas tienen que quedar marcadas las opciones que vienen por defecto. Las importantes son estas:</p>
+  <ul>
+    <li><strong>PATH:</strong> «Git from the command line and also from 3rd-party software». Sin ella, VS Code no encuentra Git.</li>
+    <li><strong>Saltos de línea:</strong> «Checkout Windows-style, commit Unix-style line endings».</li>
+    <li><strong>Terminal:</strong> «Use MinTTY».</li>
+    <li><strong>Credenciales:</strong> «Git Credential Manager».</li>
   </ul>
+  <p class="os">Mac</p>
+  <p>La web de Git no tiene botón de descarga para Mac, así que no hace falta entrar en ella.</p>
+  <ol>
+    <li>Abre <strong>Terminal</strong>: pulsa <code>Cmd+Espacio</code>, escribe «Terminal» y pulsa Intro. Verás una línea con el nombre de tu Mac que acaba en <code>%</code> o <code>$</code>. Eso significa que está esperando que escribas algo.</li>
+    <li>Escribe <code>git --version</code> y pulsa Intro.</li>
+    <li>Si sale una ventana para instalar las <strong>herramientas de línea de comandos</strong>, pulsa <strong>Instalar</strong>, acepta la licencia y espera unos minutos. No uses el instalador «Binary installer» de la web de Git, porque está desactualizado.</li>
+  </ol>
+  <div class="note"><p><strong>Para comprobarlo:</strong> abre una terminal nueva (en Windows, PowerShell; en Mac, Terminal) y escribe <code>git --version</code>. Si sale <code>git version 2.…</code>, Git está listo.</p></div>
+
+  <h3>VS Code</h3>
+  <p>VS Code es el programa donde trabajarás: a la izquierda ves tus carpetas y archivos, y a la derecha hablas con Claude. Entra en <a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a> y elige tu sistema:</p>
+  <ul>
+    <li><strong>Windows:</strong> descarga el instalador de Windows (User Installer) y ábrelo. Acepta la licencia y deja la carpeta que propone. En <strong>Tareas adicionales</strong>:
+      <ul>
+        <li>Marca <strong>Crear un icono en el escritorio</strong>. Así te será fácil volver otro día.</li>
+        <li>Marca las dos casillas <strong>Agregar la acción «Abrir con Code»</strong> (al menú de archivos y al de carpetas).</li>
+        <li>Deja marcada <strong>Agregar a PATH</strong>, que ya viene así.</li>
+      </ul>
+      Pulsa <strong>Siguiente</strong> e <strong>Instalar</strong>.</li>
+    <li><strong>Mac:</strong> pulsa el botón de Mac (sirve para todos los Mac). Ve a <strong>Descargas</strong>: si ves un <code>.zip</code>, haz doble clic para descomprimirlo. Arrastra <strong>Visual Studio Code</strong> a la carpeta <strong>Aplicaciones</strong>. No lo abras desde Descargas, porque después no se actualizaría bien. La primera vez que lo abras, el Mac te avisará de que se ha descargado de internet: pulsa <strong>Abrir</strong>.</li>
+  </ul>
+  <p>Si VS Code te propone iniciar sesión («Sign in», o el icono de cuenta abajo a la izquierda), ignóralo: solo sirve para sincronizar la configuración.</p>
 </section>
 
 <section>
@@ -218,8 +259,9 @@
     <li>Busca <strong>Claude Code</strong>, comprueba que el autor es <strong>Anthropic</strong> y pulsa <strong>Instalar</strong>.</li>
     <li>Abre Claude con su icono (arriba a la derecha del editor o en la barra lateral).</li>
     <li>Cuando te pida entrar, elige <strong>la cuenta de Claude con suscripción</strong> (no la opción de «Console» o API).</li>
-    <li>Se abre el navegador: entra con la misma cuenta del paso 1 y pulsa <strong>Autorizar</strong>. Vuelve a VS Code.</li>
+    <li>Se abre el navegador: entra con la misma cuenta del paso 1 y pulsa <strong>Autorizar</strong>. Si creaste la cuenta con Google, elige <strong>Continuar con Google</strong>. Vuelve a VS Code.</li>
   </ol>
+  <div class="note"><p>Este es el único login de toda la guía. Ni Git ni VS Code piden cuenta.</p></div>
 </section>
 
 <section>
@@ -309,6 +351,7 @@
     <tbody>
       <tr><td>Claude no encuentra <code>node</code>, <code>git</code> o <code>typst</code> justo después de instalarlos</td><td>Cierra VS Code del todo, ábrelo de nuevo y escribe <code>/setup</code>.</td></tr>
       <tr><td>No sabes qué falta</td><td>Pídele a Claude: «Comprueba mi ordenador».</td></tr>
+      <tr><td>Claude no consigue instalar Node.js</td><td>Instálalo tú: en <a href="https://nodejs.org">nodejs.org</a> descarga la versión <strong>LTS</strong> y deja las opciones por defecto. En Windows, deja sin marcar «Tools for Native Modules». Cierra VS Code del todo, ábrelo y comprueba con <code>node --version</code> en la terminal de VS Code: tiene que ser 22.18 o superior.</td></tr>
       <tr><td>VS Code no deja clonar</td><td>Falta Git: instálalo (paso 2) y reinicia VS Code.</td></tr>
       <tr><td>LinkedIn no devuelve ofertas (error 429)</td><td>LinkedIn limita las consultas. Espera unas horas y busca una sola vez por sesión. Las demás fuentes siguen funcionando.</td></tr>
       <tr><td>Claude dice que has llegado al límite de uso</td><td>Es el límite de Pro. Espera a que se renueve (te dice cuándo) y sigue.</td></tr>
