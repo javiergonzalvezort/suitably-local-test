@@ -170,7 +170,7 @@ export function checkWorkspace(workspaceRoot: string): CheckResult {
 }
 
 async function checkSourcesOnline(): Promise<CheckResult> {
-  const urls = ["https://himalayas.app/robots.txt", "https://remoteok.com/robots.txt"];
+  const urls = ["https://www.linkedin.com/robots.txt", "https://www.infojobs.net/robots.txt", "https://es.indeed.com/robots.txt"];
   const failed: string[] = [];
   for (const url of urls) {
     try {
@@ -180,7 +180,7 @@ async function checkSourcesOnline(): Promise<CheckResult> {
       failed.push(url);
     }
   }
-  if (failed.length === 0) return { name: "Job sources reachable", status: "ok", detail: "Himalayas, Remote OK" };
+  if (failed.length === 0) return { name: "Job sources reachable", status: "ok", detail: "LinkedIn, InfoJobs, Indeed" };
   return {
     name: "Job sources reachable",
     status: "warn",

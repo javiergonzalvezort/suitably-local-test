@@ -292,6 +292,7 @@
     <li>Dile a Claude que ya están.</li>
     <li>Leerá tus documentos y te hará entre tres y cinco preguntas: qué puestos buscas, dónde, si te mudarías, salario, qué descartas. Puedes saltarte cualquiera.</li>
     <li>Con eso redacta tu perfil. Revísalo: todo lo que digan tus CV y cartas sale de ahí.</li>
+    <li>Antes de la primera búsqueda te dirá dónde va a buscar y te ofrecerá portales complementarios según tu perfil (por ejemplo, portales de trabajo en remoto si buscas teletrabajo o en inglés). Elige los que quieras, o ninguno. Puedes cambiarlo cuando quieras: <span class="say">Busca también en Himalayas</span></li>
   </ol>
   <p>Tu perfil crece con el tiempo. En <code>me/profile/questions.md</code> hay preguntas más profundas (motivaciones, logros, historias que contar en una entrevista). Respóndelas cuando puedas, por ejemplo: <span class="say">Respondo a la pregunta 7: …</span> Cuanto más contestes, mejores serán los CV.</p>
 </section>
@@ -299,14 +300,19 @@
 <section>
   <h2><span class="num">7</span><span>Buscar ofertas</span></h2>
   <p>Escribe: <span class="say">Busca ofertas</span></p>
-  <p>Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará en cuatro portales:</p>
+  <p>Te preguntará de qué fechas (último día, 3, 7 o 14 días; por defecto 7) y buscará siempre en tres portales:</p>
+  <ul>
+    <li><strong>LinkedIn:</strong> la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.</li>
+    <li><strong>InfoJobs:</strong> el portal de empleo generalista más usado en España, con ofertas de todos los sectores y provincias.</li>
+    <li><strong>Indeed:</strong> otro gran portal generalista. De cada oferta solo trae un extracto corto; si una te interesa, ábrela y pega el texto completo en Claude para evaluarla bien.</li>
+  </ul>
+  <p>Y en los complementarios que hayas elegido:</p>
   <ul>
     <li><strong>Himalayas:</strong> portal de empleo 100% en remoto, con ofertas de todo el mundo y a menudo con el salario indicado.</li>
     <li><strong>Remote OK:</strong> otro portal de trabajo en remoto, con mucho peso de tecnología, producto, diseño y marketing.</li>
     <li><strong>Arbeitnow:</strong> portal europeo, sobre todo de Alemania, con muchas ofertas en inglés, remotas en Europa o con ayuda para mudarse.</li>
-    <li><strong>LinkedIn:</strong> la red profesional más grande, con muchas ofertas en España. Se leen sus ofertas públicas sin entrar en tu cuenta y en poca cantidad, porque LinkedIn limita las consultas.</li>
   </ul>
-  <p>¿Has visto una oferta en otro sitio (InfoJobs, Indeed, la web de una empresa)? Pega el texto o el enlace en Claude y la guarda junto a las demás.</p>
+  <p>¿Has visto una oferta en otro sitio (un portal de tu sector, la web de una empresa)? Pega el texto en Claude y la guarda junto a las demás.</p>
 </section>
 
 <section>
@@ -354,6 +360,7 @@
       <tr><td>Claude no consigue instalar Node.js</td><td>Instálalo tú: en <a href="https://nodejs.org">nodejs.org</a> descarga la versión <strong>LTS</strong> y deja las opciones por defecto. En Windows, deja sin marcar «Tools for Native Modules». Cierra VS Code del todo, ábrelo y comprueba con <code>node --version</code> en la terminal de VS Code: tiene que ser 22.18 o superior.</td></tr>
       <tr><td>VS Code no deja clonar</td><td>Falta Git: instálalo (paso 2) y reinicia VS Code.</td></tr>
       <tr><td>LinkedIn no devuelve ofertas (error 429)</td><td>LinkedIn limita las consultas. Espera unas horas y busca una sola vez por sesión. Las demás fuentes siguen funcionando.</td></tr>
+      <tr><td>Indeed o InfoJobs dicen "bot check (captcha)" o error 403</td><td>El portal ha pedido una comprobación de que eres una persona. El programa no intenta saltársela. Prueba más tarde, o abre el portal tú y pega las ofertas que te interesen.</td></tr>
       <tr><td>Claude dice que has llegado al límite de uso</td><td>Es el límite de Pro. Espera a que se renueve (te dice cuándo) y sigue.</td></tr>
       <tr><td>Nada de lo anterior funciona</td><td>Plan B, el instalador automático (abajo).</td></tr>
     </tbody>
@@ -375,7 +382,7 @@
   </ul>
 </section>
 
-<footer class="end">suitably · versión local, código abierto (AGPL-3.0) · Sin relación con Anthropic, Himalayas, Remote OK, Arbeitnow ni LinkedIn.</footer>
+<footer class="end">suitably · versión local, código abierto (AGPL-3.0) · Sin relación con Anthropic, LinkedIn, InfoJobs, Indeed, Himalayas, Remote OK ni Arbeitnow.</footer>
 
 </div>
 </body>

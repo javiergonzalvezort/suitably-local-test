@@ -12,5 +12,6 @@
   ],
   "workplace": "",
   "maxAgeDays": 7,
-  "shortlistSize": 20
+  "shortlistSize": 20,
+  "extraSources": []
 }
